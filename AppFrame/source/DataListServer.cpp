@@ -1,15 +1,7 @@
-/* 2024.12.12 駒沢風助 ファイル作成 */
+/* データリストサーバーの定義 */
 
 #include "DataListServer.h"
 #include "AppFunctionDefine.h"
-
-/* データリストサーバーの定義 */
-
-// コンストラクタ
-DataListServer::DataListServer()
-{
-	/* 初期化 */
-}
 
 // デストラクタ
 DataListServer::~DataListServer()
@@ -45,7 +37,7 @@ void DataListServer::DrawDataList()
 }
 
 // データリスト追加予約
-void DataListServer::AddDataList(DataListBase* NewDataList)
+void DataListServer::AddDataList(std::shared_ptr<DataListBase> NewDataList)
 {
 	// ※データリストの追加自体は"AddDataList"関数で行う
 	// 引数
@@ -55,7 +47,7 @@ void DataListServer::AddDataList(DataListBase* NewDataList)
 }
 
 // データリスト取得
-DataListBase* DataListServer::GetDataList(const std::string& cName)
+std::shared_ptr<DataListBase> DataListServer::GetDataList(const std::string& cName)
 {
 	// 引数
 	// cName		<-	取得したいデータリストの名称
@@ -84,14 +76,14 @@ void DataListServer::DeleteDataList(const std::string& cName)
 	// cName	<-	削除したいシーンの名称
 
 	/* 指定の名称のデータリストを削除 */
-	pstDataList.erase(std::remove_if(pstDataList.begin(),pstDataList.end(),[&](auto* DataList)
+	pstDataList.erase(std::remove_if(pstDataList.begin(),pstDataList.end(),[&](std::shared_ptr<DataListBase> DataList)
 	{
 		/* データリストの名称が一致するか確認 */
 		if (DataList->stGetDataListName() == cName)
 		{
 			// 一致している場合
 			/* メモリを開放する */
-			delete DataList;
+			DataList.reset();
 			return true;
 		}
 		else
@@ -109,7 +101,7 @@ void DataListServer::DeleteAllDataList()
 	// データリスト一覧に登録されている全てのデータリストを削除する
 	for (auto& DataList : pstDataList)
 	{
-		delete DataList;	// メモリを開放する
+		DataList.reset();	// メモリを開放する
 	}
 
 	/* データリストのクリアを行う */

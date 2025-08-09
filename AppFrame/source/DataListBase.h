@@ -1,10 +1,8 @@
-/* 2024.12.12 駒沢風助 ファイル作成 */
+/* すべてのデータリストのベースとなるクラスの宣言 */
 
 #pragma once
 #include <DxLib.h>
 #include <string>
-
-/* すべてのデータ制御処理のベースとなるクラスの宣言 */
 
 // データリストベースクラス
 class DataListBase

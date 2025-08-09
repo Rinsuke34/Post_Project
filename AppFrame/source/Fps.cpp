@@ -1,12 +1,10 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* フレームレート固定クラスの定義 */
 
 #include <math.h>
 #include "DxLib.h"
 #include "Fps.h"
 #include "AppVariableDefine.h"
 #include "AppConstantDefine.h"
-
-/* フレームレート固定クラスの定義 */
 
 // コンストラクタ(クラスが使用可能になったタイミングで実行する)
 Fps::Fps()

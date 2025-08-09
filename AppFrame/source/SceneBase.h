@@ -1,11 +1,9 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* すべてのシーンのベースとなるクラスの宣言 */
 
 #pragma once
 #include <DxLib.h>
 #include <string>
 #include <mutex>
-
-/* すべてのシーンのベースとなるクラスの宣言 */
 
 // シーンベースクラス
 class SceneBase

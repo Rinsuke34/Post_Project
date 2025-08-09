@@ -1,11 +1,9 @@
-/* 2024.12.08 駒沢風助 ファイル"仮"作成 */
+/* プレイヤーの入力取得クラスの定義 */
 
 #include "PlayerInput.h"
 #include "AppConstantDefine.h"
 #include "AppVariableDefine.h"
 #include "AppFunctionDefine.h"
-
-/* プレイヤーの入力取得クラスの定義 */
 
 // コンストラクタ
 PlayerInput::PlayerInput()

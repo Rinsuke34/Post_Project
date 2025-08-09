@@ -1,8 +1,6 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* データリストのベースとなるクラスの定義 */
 
 #include "DataListBase.h"
-
-/* すべてのデータ制御処理のベースとなるクラスの定義 */
 
 // コンストラクタ
 DataListBase::DataListBase(const std::string& cName)

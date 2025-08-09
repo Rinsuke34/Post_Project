@@ -1,9 +1,7 @@
-/* 2024.12.25 駒沢風助 ファイル作成 */
+/* 汎用的に使用できる計算式の定義 */
 
 #include "AppFunctionDefine.h"
 #include <algorithm>
-
-/* 汎用的に使用できる計算式の定義 */
 
 // 値を範囲内に収める
 float PUBLIC_PROCESS::fClamp(float fValue, float fMax, float fMin)

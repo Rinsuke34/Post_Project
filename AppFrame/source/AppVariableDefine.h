@@ -1,4 +1,4 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* 広域変数の宣言 */
 
 #pragma once
 #include <vector>
@@ -9,8 +9,6 @@
 #include "PlayerInput.h"
 #include "SceneServer.h"
 #include "DataListServer.h"
-
-/* 広域変数の宣言 */
 
 /* プログラム状態 */
 extern bool gbEndFlg;	// プログラム終了フラグ

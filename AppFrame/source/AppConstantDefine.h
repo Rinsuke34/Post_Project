@@ -1,8 +1,6 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* AppFrameで使用する定数の宣言 */
 
 #pragma once
-
-/* AppFrameで使用する定数の宣言 */
 
 /* 画面関連 */
 static const int SCREEN_SIZE_WIDE			= 1920;		// 画面サイズ(横)

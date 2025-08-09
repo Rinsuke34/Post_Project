@@ -1,10 +1,8 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* AppFrameで使用する関数の宣言 */
 
 #pragma once
 #include <DxLib.h>
 #include <string>
-
-/* AppFrameで使用する関数の宣言 */
 
 // シーンの設定
 namespace SCENE_SET
@@ -38,5 +36,5 @@ namespace PUBLIC_PROCESS
 // 汎用機能系
 namespace PUBLIC_FUNCTION
 {
-	void		FileDeletesAndStand(const std::string& filename);																				// 指定ファイルを完全に削除するまで待機
+	void		FileDeletesAndStand(const std::string& filename);																		// 指定ファイルを完全に削除するまで待機
 }

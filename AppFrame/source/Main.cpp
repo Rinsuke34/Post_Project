@@ -7,8 +7,8 @@
 
 /* プログラムのメインループ */
 
-// メインプログラム
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+// メインループ
+void Main::MainLoop()
 {
 	/* 名前空間の省略 */
 	using namespace Main;	// WinMain関数で使用する関数、変数宣言
@@ -19,7 +19,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1)
 	{
 		// エラーが起きたら直ちに終了
-		return -1;
+		return;
 	}
 
 	/* メインプログラム初期化処理 */
@@ -60,7 +60,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	/* 終了処理 */
 	Main::MainEnd();
 
-	return 0;
+	return;
 }
 
 // DXライブラリ初期化

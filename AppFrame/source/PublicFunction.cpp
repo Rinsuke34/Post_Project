@@ -1,4 +1,4 @@
-/* 2025.03.25 駒沢風助 ファイル作成 */
+/* 汎用的に使用できる機能の定義 */
 
 #include "AppFunctionDefine.h"
 #include <fstream>
@@ -6,7 +6,6 @@
 #include <chrono>
 #include <cstdio>
 
-/* 汎用的に使用できる機能の定義 */
 // 指定ファイルを完全に削除するまで待機
 void PUBLIC_FUNCTION::FileDeletesAndStand(const std::string& filename)
 {

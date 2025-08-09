@@ -1,10 +1,8 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* シーンのベースとなるクラスの定義 */
 
 #include <cstring>
 #include "SceneBase.h"
 #include "AppVariableDefine.h"
-
-/* シーンのベースとなるクラスの定義 */
 
 // コンストラクタ
 SceneBase::SceneBase(const std::string& cName, const int iLayer, const bool bLowerLayerStopFlg)

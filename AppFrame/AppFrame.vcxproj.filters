@@ -40,20 +40,11 @@
     <Filter Include="ヘッダー ファイル\シーン\サーバー">
       <UniqueIdentifier>{838fcb2c-c6d8-4b07-a266-aa6aa5db63e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\データ">
-      <UniqueIdentifier>{3a70bd4c-7a33-4dc0-9383-b4a93d534240}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\データ">
       <UniqueIdentifier>{98dbccfd-a2ae-4c49-af23-e3654aab0276}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\データ\ベース">
-      <UniqueIdentifier>{08debf6c-2d01-481c-850d-1be72ab33b0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\データ\ベース">
       <UniqueIdentifier>{889d56af-5864-47cc-a940-944752f08d26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\データ\サーバー">
-      <UniqueIdentifier>{0aee72a3-553a-468a-86c0-5d06e27a5ba8}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\データ\サーバー">
       <UniqueIdentifier>{48886f2f-95fc-4fdf-99e9-9d375168db53}</UniqueIdentifier>
@@ -61,13 +52,22 @@
     <Filter Include="ソース ファイル\汎用計算">
       <UniqueIdentifier>{7ba01d80-664d-4c8d-bbfb-d7203d1adfcd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\定義\シーン">
+    <Filter Include="ソース ファイル\データリスト">
+      <UniqueIdentifier>{3a70bd4c-7a33-4dc0-9383-b4a93d534240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\ベース">
+      <UniqueIdentifier>{08debf6c-2d01-481c-850d-1be72ab33b0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\サーバー">
+      <UniqueIdentifier>{0aee72a3-553a-468a-86c0-5d06e27a5ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン">
       <UniqueIdentifier>{fe24f884-f09a-43b1-8bdc-ca0ef570fe0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\定義\シーン\ベース">
+    <Filter Include="ソース ファイル\シーン\ベース">
       <UniqueIdentifier>{ffc2d1aa-14fe-417e-96d7-f03c207dc77b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\定義\シーン\サーバー">
+    <Filter Include="ソース ファイル\シーン\サーバー">
       <UniqueIdentifier>{0fee6b54-5c98-4ecf-9bc9-5d5c7ce16fa8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -79,7 +79,7 @@
       <Filter>ソース ファイル\プレイヤー入力</Filter>
     </ClCompile>
     <ClCompile Include="source\SceneBase.cpp">
-      <Filter>ソース ファイル\定義\シーン\ベース</Filter>
+      <Filter>ソース ファイル\シーン\ベース</Filter>
     </ClCompile>
     <ClCompile Include="source\AppVariableDefine.cpp">
       <Filter>ソース ファイル\定義</Filter>
@@ -88,13 +88,13 @@
       <Filter>ソース ファイル\フレームレート制御</Filter>
     </ClCompile>
     <ClCompile Include="source\SceneServer.cpp">
-      <Filter>ソース ファイル\定義\シーン\サーバー</Filter>
+      <Filter>ソース ファイル\シーン\サーバー</Filter>
     </ClCompile>
     <ClCompile Include="source\DataListBase.cpp">
-      <Filter>ソース ファイル\データ\ベース</Filter>
+      <Filter>ソース ファイル\データリスト\ベース</Filter>
     </ClCompile>
     <ClCompile Include="source\DataListServer.cpp">
-      <Filter>ソース ファイル\データ\サーバー</Filter>
+      <Filter>ソース ファイル\データリスト\サーバー</Filter>
     </ClCompile>
     <ClCompile Include="source\PublicProcess.cpp">
       <Filter>ソース ファイル\汎用計算</Filter>

@@ -1,10 +1,8 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* プレイヤーの入力を取得するクラスの宣言 */
 
 #pragma once
 #include <DxLib.h>
 #include <cstring>
-
-/* プレイヤーの入力を取得するクラスの宣言 */
 
 // 入力取得クラス
 class PlayerInput

@@ -1,10 +1,8 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* AppFrameで使用する構造体の宣言 */
 
 #pragma once
 #include <DxLib.h>
 #include "AppConstantDefine.h"
-
-/* AppFrameで使用する構造体の宣言 */
 
 // 入力関連
 namespace Struct_Input
