@@ -8,6 +8,9 @@
 /* ライブラリ */
 #include <DxLib.h>
 
+/* メインループ関連 */
+#include "AppMain.h"
+
 /* 定義 */
 #include "AppConstantDefine.h"
 #include "AppFunctionDefine.h"

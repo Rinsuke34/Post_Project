@@ -22,7 +22,7 @@
     <ClCompile Include="source\DataListBase.cpp" />
     <ClCompile Include="source\DataListServer.cpp" />
     <ClCompile Include="source\Fps.cpp" />
-    <ClCompile Include="source\Main.cpp" />
+    <ClCompile Include="source\AppMain.cpp" />
     <ClCompile Include="source\PlayerInput.cpp" />
     <ClCompile Include="source\PublicFunction.cpp" />
     <ClCompile Include="source\PublicProcess.cpp" />
@@ -37,7 +37,7 @@
     <ClInclude Include="source\DataListServer.h" />
     <ClInclude Include="source\Fps.h" />
     <ClInclude Include="source\AppFunctionDefine.h" />
-    <ClInclude Include="source\Main.h" />
+    <ClInclude Include="source\AppMain.h" />
     <ClInclude Include="source\PlayerInput.h" />
     <ClInclude Include="source\SceneBase.h" />
     <ClInclude Include="source\SceneServer.h" />

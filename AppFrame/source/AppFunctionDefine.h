@@ -9,7 +9,6 @@ namespace SCENE_SET
 {
 	// ※この関数は各プログラム毎に内容を変更する必要があるため、AppFrameでは宣言のみ行い各プロジェクトで定義する
 	void	SetFastScene();		// ゲーム起動時のシーンをセット
-	void	SetLoadScene();		// ロードシーンをセット
 }
 
 // 初期化

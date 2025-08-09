@@ -72,7 +72,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Main.cpp">
+    <ClCompile Include="source\AppMain.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="source\PlayerInput.cpp">
@@ -104,7 +104,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Main.h">
+    <ClInclude Include="source\AppMain.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="source\PlayerInput.h">

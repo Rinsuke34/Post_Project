@@ -6,10 +6,11 @@
 bool gbEndFlg	= false;	// プログラム終了フラグ
 
 /* プレイヤーの入力情報 */
-Struct_Input::PLAYER_INPUT_JOYPAD			gstJoypadInputData;					// ジョイパッド
-Struct_Input::PLAYER_INPUT_KEYBOARD_MOUSE	gstKeyboardInputData;				// キーボード＆マウス
-bool										gbUseMouseFlg			= false;	// マウス使用フラグ(有効であるならばカーソルを描写＆中心固定解除)
-unsigned char								gucTriggerThreshold		= 0;		// トリガー入力の閾値
+Struct_Input::PLAYER_INPUT_JOYPAD			gstJoypadInputData;						// ジョイパッド
+Struct_Input::PLAYER_INPUT_KEYBOARD_MOUSE	gstKeyboardInputData;					// キーボード＆マウス
+unsigned char								gucTriggerThreshold			= 0;		// トリガー入力の閾値
+bool										gbMouseCursorCenterFixedFlg	= false;	// マウスの中心固定フラグ(有効であるならばマウスカーソルを画面中央に固定する)
+bool										gbMouseCursorNotDepictedFlg	= false;	// マウスカーソル描写無効フラグ(有効であるならばマウスカーソルを描写しない)
 
 /* 実行中クラス */
 std::unique_ptr<Fps>			gpFps				= nullptr;	// fps固定用クラス

@@ -13,13 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\シーン">
+      <UniqueIdentifier>{793aec4e-494c-4874-8a71-3c3e8d4b99e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン">
+      <UniqueIdentifier>{5f7db13e-268a-4501-b34d-689582d1768d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\タイトル">
+      <UniqueIdentifier>{73d3c0be-adbc-4b8f-a670-213ae1a01659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\タイトル">
+      <UniqueIdentifier>{db502bfb-2946-4b08-a9b2-b7761199ec23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\AppFrame_FunctionDefine.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="source\Scene_Title.h.cpp">
+      <Filter>ソース ファイル\シーン\タイトル</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Scene_Title.h">
+      <Filter>ヘッダー ファイル\シーン\タイトル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

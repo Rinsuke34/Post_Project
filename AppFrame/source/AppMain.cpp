@@ -1,11 +1,9 @@
-/* 2024.12.08 駒沢風助 ファイル作成 */
+/* プログラムのメインループ */
 
-#include "Main.h"
+#include "AppMain.h"
 #include "AppVariableDefine.h"
 #include "AppConstantDefine.h"
 #include "AppFunctionDefine.h"
-
-/* プログラムのメインループ */
 
 // メインループ
 void Main::MainLoop()
@@ -67,7 +65,7 @@ void Main::MainLoop()
 void Main::DxLibInit()
 {
 	/* タイトルの設定 */
-	SetMainWindowText("Tower_Project");
+	SetMainWindowText("Post_Project");
 
 	/* ログ出力を無効にする */
 	SetOutApplicationLogValidFlag(FALSE);

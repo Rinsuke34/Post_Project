@@ -133,14 +133,14 @@ void PlayerInput::InputKeyboard()
 		gstKeyboardInputData.iMouseX = iMouseX;
 		gstKeyboardInputData.iMouseY = iMouseY;
 
-		/* マウス状態取得 */
-		if (gbUseMouseFlg == false)
+		/* マウス固定処理 */
+		if (gbMouseCursorCenterFixedFlg == true)
 		{
-			// マウス使用フラグが無効であるならば
+			// マウスの中心固定フラグが有効であるならば
 			/* マウス原点設定 */
 			// ※マウス座標の中心を原点として移動量を取得する
-			int iMouseOriginX =	SCREEN_SIZE_WIDE	/ 2;
-			int iMouseOriginY =	SCREEN_SIZE_HEIGHT	/ 2;
+			int iMouseOriginX = SCREEN_SIZE_WIDE / 2;
+			int iMouseOriginY = SCREEN_SIZE_HEIGHT / 2;
 
 			/* マウス移動量測定 */
 			gstKeyboardInputData.iMouseMoveX = iMouseX - iMouseOriginX;
@@ -148,17 +148,25 @@ void PlayerInput::InputKeyboard()
 
 			/* マウス座標リセット */
 			SetMousePoint(iMouseOriginX, iMouseOriginY);
+		}
+		else
+		{
+			// マウスの中心固定フラグが無効であるならば
+			/* マウス移動量測定 */
+			gstKeyboardInputData.iMouseMoveX = iMouseX - pOldKeyboardInput.iMouseX;
+			gstKeyboardInputData.iMouseMoveY = iMouseY - pOldKeyboardInput.iMouseY;
+		}
 
+		/* マウスカーソルの描写設定 */
+		if (gbMouseCursorNotDepictedFlg == true)
+		{
+			// マウスカーソル描写無効フラグが有効であるならば
 			/* マウスカーソル表示を無効化 */
 			SetMouseDispFlag(FALSE);
 		}
 		else
 		{
-			// マウス使用フラグが有効であるならば
-			/* マウス移動量測定 */
-			gstKeyboardInputData.iMouseMoveX = iMouseX - pOldKeyboardInput.iMouseX;
-			gstKeyboardInputData.iMouseMoveY = iMouseY - pOldKeyboardInput.iMouseY;
-
+			// マウスカーソル描写無効フラグが無効であるならば
 			/* マウスカーソル表示を有効化 */
 			SetMouseDispFlag(TRUE);
 		}
