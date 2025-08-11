@@ -25,3 +25,5 @@
 #include "DataListBase.h"
 #include "DataListServer.h"
 
+/* ƒc[ƒ‹Œn */
+#include "Scene_2DPartsAnimCreateTool.h"

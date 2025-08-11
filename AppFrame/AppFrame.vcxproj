@@ -29,6 +29,7 @@
     <ClCompile Include="source\SceneBase.cpp" />
     <ClCompile Include="source\SceneServer.cpp" />
     <ClCompile Include="source\AppVariableDefine.cpp" />
+    <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\AppFrame.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="source\SceneServer.h" />
     <ClInclude Include="source\AppStructDefine.h" />
     <ClInclude Include="source\AppVariableDefine.h" />
+    <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

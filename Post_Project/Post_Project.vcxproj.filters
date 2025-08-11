@@ -30,7 +30,7 @@
     <ClCompile Include="source\Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\Scene_Title.h.cpp">
+    <ClCompile Include="source\Scene_Title.cpp">
       <Filter>ソース ファイル\シーン\タイトル</Filter>
     </ClCompile>
   </ItemGroup>

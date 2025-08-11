@@ -70,6 +70,12 @@
     <Filter Include="ソース ファイル\シーン\サーバー">
       <UniqueIdentifier>{0fee6b54-5c98-4ecf-9bc9-5d5c7ce16fa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール">
+      <UniqueIdentifier>{dd40bd3a-5b88-443e-bcad-a428582bc47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール">
+      <UniqueIdentifier>{4262bdd3-99e4-43be-bcf3-1f87a31abf72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AppMain.cpp">
@@ -101,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="source\PublicFunction.cpp">
       <Filter>ソース ファイル\汎用計算</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp">
+      <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="source\DataListServer.h">
       <Filter>ヘッダー ファイル\データ\サーバー</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h">
+      <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

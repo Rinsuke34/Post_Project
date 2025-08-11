@@ -169,7 +169,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp" />
-    <ClCompile Include="source\Scene_Title.h.cpp" />
+    <ClCompile Include="source\Scene_Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppFrame\AppFrame.vcxproj">
