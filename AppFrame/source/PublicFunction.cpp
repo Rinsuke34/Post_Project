@@ -1,11 +1,15 @@
 /* 汎用的に使用できる機能の定義 */
 
 #include "AppFunctionDefine.h"
+#include "AppVariableDefine.h"
+#include "Scene_2DPartsAnimCreateTool.h"
+
 #include <fstream>
 #include <thread>
 #include <chrono>
 #include <cstdio>
 #include <Windows.h>
+#include <filesystem>
 
 // 指定ファイルを完全に削除するまで待機
 void PUBLIC_FUNCTION::FileDeletesAndStand(const std::string& filename)
@@ -54,13 +58,18 @@ std::string	PUBLIC_FUNCTION::aOpenFileDialog(std::string Filter)
 	OPENFILENAME ofn;
 	ZeroMemory(&ofn, sizeof(ofn));
 	ofn.lStructSize		= sizeof(ofn);
-	ofn.hwndOwner		= WindHwnd; // DXライブラリのウィンドウを親に設定
+	ofn.hwndOwner		= WindHwnd;		// DXライブラリのウィンドウを親に設定
 	ofn.lpstrFile		= new char[MAX_PATH];
 	ofn.nMaxFile		= MAX_PATH;
 	ofn.lpstrFilter		= Filter.c_str();
 	ofn.nFilterIndex	= 1;
-	ofn.lpstrFile[0]	= '\0'; // 初期化
+	ofn.lpstrFile[0]	= '\0';
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER;
+
+	/* AppResourceフォルダが開くように設定 */
+	std::filesystem::path appResourceDirPath	= std::filesystem::current_path().parent_path() / "AppResource";
+	std::string appResourceDir					= appResourceDirPath.string();
+	ofn.lpstrInitialDir							= appResourceDir.c_str();
 
 	/* ダイアログ表示 */
 	if (GetOpenFileName(&ofn))
@@ -75,9 +84,6 @@ std::string	PUBLIC_FUNCTION::aOpenFileDialog(std::string Filter)
 
 	return "";
 }
-
-#include "AppVariableDefine.h"
-#include "Scene_2DPartsAnimCreateTool.h"
 
 // 2Dパーツアニメーション作成ツールの起動
 void PUBLIC_FUNCTION::Start2DPartsAnimCreateTool()

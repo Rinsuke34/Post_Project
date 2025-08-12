@@ -2,7 +2,9 @@
 
 #pragma once
 #include "SceneBase.h"
-#include <vector>
+#include "AppStructDefine.h"
+#include "Scene_UI_Table.h"
+#include <memory>
 
 // シーン"汎用2Dパーツアニメーションツール"
 class Scene_2DPartsAnimCreateTool : public SceneBase
@@ -16,8 +18,14 @@ class Scene_2DPartsAnimCreateTool : public SceneBase
 
 	private:
 		/* 関数 */
+		bool	bLoadPartsAnimData();			// パーツアニメーションのデータ読み込み
+		bool	bSavePartsAnimData();			// パーツアニメーションのデータ保存
 
 		/* 変数 */
-		std::vector<int> iSelectGrHandle;	// 選択した画像のグラフィックハンドル
-		std::vector<std::string> stSelectGrPath;
+		bool								bOldMouseCursorCenterFixedFlg;	// ツール起動時のマウスの中心固定フラグ
+		bool								bOldMouseCursorNotDepictedFlg;	// ツール起動時のマウスカーソル描写無効フラグ
+
+		Struct_2DPartsAnim::PARTS_ANIM_DATA	stPartsAnimData;				// パーツアニメーションのデータ
+
+		std::shared_ptr<Scene_UI_Table> 	paUI_Table[4];					// テーブルUI(0:パーツリスト, 1:アニメーションリスト, 2:フレームリスト, 3:選択フレームのパーツリスト)
 };

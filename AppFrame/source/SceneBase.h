@@ -15,6 +15,8 @@ class SceneBase
 		virtual void	Process()			{};	// 計算
 		virtual void	Draw()				{};	// 描画
 
+		void	SetDeleteFlg(bool bDeleteFlg)	{ this->bDeleteFlg = bDeleteFlg; }		// 削除フラグを設定(有効ならばシーンを削除する)
+
 		bool	bGetDeleteFlg()				{ return this->bDeleteFlg; };				// 削除フラグを取得
 		int		iGetSceneLayerOrder()		{ return this->iLayerOrder; };				// レイヤー順序を取得
 		bool	bGetLowerLayerProcessFlg()	{ return this->bLowerLayerStopFlg; }		// 下層レイヤー計算停止フラグを取得

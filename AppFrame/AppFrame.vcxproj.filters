@@ -76,6 +76,12 @@
     <Filter Include="ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール">
       <UniqueIdentifier>{4262bdd3-99e4-43be-bcf3-1f87a31abf72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI">
+      <UniqueIdentifier>{807397b6-a87e-40aa-bf2d-c14b0af74f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI">
+      <UniqueIdentifier>{0c093a19-af48-4786-91fc-19eeecbaae20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AppMain.cpp">
@@ -110,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp">
       <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_UI_Table.cpp">
+      <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h">
       <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_UI_Table.h">
+      <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

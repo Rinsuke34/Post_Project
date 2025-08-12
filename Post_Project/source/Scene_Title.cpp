@@ -20,11 +20,11 @@ void Scene_Title::Process()
 	/* 入力待ち */
 	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_Z] == TRUE)
 	{
-		/* シーン削除フラグを有効にする */
-		this->bDeleteFlg = true;
-
 		/* 2Dパーツアニメーション作成ツールを起動 */
 		PUBLIC_FUNCTION::Start2DPartsAnimCreateTool();
+
+		/* シーンの削除フラグを有効にする */
+		this->bDeleteFlg = true;
 	}
 }
 
