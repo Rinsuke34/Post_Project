@@ -25,7 +25,11 @@ class Scene_2DPartsAnimCreateTool : public SceneBase
 		bool								bOldMouseCursorCenterFixedFlg;	// ツール起動時のマウスの中心固定フラグ
 		bool								bOldMouseCursorNotDepictedFlg;	// ツール起動時のマウスカーソル描写無効フラグ
 
-		Struct_2DPartsAnim::PARTS_ANIM_DATA	stPartsAnimData;				// パーツアニメーションのデータ
+		int									iSelectTime;					// 指定中のアニメーションの時間
 
-		std::shared_ptr<Scene_UI_Table> 	paUI_Table[4];					// テーブルUI(0:パーツリスト, 1:アニメーションリスト, 2:フレームリスト, 3:選択フレームのパーツリスト)
+		std::string														FileName;		// パーツアニメーション群の名称(新規作成時に入力する名称)
+		std::vector<Struct_2DPartsAnim::PARTS_ANIM_PARTS_IMAGE_DATA>	PartsImageData;	// パーツの画像データ(アニメーション用パーツの画像データ)
+		std::vector<Struct_2DPartsAnim::PARTS_ANIM_ANIM_DATA>			PartsAnimData;	// パーツアニメーションの情報(アニメーションのフレーム情報など)
+
+		std::shared_ptr<Scene_UI_Table> 	paUI_Table[3];					// テーブルUI(0:パーツリスト, 1:アニメーションリスト, 2:選択時間でのパーツリスト)
 };

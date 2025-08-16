@@ -75,25 +75,11 @@ namespace Struct_2DPartsAnim
 		float		fPartsScaleY;		// パーツのYスケール
 		float		fPartsAngle;		// パーツの角度(ラジアン)
 		bool		bPartsFlipX;		// パーツの左右反転フラグ(有効であるならばパーツを反転する)
-		bool		bPartsFlipY;		// パーツの上下反転フラグ(有効であるならばパーツを反転する)
-	};
-
-	struct PARTS_ANIM_ANIM_TIME_DATA									// フレームの情報
-	{
-		int											iDrawTime;			// そのアニメーションが描写される時間(フレーム単位)
-		std::vector<PARTS_ANIM_PARTS_FRAME_DATA>	vecPartsFrameData;	// パーツのフレーム単位の情報
 	};
 
 	struct PARTS_ANIM_ANIM_DATA												// パーツアニメーションの情報
 	{
-		std::string									stAnimName;				// アニメーション名
-		std::vector<PARTS_ANIM_ANIM_TIME_DATA>		vecPartsAnimTimeData;	// パーツアニメーションの時間単位での情報
-	};
-
-	struct PARTS_ANIM_DATA													// パーツアニメーション群の情報
-	{
-		std::string									stAnimName;				// パーツアニメーション群の名称
-		std::vector<PARTS_ANIM_PARTS_IMAGE_DATA>	vecPartsImageData;		// 各パーツの基本情報
-		std::vector<PARTS_ANIM_ANIM_DATA>			vecPartsAnimData;		// パーツアニメーションの情報
+		std::string													stAnimName;			// アニメーション名
+		std::vector<std::vector<PARTS_ANIM_PARTS_FRAME_DATA>>		PartsAnimFrameData;	// パーツアニメーションの時間単位での情報
 	};
 }

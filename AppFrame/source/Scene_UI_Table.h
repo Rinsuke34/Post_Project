@@ -17,7 +17,8 @@ class Scene_UI_Table : public SceneBase
 
 		void SetElement(std::vector<std::string> vecElement) { this->vecElement = vecElement; }	// 要素を設定
 
-		int iGetSelectElementIndex() const { return this->iSelectElementIndex; }	// 選択中の要素の番号を取得
+		int		iGetSelectElementIndex()	const { return this->iSelectElementIndex; }	// 選択中の要素の番号を取得
+		bool	bGetTableSelectedFlg()		const { return this->bTableSelectedFlg; }	// テーブルが選択状態であるかのフラグを取得
 
 	private:
 		/* 変数 */
