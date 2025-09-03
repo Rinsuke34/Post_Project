@@ -5,11 +5,11 @@
 #include <string>
 
 // データリストベースクラス
-class DataListBase
+class DataList_Base
 {
 	public:
-		DataListBase(const std::string& cName);		// コンストラクタ
-		virtual ~DataListBase() {};					// デストラクタ
+		DataList_Base(const std::string& cName);		// コンストラクタ
+		virtual ~DataList_Base() {};					// デストラクタ
 
 		/* ゲッター */
 		std::string	stGetDataListName()	{ return this->stDataListName; }	// データリスト名称を取得

@@ -3,7 +3,7 @@
 #include "DataListBase.h"
 
 // コンストラクタ
-DataListBase::DataListBase(const std::string& cName)
+DataList_Base::DataList_Base(const std::string& cName)
 {
 	// 引数
 	// cName					<- データリストの名前

@@ -17,7 +17,11 @@ Ground_Model::Ground_Model() : Ground_Base()
 // デストラクタ
 Ground_Model::~Ground_Model()
 {
+	/* コリジョン情報後始末 */
+	MV1TerminateCollInfo(this->iModelHandle, this->iCollisionFrameNo);
 
+	/* モデルハンドル削除 */
+	MV1DeleteModel(this->iModelHandle);
 }
 
 // 初期設定
@@ -37,16 +41,22 @@ void Ground_Model::InitialSetup()
 	Update_Collision();
 }
 
-// 更新
-void Ground_Model::Update()
-{
-
-}
-
 // 描画
 void Ground_Model::Draw()
 {
+	/* コリジョンフレームを描写しない状態に設定 */
+	DrawFrameCollisionSet(false);
 
+	/* 現在のモデルの透明度取得 */
+	float OpacityRate = MV1GetOpacityRate(this->iModelHandle);
+
+	/* 透明度確認 */
+	if (OpacityRate > 0.f)
+	{
+		// 完全に透明でない場合
+		/* モデル描写 */
+		MV1DrawModel(this->iModelHandle);
+	}
 }
 
 // 更新(コリジョン情報)
@@ -175,4 +185,55 @@ bool Ground_Model::HitCheck(Struct_Collision::COLLISION_LINE	stLine)
 
 	// 接触していない場合
 	return false;
+}
+
+// コリジョンフレームの描写設定
+void Ground_Model::DrawFrameCollisionSet(bool bCollisionDraw)
+{
+	// 引数
+	// bCollisionDraw	: コリジョンフレームを描写する(true) / 描写しない(false)
+	// ※コリジョンフレームを描写しない場合、コリジョン以外のフレームの描写を有効にします
+
+	/* フレーム数を取得 */
+	int iFrameNo = MV1GetFrameNum(this->iModelHandle);
+
+	/* すべてのフレームを非表示に設定 */
+	for (int i = 0; i < iFrameNo; i++)
+	{
+		/* コリジョンフレーム番号であるか */
+		if (i == this->iCollisionFrameNo)
+		{
+			// コリジョンフレーム番号である場合
+			/* コリジョンフレームを描写する設定であるか確認 */
+			if (bCollisionDraw == true)
+			{
+				// 描写する設定である場合
+				/* フレームを表示に設定 */
+				MV1SetFrameVisible(this->iModelHandle, i, TRUE);
+			}
+			else
+			{
+				// 描写しない設定である場合
+				/* フレームを非表示に設定 */
+				MV1SetFrameVisible(this->iModelHandle, i, FALSE);
+			}
+		}
+		else
+		{
+			// コリジョンフレーム番号でない場合
+			/* コリジョンフレームを描写する設定であるか確認 */
+			if (bCollisionDraw == true)
+			{
+				// 描写する設定である場合
+				/* フレームを非表示に設定 */
+				MV1SetFrameVisible(this->iModelHandle, i, FALSE);
+			}
+			else
+			{
+				// 描写しない設定である場合
+				/* フレームを表示に設定 */
+				MV1SetFrameVisible(this->iModelHandle, i, TRUE);
+			}
+		}
+	}
 }

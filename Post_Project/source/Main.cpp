@@ -4,6 +4,9 @@
 #include "AppFrame.h"
 #include "Scene_Title.h"
 
+#include "DataList_GrHandle.h"
+#include "DataList_Model.h"
+
 // メインプログラム
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -30,10 +33,8 @@ namespace PROJECT_INIT
 	// プロジェクト初期化処理
 	void	Init()
 	{
-		/* データリストサーバーに"プレイヤー入力管理"を追加 */
-		//gpDataListServer->AddDataList(new DataList_Input());
-
-		/* 今追加した"プレイヤー入力管理"を取得 */
-		//gpDataList_Input = dynamic_cast<DataList_Input*>(gpDataListServer->GetDataList("DataList_Input"));
+		/* データリストサーバーへの登録 */
+		gpDataListServer->AddDataList(std::make_shared<DataList_GrHandle>());	// 画像データ管理
+		gpDataListServer->AddDataList(std::make_shared<DataList_Model>());		// 3Dモデル管理
 	}
 }

@@ -49,6 +49,24 @@
     <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形\平面">
       <UniqueIdentifier>{3cdd1e52-1847-4705-960b-2143a1d88cb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\データリスト">
+      <UniqueIdentifier>{9ca8048b-1a6e-4789-b71e-d8ff4dd2f3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト">
+      <UniqueIdentifier>{25931879-4600-4e59-a192-28e8117c6994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\3Dモデル管理">
+      <UniqueIdentifier>{c4a82477-0f00-4b2a-8abb-49e4bf70433a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\画像データ管理">
+      <UniqueIdentifier>{bb20a9e4-4b70-4820-bcef-ae236e583003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\3Dモデル管理">
+      <UniqueIdentifier>{80e479e6-ffd0-4678-956b-7758f8489890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\画像データ管理">
+      <UniqueIdentifier>{e311e996-1fbe-4e28-a2e0-eb7ee00d8f8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -69,6 +87,12 @@
     <ClCompile Include="source\Object_Base.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト</Filter>
     </ClCompile>
+    <ClCompile Include="source\DataList_GrHandle.cpp">
+      <Filter>ソース ファイル\データリスト\画像データ管理</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataList_Model.cpp">
+      <Filter>ソース ファイル\データリスト\3Dモデル管理</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
@@ -85,6 +109,12 @@
     </ClInclude>
     <ClInclude Include="source\Object_Base.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_GrHandle.h">
+      <Filter>ヘッダー ファイル\データリスト\画像データ管理</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_Model.h">
+      <Filter>ヘッダー ファイル\データリスト\3Dモデル管理</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -40,15 +40,6 @@
     <Filter Include="ヘッダー ファイル\シーン\サーバー">
       <UniqueIdentifier>{838fcb2c-c6d8-4b07-a266-aa6aa5db63e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\データ">
-      <UniqueIdentifier>{98dbccfd-a2ae-4c49-af23-e3654aab0276}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\データ\ベース">
-      <UniqueIdentifier>{889d56af-5864-47cc-a940-944752f08d26}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\データ\サーバー">
-      <UniqueIdentifier>{48886f2f-95fc-4fdf-99e9-9d375168db53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\汎用計算">
       <UniqueIdentifier>{7ba01d80-664d-4c8d-bbfb-d7203d1adfcd}</UniqueIdentifier>
     </Filter>
@@ -81,6 +72,15 @@
     </Filter>
     <Filter Include="ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI">
       <UniqueIdentifier>{0c093a19-af48-4786-91fc-19eeecbaae20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト">
+      <UniqueIdentifier>{98dbccfd-a2ae-4c49-af23-e3654aab0276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\ベース">
+      <UniqueIdentifier>{889d56af-5864-47cc-a940-944752f08d26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\サーバー">
+      <UniqueIdentifier>{48886f2f-95fc-4fdf-99e9-9d375168db53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,10 +156,10 @@
       <Filter>ヘッダー ファイル\シーン\サーバー</Filter>
     </ClInclude>
     <ClInclude Include="source\DataListBase.h">
-      <Filter>ヘッダー ファイル\データ\ベース</Filter>
+      <Filter>ヘッダー ファイル\データリスト\ベース</Filter>
     </ClInclude>
     <ClInclude Include="source\DataListServer.h">
-      <Filter>ヘッダー ファイル\データ\サーバー</Filter>
+      <Filter>ヘッダー ファイル\データリスト\サーバー</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h">
       <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>

@@ -10,8 +10,8 @@ class Ground_Plane : public Ground_Base
 		virtual ~Ground_Plane() {};		// デストラクタ
 
 		/* 関数 */
-		virtual void	Update();	// 更新
-		virtual void	Draw();		// 描画
+		virtual void	InitialSetup();		// 初期設定
+		virtual void	Draw();				// 描画
 
 		// コリジョン接触判定
 		bool HitCheck(Struct_Collision::COLLISION_CAPSULE	stCapsule)	override;	// カプセル

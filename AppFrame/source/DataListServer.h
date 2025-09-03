@@ -17,14 +17,14 @@ class DataListServer
 		void	DeleteDataList(const std::string& cName);	// 指定データリスト削除
 
 		/* セッター */
-		void							AddDataList(std::shared_ptr<DataListBase> NewDataList);		// データリスト追加
+		void							AddDataList(std::shared_ptr<DataList_Base> NewDataList);		// データリスト追加
 
 		/* ゲッター */
-		std::shared_ptr<DataListBase>	GetDataList(const std::string& cName);						// データリスト取得
+		std::shared_ptr<DataList_Base>	GetDataList(const std::string& cName);						// データリスト取得
 
 	private:
 		// データリスト一覧
-		std::list<std::shared_ptr<DataListBase>> pstDataList;
+		std::list<std::shared_ptr<DataList_Base>> pstDataList;
 
 		/* 関数 */
 		void	DeleteAllDataList();			// データリスト削除(データリスト一覧内のすべてのデータリストに対して)

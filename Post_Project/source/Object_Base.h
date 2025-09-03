@@ -11,6 +11,7 @@ class Object_Base
 		virtual ~Object_Base() {};		// デストラクタ
 
 		/* 関数 */
+		virtual void	InitialSetup()		{};	// 初期設定
 		virtual void	Update()			{};	// 更新
 		virtual void	Draw()				{};	// 描画
 		

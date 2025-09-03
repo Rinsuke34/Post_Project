@@ -11,7 +11,6 @@ class Ground_Model : public Ground_Base
 
 		/* 関数 */
 		virtual void	InitialSetup();		// 初期設定
-		virtual void	Update();			// 更新
 		virtual void	Draw();				// 描画
 		void			Update_Collision();	// 更新(コリジョン情報)
 
@@ -33,6 +32,9 @@ class Ground_Model : public Ground_Base
 		VECTOR	GetScale()						{ return this->vecScale; }				// オブジェクトの拡大率を取得
 
 	private:
+		/* 関数 */
+		void	DrawFrameCollisionSet(bool bCollisionDraw);		// コリジョンフレームの描写設定
+
 		/* 変数 */
 		int iModelHandle;				// モデルハンドル
 		int iCollisionFrameNo;			// コリジョン用のフレーム番号

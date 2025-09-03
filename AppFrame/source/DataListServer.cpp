@@ -37,7 +37,7 @@ void DataListServer::DrawDataList()
 }
 
 // データリスト追加予約
-void DataListServer::AddDataList(std::shared_ptr<DataListBase> NewDataList)
+void DataListServer::AddDataList(std::shared_ptr<DataList_Base> NewDataList)
 {
 	// ※データリストの追加自体は"AddDataList"関数で行う
 	// 引数
@@ -47,7 +47,7 @@ void DataListServer::AddDataList(std::shared_ptr<DataListBase> NewDataList)
 }
 
 // データリスト取得
-std::shared_ptr<DataListBase> DataListServer::GetDataList(const std::string& cName)
+std::shared_ptr<DataList_Base> DataListServer::GetDataList(const std::string& cName)
 {
 	// 引数
 	// cName		<-	取得したいデータリストの名称
@@ -76,7 +76,7 @@ void DataListServer::DeleteDataList(const std::string& cName)
 	// cName	<-	削除したいシーンの名称
 
 	/* 指定の名称のデータリストを削除 */
-	pstDataList.erase(std::remove_if(pstDataList.begin(),pstDataList.end(),[&](std::shared_ptr<DataListBase> DataList)
+	pstDataList.erase(std::remove_if(pstDataList.begin(),pstDataList.end(),[&](std::shared_ptr<DataList_Base> DataList)
 	{
 		/* データリストの名称が一致するか確認 */
 		if (DataList->stGetDataListName() == cName)

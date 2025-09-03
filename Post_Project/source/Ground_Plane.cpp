@@ -14,8 +14,8 @@ Ground_Plane::Ground_Plane() : Ground_Base()
 	}
 }
 
-// XV
-void Ground_Plane::Update()
+// ‰Šúİ’è
+void Ground_Plane::InitialSetup()
 {
 
 }
