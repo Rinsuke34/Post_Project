@@ -12,18 +12,36 @@ Ground_Plane::Ground_Plane() : Ground_Base()
 	{
 		this->avecVertex[iIndex] = VGet(0.0f, 0.0f, 0.0f);
 	}
-}
-
-// 初期設定
-void Ground_Plane::InitialSetup()
-{
-
+	this->piGrHandle = nullptr;
 }
 
 // 描画
 void Ground_Plane::Draw()
 {
+	/* 頂点座標を設定 */
+	VERTEX3D aVertex[4];
+	for (int iIndex = 0; iIndex < 4; ++iIndex)
+	{
+		aVertex[iIndex].pos		= this->avecVertex[iIndex];			// 頂点座標
+		aVertex[iIndex].norm	= this->vecNormal;					// 法線ベクトル
+		aVertex[iIndex].dif		= GetColorU8(255, 255, 255, 255);	// 拡散光の
+		aVertex[iIndex].spc		= GetColorU8(0, 0, 0, 0);			// 鏡面光の色
+		// 頂点のテクスチャ座標
+		switch (iIndex)
+		{
+			case 0: aVertex[iIndex].u = 0.0f; aVertex[iIndex].v = 0.0f; break;
+			case 1: aVertex[iIndex].u = 1.0f; aVertex[iIndex].v = 0.0f; break;
+			case 2: aVertex[iIndex].u = 1.0f; aVertex[iIndex].v = 1.0f; break;
+			case 3: aVertex[iIndex].u = 0.0f; aVertex[iIndex].v = 1.0f; break;
+		}
+	}
 
+	/* 頂点インデックスを設定 */
+	// ※四角形を二つの三角形に分割する
+	unsigned short IndexTop[6] = { 0, 1, 2, 0, 2, 3 };
+
+	/* 四角形（板ポリゴン）の描画 */
+	DrawPolygonIndexed3D(aVertex, 4, IndexTop, 2, *this->piGrHandle, TRUE);
 }
 
 // コリジョン接触判定

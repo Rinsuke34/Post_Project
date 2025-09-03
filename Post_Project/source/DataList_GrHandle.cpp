@@ -6,14 +6,14 @@
 DataList_GrHandle::DataList_GrHandle() : DataList_Base("DataList_GrHandle")
 {
 	/* 初期化 */
-	this->pGrHandleList.clear();	// 画像データリスト
+	this->GrHandleList.clear();	// 画像データリスト
 }
 
 // デストラクタ
 DataList_GrHandle::~DataList_GrHandle()
 {
 	/* リスト内の画像ハンドルを削除 */
-	for (auto& list : this->pGrHandleList)
+	for (auto& list : this->GrHandleList)
 	{
 		/* 画像を削除 */
 		DeleteGraph(list.second);
@@ -38,7 +38,7 @@ void DataList_GrHandle::LoadGrHandle(std::string& cFileName)
 		int GrHandle = LoadGraph(FileName.c_str());
 
 		/* 画像データをリストに追加 */
-		this->pGrHandleList[cFileName] = GrHandle;
+		this->GrHandleList[cFileName] = GrHandle;
 	}
 
 	return;
@@ -64,19 +64,19 @@ void DataList_GrHandle::LoadGrHandle_2DPartsAnim(std::string& cFileName)
 		int GrHandle = LoadGraph(absPath.generic_string().c_str());
 
 		/* 画像データをリストに追加 */
-		this->pGrHandleList[cFileName] = GrHandle;
+		this->GrHandleList[cFileName] = GrHandle;
 	}
 
 	return;
 }
 
 // 画像データ取得
-int DataList_GrHandle::iGetGrhandle(std::string& cFileName)
+std::shared_ptr<int> DataList_GrHandle::iGetGrhandle(std::string& cFileName)
 {
 	// 引数
-	// cFileName	: 画像ファイル名
+	// cFileName			: 画像ファイル名
 	// 戻り値
-	// int			: 画像ハンドル
+	// std::shared_ptr<int>	: 画像ハンドルのポインタ
 
 	int iReturn = 0;
 
@@ -91,10 +91,17 @@ int DataList_GrHandle::iGetGrhandle(std::string& cFileName)
 		LoadGrHandle(cFileName);
 	}
 	
-	/* 対象の画像データを戻り値に設定 */
-	iReturn = pGrHandleList[cFileName];
+	/* 画像ハンドルのポインタをスマートポインタで返す */
+	auto list = GrHandleList.find(cFileName);
+	if (list != GrHandleList.end())
+	{
+		/* 対象の画像ハンドルのポインタを戻り値で返却 */
+		return std::make_shared<int>(list->second);
+	}
 
-	return iReturn;
+	/* 見つからなかった場合はnullptrを返す */
+	// ※通常はここに来ることはない想定
+	return nullptr;
 }
 
 // 該当画像ハンドルデータ存在確認
@@ -110,7 +117,7 @@ bool DataList_GrHandle::bCheckGrHandle(std::string& cFileName)
 	bool bReturn = false;
 
 	/* 対象の3Dモデルが登録されているか */
-	if (this->pGrHandleList.count(cFileName) != 0)
+	if (this->GrHandleList.count(cFileName) != 0)
 	{
 		// 登録されている場合
 		bReturn = true;

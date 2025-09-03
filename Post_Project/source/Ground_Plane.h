@@ -10,8 +10,7 @@ class Ground_Plane : public Ground_Base
 		virtual ~Ground_Plane() {};		// デストラクタ
 
 		/* 関数 */
-		virtual void	InitialSetup();		// 初期設定
-		virtual void	Draw();				// 描画
+		virtual void	Draw();			// 描画
 
 		// コリジョン接触判定
 		bool HitCheck(Struct_Collision::COLLISION_CAPSULE	stCapsule)	override;	// カプセル
@@ -20,6 +19,7 @@ class Ground_Plane : public Ground_Base
 
 	private:
 		/* 変数 */
-		VECTOR		vecNormal;			// 法線ベクトル
-		VECTOR		avecVertex[4];		// 頂点座標(4頂点)反時計回り[0:左奥,1:右奥,2:右前,3,左前]
+		VECTOR					vecNormal;			// 法線ベクトル
+		VECTOR					avecVertex[4];		// 頂点座標(4頂点)反時計回り[0:左奥,1:右奥,2:右前,3,左前]
+		std::shared_ptr<int>	piGrHandle;			// 使用する画像のハンドル
 };

@@ -17,7 +17,7 @@ class DataList_Model : public DataList_Base
 	private:
 		/* 変数 */
 		// リスト
-		std::map<std::string, int>	pModelHandleList;		// 3Dモデルリスト
+		std::map<std::string, int>	ModelHandleList;		// 3Dモデルリスト
 
 		/* 関数 */
 		bool	bCheckModel(std::string modelName);			// 該当3Dモデル存在確認

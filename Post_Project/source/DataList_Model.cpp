@@ -12,14 +12,14 @@ DataList_Model::DataList_Model() : DataList_Base("DataList_Model")
 DataList_Model::~DataList_Model()
 {
 	/* リスト内の3Dモデルを削除 */
-	for (const auto& pair : pModelHandleList)
+	for (const auto& pair : ModelHandleList)
 	{
 		/* モデルを削除 */
 		MV1DeleteModel(pair.second);
 	}
 
 	/* mapをクリアする */
-	pModelHandleList.clear();
+	ModelHandleList.clear();
 }
 
 // 3Dモデルロード(事前読み込み用)
@@ -42,7 +42,7 @@ void DataList_Model::LoadModel(std::string modelName)
 		int iHandle = MV1LoadModel(FileName.c_str());
 
 		/* 3Dモデルをリストに追加 */
-		this->pModelHandleList[modelName] = iHandle;
+		this->ModelHandleList[modelName] = iHandle;
 	}
 	return;
 }
@@ -73,7 +73,7 @@ int	DataList_Model::iGetModel(std::string modelName)
 		iReturn = MV1LoadModel(FileName.c_str());
 
 		/* 3Dモデルをリストに追加 */
-		this->pModelHandleList[modelName] = iReturn;
+		this->ModelHandleList[modelName] = iReturn;
 
 		/* 読み込んだ3Dモデルを複製 */
 		iReturn = MV1DuplicateModel(iReturn);
@@ -82,7 +82,7 @@ int	DataList_Model::iGetModel(std::string modelName)
 	{
 		// 存在している場合
 		/* 対処のモデルを複製 */
-		iReturn = MV1DuplicateModel(this->pModelHandleList[modelName]);
+		iReturn = MV1DuplicateModel(this->ModelHandleList[modelName]);
 	}
 
 	return iReturn;
@@ -101,7 +101,7 @@ bool DataList_Model::bCheckModel(std::string modelName)
 	bool bReturn = false;
 
 	/* 対象の3Dモデルが登録されているか */
-	if (this->pModelHandleList.count(modelName) != 0)
+	if (this->ModelHandleList.count(modelName) != 0)
 	{
 		// 登録されている場合
 		bReturn = true;
