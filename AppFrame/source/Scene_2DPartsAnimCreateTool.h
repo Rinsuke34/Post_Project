@@ -13,7 +13,8 @@ class Scene_2DPartsAnimCreateTool : public SceneBase
 		Scene_2DPartsAnimCreateTool();				// コンストラクタ
 		virtual ~Scene_2DPartsAnimCreateTool();		// デストラクタ
 
-		virtual void	Process()			override;	// 計算
+		/* 関数 */
+		virtual void	Update()			override;	// 更新
 		virtual void	Draw()				override;	// 描画
 
 	private:
@@ -25,7 +26,10 @@ class Scene_2DPartsAnimCreateTool : public SceneBase
 		bool								bOldMouseCursorCenterFixedFlg;	// ツール起動時のマウスの中心固定フラグ
 		bool								bOldMouseCursorNotDepictedFlg;	// ツール起動時のマウスカーソル描写無効フラグ
 
+		bool								bNameSelectedFlg;				// ファイル名選択中フラグ
+		bool								bTimeSelectedFlg;				// 時間選択中フラグ
 		int									iSelectTime;					// 指定中のアニメーションの時間
+		int									iAnimMaxTime;					// アニメーションの最大時間
 
 		std::string														FileName;		// パーツアニメーション群の名称(新規作成時に入力する名称)
 		std::vector<Struct_2DPartsAnim::PARTS_ANIM_PARTS_IMAGE_DATA>	PartsImageData;	// パーツの画像データ(アニメーション用パーツの画像データ)

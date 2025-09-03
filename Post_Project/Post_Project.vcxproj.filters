@@ -25,6 +25,30 @@
     <Filter Include="ヘッダー ファイル\シーン\タイトル">
       <UniqueIdentifier>{db502bfb-2946-4b08-a9b2-b7761199ec23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト">
+      <UniqueIdentifier>{5279acfb-fee4-4571-8320-429497b51250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト">
+      <UniqueIdentifier>{763b151e-ca04-4133-81e5-0bb9346e510c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\地形">
+      <UniqueIdentifier>{73644b03-f3ca-4805-8483-195194a943d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\地形\3Dモデル">
+      <UniqueIdentifier>{58ad6540-4184-4268-bf0b-39806e88c461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\地形\平面">
+      <UniqueIdentifier>{b92b052a-e6e5-45b5-8d9d-f425e7ee48eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形">
+      <UniqueIdentifier>{0afc8a32-3713-4a81-8e1f-b9c110a71d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形\3Dモデル">
+      <UniqueIdentifier>{97abc575-3fb4-4e03-91c3-adddbcb6344f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形\平面">
+      <UniqueIdentifier>{3cdd1e52-1847-4705-960b-2143a1d88cb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -33,10 +57,34 @@
     <ClCompile Include="source\Scene_Title.cpp">
       <Filter>ソース ファイル\シーン\タイトル</Filter>
     </ClCompile>
+    <ClCompile Include="source\Ground_Model.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\地形\3Dモデル</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Ground_Base.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\地形</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Ground_Plane.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\地形\平面</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Object_Base.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
       <Filter>ヘッダー ファイル\シーン\タイトル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Ground_Model.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\地形\3Dモデル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Ground_Base.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\地形</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Ground_Plane.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\地形\平面</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Object_Base.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

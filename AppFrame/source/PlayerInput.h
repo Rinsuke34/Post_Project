@@ -11,10 +11,11 @@ class PlayerInput
 		PlayerInput();					// コンストラクタ
 		virtual ~PlayerInput() {};		// デストラクタ
 
+		/* 関数 */
 		void	Input();				// プレイヤーの入力取得
 
 	private:
-		/* プレイヤー入力取得系 */
+		/* 関数 */
 		void	InputJoypad();			// ジョイパッド
 		void	InputKeyboard();		// キーボード＆マウス
 

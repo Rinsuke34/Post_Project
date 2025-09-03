@@ -120,6 +120,9 @@
     <ClCompile Include="source\Scene_UI_Table.cpp">
       <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
     </ClCompile>
+    <ClCompile Include="source\Scene_UI_Button.cpp">
+      <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\AppMain.h">
@@ -162,6 +165,9 @@
       <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_UI_Table.h">
+      <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_UI_Button.h">
       <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
     </ClInclude>
   </ItemGroup>

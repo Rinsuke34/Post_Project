@@ -27,8 +27,8 @@ void SceneServer::SceneProcess()
 	/* レイヤー順序が高いシーンから計算を行う */
 	for (auto& Scene : pstSceneList)
 	{
-		/* シーンの計算処理 */
-		Scene->Process();
+		/* シーンの更新処理 */
+		Scene->Update();
 
 		/* 対象シーンの削除フラグの確認 */
 		if (Scene->bGetDeleteFlg() == true)

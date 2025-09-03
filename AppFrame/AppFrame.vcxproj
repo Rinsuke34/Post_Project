@@ -30,6 +30,7 @@
     <ClCompile Include="source\SceneServer.cpp" />
     <ClCompile Include="source\AppVariableDefine.cpp" />
     <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp" />
+    <ClCompile Include="source\Scene_UI_Button.cpp" />
     <ClCompile Include="source\Scene_UI_Table.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +47,7 @@
     <ClInclude Include="source\AppStructDefine.h" />
     <ClInclude Include="source\AppVariableDefine.h" />
     <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h" />
+    <ClInclude Include="source\Scene_UI_Button.h" />
     <ClInclude Include="source\Scene_UI_Table.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

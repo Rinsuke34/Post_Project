@@ -14,8 +14,8 @@ Scene_Title::~Scene_Title()
 
 }
 
-// ŒvZ
-void Scene_Title::Process()
+// XV
+void Scene_Title::Update()
 {
 	/* “ü—Í‘Ò‚¿ */
 	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_Z] == TRUE)

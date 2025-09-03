@@ -12,11 +12,14 @@ class Scene_UI_Table : public SceneBase
 		Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, std::string TableName);	// コンストラクタ
 		virtual ~Scene_UI_Table();		// デストラクタ
 
-		virtual void	Process()			override;	// 計算
+		/* 関数 */
+		virtual void	Update()			override;	// 更新
 		virtual void	Draw()				override;	// 描画
 
+		/* セッター */
 		void SetElement(std::vector<std::string> vecElement) { this->vecElement = vecElement; }	// 要素を設定
 
+		/* ゲッター */
 		int		iGetSelectElementIndex()	const { return this->iSelectElementIndex; }	// 選択中の要素の番号を取得
 		bool	bGetTableSelectedFlg()		const { return this->bTableSelectedFlg; }	// テーブルが選択状態であるかのフラグを取得
 

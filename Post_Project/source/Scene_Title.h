@@ -10,6 +10,7 @@ class Scene_Title : public SceneBase
 		Scene_Title();				// コンストラクタ
 		virtual ~Scene_Title();		// デストラクタ
 
-		virtual void	Process()			override;	// 計算
+		/* 関数 */
+		virtual void	Update()			override;	// 更新
 		virtual void	Draw()				override;	// 描画
 };

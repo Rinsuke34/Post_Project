@@ -12,21 +12,23 @@ class SceneServer
 		SceneServer();				// コンストラクタ
 		virtual ~SceneServer();		// デストラクタ
 
+		/* 関数 */
 		void	SceneProcess();		// シーン計算処理
 		void	SceneDraw();		// シーン描画処理
 		void	DrawSceneList();	// データリスト描画(デバッグ用)
 
-		
-		void						AddSceneReservation(std::shared_ptr<SceneBase> NewScene);	// シーン追加予約
-		std::shared_ptr<SceneBase>	GetScene(const std::string& cName);							// シーン取得
+		/* セッター */
+		void	AddSceneReservation(std::shared_ptr<SceneBase> NewScene);															// シーン追加予約
+		void	SetDeleteCurrentSceneFlg(bool bDeleteCurrentSceneFlg) { this->bDeleteCurrentSceneFlg = bDeleteCurrentSceneFlg; };	// シーン追加時の現行シーン削除フラグ設定
 
-		void	SetDeleteCurrentSceneFlg(bool bDeleteCurrentSceneFlg)	{ this->bDeleteCurrentSceneFlg	= bDeleteCurrentSceneFlg; };	// シーン追加時、現行シーンを削除する
+		/* ゲッター */
+		std::shared_ptr<SceneBase>	GetScene(const std::string& cName);		// シーン取得
 		
 	private:
-		// シーンリスト
+		/* シーンリスト */
 		std::list<std::shared_ptr<SceneBase>> pstSceneList;
 
-		// 追加予定のシーンリスト
+		/* 追加予定のシーンリスト */
 		std::list<std::shared_ptr<SceneBase>> pstAddSceneList;
 
 		/* 関数 */
@@ -40,6 +42,4 @@ class SceneServer
 		bool	bSceneDeleteFlg;			// シーン削除フラグ(削除予定のシーンがあるならば有効にする)
 		bool	bSceneAddFlg;				// シーン追加フラグ(追加予定のシーンがあるならば有効にする)
 		bool	bDeleteCurrentSceneFlg;		// 現行シーン削除フラグ(シーンリスト内のすべてのシーンを削除するかのフラグ)
-
-	protected:
 };

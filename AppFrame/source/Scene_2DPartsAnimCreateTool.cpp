@@ -30,7 +30,10 @@ Scene_2DPartsAnimCreateTool::Scene_2DPartsAnimCreateTool() : SceneBase("Scene_2D
 	}
 
 	/* 初期化 */
-	this->iSelectTime	= 0;
+	this->iSelectTime		= 0;
+	this->iAnimMaxTime		= 0;
+	this->bNameSelectedFlg	= false;
+	this->bTimeSelectedFlg	= false;
 }
 
 // デストラクタ
@@ -46,20 +49,44 @@ Scene_2DPartsAnimCreateTool::~Scene_2DPartsAnimCreateTool()
 		paUI_Table[i]->SetDeleteFlg(true);
 	}
 
-	///* 選択した画像のグラフィックハンドルを解放 */
-	//for (int iGrHandle : this->iSelectGrHandle)
-	//{
-	//	DeleteGraph(iGrHandle);
-	//}
-	//this->iSelectGrHandle.clear();
-	//this->stSelectGrPath.clear();
+	/* パーツアニメーションの画像データを解放 */
+	for (const auto& partImage : this->PartsImageData)
+	{
+		DeleteGraph(partImage.iPartsGrHandle);
+	}
 }
 
-// 計算
-void Scene_2DPartsAnimCreateTool::Process()
+// 更新
+void Scene_2DPartsAnimCreateTool::Update()
 {
-	/* パーツアニメーション群新規作成 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_N] == TRUE)
+	/* 左クリックでの項目選択 */
+	if (gstKeyboardInputData.igInput[INPUT_TRG] & MOUSE_INPUT_LEFT)
+	{
+		/* マウスカーソルがファイル名部分に重なっている状態であるか確認 */
+		if (gstKeyboardInputData.iMouseX >= 16 && gstKeyboardInputData.iMouseX <= 400 &&
+			gstKeyboardInputData.iMouseY >= 16 * 1 && gstKeyboardInputData.iMouseY <= 16 * 3)
+		{
+			// マウスカーソルがファイル名部分に重なっている場合
+			this->bNameSelectedFlg = true;
+			this->bTimeSelectedFlg = false;
+		}
+		else if (gstKeyboardInputData.iMouseX >= 16 && gstKeyboardInputData.iMouseX <= 1920 - 16 &&
+			gstKeyboardInputData.iMouseY >= 1080 - 16 * 4 && gstKeyboardInputData.iMouseY <= 1080 - 16 * 2)
+		{
+			// マウスカーソルが時間部分に重なっている場合
+			this->bNameSelectedFlg = false;
+			this->bTimeSelectedFlg = true;
+		}
+		else
+		{
+			// マウスカーソルがどちらにも重なっていない場合
+			this->bNameSelectedFlg = false;
+			this->bTimeSelectedFlg = false;
+		}
+	}
+
+	/* パーツアニメーションファイル新規作成 */
+	if (this->bNameSelectedFlg && (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_A] == TRUE))
 	{
 		/* ファイル名を入力(半角文字) */
 		char cAnimName[20];
@@ -69,7 +96,6 @@ void Scene_2DPartsAnimCreateTool::Process()
 			// 正常に入力された場合
 			/* 入力されたパーツアニメーション群名に設定 */
 			this->FileName = cAnimName; // パーツアニメーション群名を設定
-
 			/* 現在のアニメーションの情報を削除 */
 			for (int i = 0; i < this->PartsImageData.size(); i++)
 			{
@@ -82,7 +108,7 @@ void Scene_2DPartsAnimCreateTool::Process()
 	}
 
 	/* アニメーション用パーツ追加 */
-	if(paUI_Table[0]->bGetTableSelectedFlg() && gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_A] == TRUE)
+	if(paUI_Table[0]->bGetTableSelectedFlg() && (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_A] == TRUE))
 	{
 		/* ダイアログを表示 */
 		std::string path = PUBLIC_FUNCTION::aOpenFileDialog(".png");
@@ -164,18 +190,35 @@ void Scene_2DPartsAnimCreateTool::Process()
 	}
 
 	/* 選択時間の変更 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_LEFT] == TRUE)
+	if (this->bTimeSelectedFlg)
 	{
-		// 左キーが押された場合
-		if (this->iSelectTime > 0)
+		if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_LEFT] == TRUE)
 		{
-			this->iSelectTime--;
+			// 左キーが押された場合
+			if (this->iSelectTime > 0)
+			{
+				this->iSelectTime--;
+			}
+		}
+		if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_RIGHT] == TRUE)
+		{
+			// 右キーが押された場合
+			this->iSelectTime++;
 		}
 	}
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_RIGHT] == TRUE)
+
+	/* セーブ */
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_S] == TRUE)
 	{
-		// 右キーが押された場合
-		this->iSelectTime++;
+		// Sキーが押された場合
+		this->bSavePartsAnimData();
+	}
+
+	/* ロード */
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_L] == TRUE)
+	{
+		// Lキーが押された場合
+		this->bLoadPartsAnimData();
 	}
 
 	/* テーブルUIへの要素設定 */
@@ -194,6 +237,16 @@ void Scene_2DPartsAnimCreateTool::Process()
 	}
 	paUI_Table[1]->SetElement(animNameList);
 	iSelectAnimIndex = paUI_Table[1]->iGetSelectElementIndex();
+
+	// 最大時間（フレーム数）を毎フレーム更新
+	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size())
+	{
+		this->iAnimMaxTime = static_cast<int>(PartsAnimData[iSelectAnimIndex].PartsAnimFrameData.size());
+	}
+	else
+	{
+		this->iAnimMaxTime = 0;
+	}
 
 	// 選択した時間でのパーツリスト
 	std::vector<std::string> framePartsNameList;
@@ -242,7 +295,7 @@ void Scene_2DPartsAnimCreateTool::Draw()
 				{
 					int iGrSizeX, iGrSizeY;
 					GetGraphSize(iGrHandle, &iGrSizeX, &iGrSizeY);
-					DrawRotaGraph3(part.fPartsX + (SCREEN_SIZE_WIDE / 2), part.fPartsY + (SCREEN_SIZE_HEIGHT / 2), iGrSizeX / 2, iGrSizeY / 2, part.fPartsScaleX, part.fPartsScaleY, part.fPartsAngle, iGrHandle, TRUE, part.bPartsFlipX);
+					DrawRotaGraph3(static_cast<int>(part.fPartsX + (SCREEN_SIZE_WIDE / 2)), static_cast<int>(part.fPartsY + (SCREEN_SIZE_HEIGHT / 2)), static_cast<int>(iGrSizeX / 2), static_cast<int>(iGrSizeY / 2), part.fPartsScaleX, part.fPartsScaleY, part.fPartsAngle, iGrHandle, TRUE, part.bPartsFlipX);
 				}
 			}
 		}
@@ -253,6 +306,10 @@ void Scene_2DPartsAnimCreateTool::Draw()
 	DrawBox(16, 16 * 1, 400, 16 * 3, GetColor(0, 0, 0), FALSE);
 	DrawString(16, 16 * 1, "ファイル名", GetColor(255, 255, 255));
 	DrawString(16, 16 * 2, this->FileName.c_str(), GetColor(0, 0, 0));
+	if (this->bNameSelectedFlg == true)
+	{
+		DrawBox(16, 16 * 1, 400, 16 * 3, GetColor(255, 0, 0), FALSE);
+	}
 
 	/* 現在のアニメーションの時間描写 */
 	DrawBox(16, 1080 - 16 * 4, 1920 - 16, 1080 - 16 * 3, GetColor(0, 0, 0), TRUE);
@@ -260,34 +317,141 @@ void Scene_2DPartsAnimCreateTool::Draw()
 	DrawBox(16, 1080 - 16 * 3, 1920 - 16, 1080 - 16 * 2, GetColor(128, 128, 128), FALSE);
 	// 時間部分
 	DrawBox(16, 1080 - 16 * 3 + 4, 1920 - 16, 1080 - 16 * 2 - 4, GetColor(128, 128, 128), TRUE);
-	DrawBox(16, 1080 - 16 * 3 + 4, 16 + this->iSelectTime * 25, 1080 - 16 * 2 - 4, GetColor(255, 0, 0), TRUE);
+	// 最大時間が0の場合は赤色バーを非表示
+	if (iAnimMaxTime > 0)
+	{
+		// 割合計算
+		float rate = static_cast<float>(iSelectTime) / static_cast<float>(iAnimMaxTime);
+		if (rate > 1.0f) rate = 1.0f;
+		if (rate < 0.0f) rate = 0.0f;
+		int barStartX = 16;
+		int barEndX = static_cast<int>(16 + (1920 - 16 - 16) * rate);
+		DrawBox(barStartX, 1080 - 16 * 3 + 4, barEndX, 1080 - 16 * 2 - 4, GetColor(255, 0, 0), TRUE);
+	}
+	if (this->bTimeSelectedFlg == true)
+	{
+		DrawBox(16, 1080 - 16 * 4, 1920 - 16, 1080 - 16 * 2, GetColor(255, 0, 0), FALSE);
+	}
 }
 
 // パーツアニメーションのデータ読み込み
 bool Scene_2DPartsAnimCreateTool::bLoadPartsAnimData()
 {
-	return false;
+	using json = nlohmann::json;
+
+	// ファイル選択ダイアログでJSONファイルパスを取得
+	std::string jsonPathStr = PUBLIC_FUNCTION::aOpenFileDialog(".json");
+	if (jsonPathStr.empty()) {
+		return false;
+	}
+	std::filesystem::path jsonPath = jsonPathStr;
+
+	// ファイル名（拡張子なし）をShift-JISに変換してFileNameに設定
+	this->FileName = PUBLIC_PROCESS::aUtf8ToShiftJIS(jsonPath.stem().string());
+
+	// AppResource/AnimData_Resourceの絶対パス取得
+	std::filesystem::path currentDir = std::filesystem::current_path();
+	std::filesystem::path parentDir = currentDir.parent_path();
+	std::filesystem::path resourceDir = parentDir / "AnimData_Resource";
+
+	// ファイルオープン
+	std::ifstream ifs(jsonPath);
+	if (!ifs.is_open()) {
+		return false;
+	}
+
+	json j;
+	try {
+		ifs >> j;
+	}
+	catch (...) {
+		return false;
+	}
+	ifs.close();
+
+	PartsImageData.clear();
+	PartsAnimData.clear();
+
+	// ImagePathの復元
+	if (j.contains("ImagePath") && j["ImagePath"].is_array())
+	{
+		for (const auto& part : j["ImagePath"])
+		{
+			Struct_2DPartsAnim::PARTS_ANIM_PARTS_IMAGE_DATA imageData;
+			imageData.stPartsName = part.value("Name", "");
+			// ファイル名のみをAnimData_Resourceフォルダに結合
+			std::filesystem::path filename = part.value("Path", "");
+			std::filesystem::path absPath = resourceDir / filename;
+			imageData.stPartsPath = absPath.generic_string();
+			imageData.iPartsGrHandle = LoadGraph(imageData.stPartsPath.c_str());
+			PartsImageData.push_back(imageData);
+		}
+	}
+
+	// Animationの復元
+	if (j.contains("Animation") && j["Animation"].is_array())
+	{
+		for (const auto& anim : j["Animation"])
+		{
+			Struct_2DPartsAnim::PARTS_ANIM_ANIM_DATA animData;
+			animData.stAnimName = anim.value("Name", "");
+			animData.PartsAnimFrameData.clear();
+
+			if (anim.contains("Parts") && anim["Parts"].is_array())
+			{
+				for (const auto& frameArray : anim["Parts"])
+				{
+					std::vector<Struct_2DPartsAnim::PARTS_ANIM_PARTS_FRAME_DATA> frameList;
+					if (frameArray.is_array())
+					{
+						for (const auto& frame : frameArray)
+						{
+							Struct_2DPartsAnim::PARTS_ANIM_PARTS_FRAME_DATA frameData;
+							frameData.stPartsName = frame.value("Name", "");
+							frameData.fPartsX = frame.value("PosX", 0.0f);
+							frameData.fPartsY = frame.value("PosY", 0.0f);
+							frameData.fPartsScaleX = frame.value("ScaleX", 1.0f);
+							frameData.fPartsScaleY = frame.value("ScaleY", 1.0f);
+							frameData.fPartsAngle = frame.value("Angle", 0.0f);
+							frameData.bPartsFlipX = frame.value("FlipX", false);
+							frameList.push_back(frameData);
+						}
+					}
+					animData.PartsAnimFrameData.push_back(frameList);
+				}
+			}
+			PartsAnimData.push_back(animData);
+		}
+	}
+
+	return true;
 }
 
 // パーツアニメーションのデータ保存
 bool Scene_2DPartsAnimCreateTool::bSavePartsAnimData()
 {
-
 	using json = nlohmann::json;
+
+	// AppResource/AnimData_Resourceの絶対パス取得
+	std::filesystem::path currentDir = std::filesystem::current_path();
+	std::filesystem::path parentDir = currentDir.parent_path();
+	std::filesystem::path resourceDir = parentDir / "AnimData_Resource";
 
 	// JSONオブジェクト作成
 	json j;
 
-	// PartsImageDataの出力
+	// PartsImageDataの出力（画像パスはファイル名のみで保存）
 	j["ImagePath"] = json::array();
 	for (const auto& part : PartsImageData) {
+		std::filesystem::path imagePath = std::filesystem::absolute(part.stPartsPath);
+		std::filesystem::path filename = imagePath.filename(); // ファイル名のみ取得
 		j["ImagePath"].push_back({
 			{"Name", part.stPartsName},
-			{"Path", part.stPartsPath}
+			{"Path", filename.string()}
 			});
 	}
 
-	// PartsAnimDataの出力
+	// PartsAnimDataの出力（従来通り）
 	j["Animation"] = json::array();
 	for (const auto& anim : PartsAnimData) {
 		json animObj;
@@ -312,20 +476,17 @@ bool Scene_2DPartsAnimCreateTool::bSavePartsAnimData()
 		j["Animation"].push_back(animObj);
 	}
 
-	// 保存先パス作成
-	std::filesystem::path currentDir = std::filesystem::current_path();
-	std::filesystem::path parentDir = currentDir.parent_path();
-	std::filesystem::path saveDir = parentDir / "AppResource" / "AnimData_Json";
-	std::filesystem::create_directories(saveDir); // フォルダがなければ作成
-
-	std::filesystem::path savePath = saveDir / (FileName + ".json");
+	// 保存先パス作成（AppResource/AnimData_Json直下に修正）
+	std::filesystem::path saveDir = parentDir / "AnimData_Json";
+	std::filesystem::create_directories(saveDir);
+	std::filesystem::path savePath = saveDir / (this->FileName + ".json");
 
 	// ファイル保存
 	std::ofstream ofs(savePath);
 	if (!ofs.is_open()) {
 		return false;
 	}
-	ofs << j.dump(4); // インデント4で出力
+	ofs << j.dump(4);
 	ofs.close();
 
 	return true;

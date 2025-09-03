@@ -11,10 +11,10 @@ class DataListBase
 		DataListBase(const std::string& cName);		// コンストラクタ
 		virtual ~DataListBase() {};					// デストラクタ
 
+		/* ゲッター */
 		std::string	stGetDataListName()	{ return this->stDataListName; }	// データリスト名称を取得
 
 	private:
-	protected:
 
 		/* 変数 */
 		// DataListServerでの管理用データ

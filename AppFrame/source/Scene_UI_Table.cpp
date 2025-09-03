@@ -5,6 +5,13 @@
 // コンストラクタ
 Scene_UI_Table::Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, std::string TableName) : SceneBase("Scene_UI_Table", 10000, false)
 {
+	// 引数
+	// iTableWidth					<- テーブルUIの横幅
+	// iDrawPosX					<- 描写位置X
+	// iDrawPosY					<- 描写位置Y
+	// TableName					<- テーブル名
+
+
 	/* 初期化 */
 	this->TableName				= TableName;	// テーブル名
 	this->iTableWidth			= iTableWidth;	// テーブルの幅
@@ -21,8 +28,8 @@ Scene_UI_Table::~Scene_UI_Table()
 
 }
 
-// 計算
-void Scene_UI_Table::Process()
+// 更新
+void Scene_UI_Table::Update()
 {
 	/* 左クリック */
 	if (gstKeyboardInputData.igInput[INPUT_TRG] & MOUSE_INPUT_LEFT)
@@ -61,7 +68,7 @@ void Scene_UI_Table::Process()
 				this->iSelectElementIndex++;
 			}
 		}
-	}	
+	}
 }
 
 // 描画
