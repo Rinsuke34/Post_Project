@@ -402,7 +402,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 # resourceフォルダを無視する
-/Post_Project/Post_Project/resource/
+/Post_Project/resource/
 /AppResource/
 
 # ビルド時に作成されるフォルダを無視する
