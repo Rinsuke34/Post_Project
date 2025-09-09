@@ -169,13 +169,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\DataList_GrHandle.cpp" />
+    <ClCompile Include="source\Actor_Base.cpp" />
+    <ClCompile Include="source\Character_Base.cpp" />
+    <ClCompile Include="source\Character_Player.cpp" />
+    <ClCompile Include="source\Character_Player_Draw.cpp" />
+    <ClCompile Include="source\Character_Player_Move.cpp" />
+    <ClCompile Include="source\DataList_GameStatus.cpp" />
+    <ClCompile Include="source\DataList_Image.cpp" />
     <ClCompile Include="source\DataList_Model.cpp" />
+    <ClCompile Include="source\DataList_Object.cpp" />
     <ClCompile Include="source\Ground_Base.cpp" />
+    <ClCompile Include="source\Ground_Block.cpp" />
     <ClCompile Include="source\Ground_Model.cpp" />
-    <ClCompile Include="source\Ground_Plane.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\Object_Base.cpp" />
+    <ClCompile Include="source\Scene_GameMain.cpp" />
+    <ClCompile Include="source\Scene_Load.cpp" />
+    <ClCompile Include="source\Scene_Stage.cpp" />
+    <ClCompile Include="source\Scene_StageCreate.cpp" />
+    <ClCompile Include="source\Scene_Stage_Draw.cpp" />
+    <ClCompile Include="source\Scene_Stage_JsonLoad.cpp" />
     <ClCompile Include="source\Scene_Title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -184,13 +197,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\DataList_GrHandle.h" />
+    <ClInclude Include="source\Actor_Base.h" />
+    <ClInclude Include="source\Character_Base.h" />
+    <ClInclude Include="source\Character_Player.h" />
+    <ClInclude Include="source\ConstantDefine.h" />
+    <ClInclude Include="source\DataList_GameStatus.h" />
+    <ClInclude Include="source\DataList_Image.h" />
     <ClInclude Include="source\DataList_Model.h" />
+    <ClInclude Include="source\DataList_Object.h" />
     <ClInclude Include="source\Ground_Base.h" />
+    <ClInclude Include="source\Ground_Block.h" />
     <ClInclude Include="source\Ground_Model.h" />
-    <ClInclude Include="source\Ground_Plane.h" />
     <ClInclude Include="source\Object_Base.h" />
+    <ClInclude Include="source\Scene_GameMain.h" />
+    <ClInclude Include="source\Scene_Load.h" />
+    <ClInclude Include="source\Scene_Stage.h" />
+    <ClInclude Include="source\Scene_StageCreate.h" />
     <ClInclude Include="source\Scene_Title.h" />
+    <ClInclude Include="source\StructDefine.h" />
+    <ClInclude Include="source\Test_ConstantDefine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

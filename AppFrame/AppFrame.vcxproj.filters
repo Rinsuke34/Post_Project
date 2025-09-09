@@ -61,18 +61,6 @@
     <Filter Include="ソース ファイル\シーン\サーバー">
       <UniqueIdentifier>{0fee6b54-5c98-4ecf-9bc9-5d5c7ce16fa8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール">
-      <UniqueIdentifier>{dd40bd3a-5b88-443e-bcad-a428582bc47c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール">
-      <UniqueIdentifier>{4262bdd3-99e4-43be-bcf3-1f87a31abf72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI">
-      <UniqueIdentifier>{807397b6-a87e-40aa-bf2d-c14b0af74f7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI">
-      <UniqueIdentifier>{0c093a19-af48-4786-91fc-19eeecbaae20}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\データリスト">
       <UniqueIdentifier>{98dbccfd-a2ae-4c49-af23-e3654aab0276}</UniqueIdentifier>
     </Filter>
@@ -82,6 +70,30 @@
     <Filter Include="ヘッダー ファイル\データリスト\サーバー">
       <UniqueIdentifier>{48886f2f-95fc-4fdf-99e9-9d375168db53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\汎用2Dパーツアニメーション">
+      <UniqueIdentifier>{81bc10aa-c882-4546-b2c5-ef4bd0086d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\汎用2Dパーツアニメーション\シーン">
+      <UniqueIdentifier>{b7754022-4abe-4a96-8eee-f022ff13879e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\汎用2Dパーツアニメーション\シーン\UI">
+      <UniqueIdentifier>{256ad5f9-9724-46da-8559-452117982d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\汎用2Dパーツアニメーション">
+      <UniqueIdentifier>{a9d74629-502a-47b7-9000-808b2ba4d22b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\汎用2Dパーツアニメーション\シーン">
+      <UniqueIdentifier>{f87d5442-e183-4b11-8d11-e567853a3e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\汎用2Dパーツアニメーション\シーン\UI">
+      <UniqueIdentifier>{d7335793-0a30-4a29-a96c-5959a0f34302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\汎用2Dパーツアニメーション\データリスト">
+      <UniqueIdentifier>{d6ec35d2-7fdb-43f7-9a77-505ce3c73bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\汎用2Dパーツアニメーション\シーン\データリスト">
+      <UniqueIdentifier>{6bff64aa-b588-48fd-a0ad-c300518c1c7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AppMain.cpp">
@@ -90,7 +102,7 @@
     <ClCompile Include="source\PlayerInput.cpp">
       <Filter>ソース ファイル\プレイヤー入力</Filter>
     </ClCompile>
-    <ClCompile Include="source\SceneBase.cpp">
+    <ClCompile Include="source\Scene_Base.cpp">
       <Filter>ソース ファイル\シーン\ベース</Filter>
     </ClCompile>
     <ClCompile Include="source\AppVariableDefine.cpp">
@@ -102,7 +114,7 @@
     <ClCompile Include="source\SceneServer.cpp">
       <Filter>ソース ファイル\シーン\サーバー</Filter>
     </ClCompile>
-    <ClCompile Include="source\DataListBase.cpp">
+    <ClCompile Include="source\DataList_Base.cpp">
       <Filter>ソース ファイル\データリスト\ベース</Filter>
     </ClCompile>
     <ClCompile Include="source\DataListServer.cpp">
@@ -115,13 +127,16 @@
       <Filter>ソース ファイル\汎用計算</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp">
-      <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Scene_UI_Table.cpp">
-      <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
+      <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_UI_Button.cpp">
-      <Filter>ソース ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
+      <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_UI_Table.cpp">
+      <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataList_2DPartsAnimCreateTool.cpp">
+      <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン\データリスト</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,7 +146,7 @@
     <ClInclude Include="source\PlayerInput.h">
       <Filter>ヘッダー ファイル\プレイヤー入力</Filter>
     </ClInclude>
-    <ClInclude Include="source\SceneBase.h">
+    <ClInclude Include="source\Scene_Base.h">
       <Filter>ヘッダー ファイル\シーン\ベース</Filter>
     </ClInclude>
     <ClInclude Include="source\AppStructDefine.h">
@@ -155,20 +170,23 @@
     <ClInclude Include="source\SceneServer.h">
       <Filter>ヘッダー ファイル\シーン\サーバー</Filter>
     </ClInclude>
-    <ClInclude Include="source\DataListBase.h">
+    <ClInclude Include="source\DataList_Base.h">
       <Filter>ヘッダー ファイル\データリスト\ベース</Filter>
     </ClInclude>
     <ClInclude Include="source\DataListServer.h">
       <Filter>ヘッダー ファイル\データリスト\サーバー</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h">
-      <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Scene_UI_Table.h">
-      <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
+      <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\シーン</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_UI_Button.h">
-      <Filter>ヘッダー ファイル\シーン\汎用2Dパーツアニメーション作成ツール\UI</Filter>
+      <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_UI_Table.h">
+      <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_2DPartsAnimCreateTool.h">
+      <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\データリスト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

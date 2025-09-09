@@ -1,16 +1,18 @@
 /* データリスト"画像データ管理"クラスの定義 */
 
-#include "DataList_GrHandle.h"
+/* 使用する要素のインクルード */
+// ヘッダファイル
+#include "DataList_Image.h"
 
 // コンストラクタ
-DataList_GrHandle::DataList_GrHandle() : DataList_Base("DataList_GrHandle")
+DataList_Image::DataList_Image() : DataList_Base("DataList_Image")
 {
 	/* 初期化 */
 	this->GrHandleList.clear();	// 画像データリスト
 }
 
 // デストラクタ
-DataList_GrHandle::~DataList_GrHandle()
+DataList_Image::~DataList_Image()
 {
 	/* リスト内の画像ハンドルを削除 */
 	for (auto& list : this->GrHandleList)
@@ -22,7 +24,7 @@ DataList_GrHandle::~DataList_GrHandle()
 }
 
 // 画像データ読み込み
-void DataList_GrHandle::LoadGrHandle(std::string& cFileName)
+void DataList_Image::LoadGrHandle(std::string& cFileName)
 {
 	// 引数
 	// cFileName		<-	読み込む画像データのファイル名
@@ -32,7 +34,7 @@ void DataList_GrHandle::LoadGrHandle(std::string& cFileName)
 	{
 		// 読み込まれていない場合
 		/* 画像のファイルパスを取得 */
-		std::string FileName = "resource/ImageData/" + cFileName + ".mv1";
+		std::string FileName = "resource/ImageData/" + cFileName + ".png";
 
 		/* 画像データ読み込み */
 		int GrHandle = LoadGraph(FileName.c_str());
@@ -45,7 +47,7 @@ void DataList_GrHandle::LoadGrHandle(std::string& cFileName)
 }
 
 // 画像データ読み込み(2Dパーツアニメーション用)
-void DataList_GrHandle::LoadGrHandle_2DPartsAnim(std::string& cFileName)
+void DataList_Image::LoadGrHandle_2DPartsAnim(std::string& cFileName)
 {
 	// 引数
 	// cFileName		<-	読み込む画像データのファイル名
@@ -71,7 +73,7 @@ void DataList_GrHandle::LoadGrHandle_2DPartsAnim(std::string& cFileName)
 }
 
 // 画像データ取得
-std::shared_ptr<int> DataList_GrHandle::iGetGrhandle(std::string& cFileName)
+std::shared_ptr<int> DataList_Image::iGetGrhandle(std::string& cFileName)
 {
 	// 引数
 	// cFileName			: 画像ファイル名
@@ -105,7 +107,7 @@ std::shared_ptr<int> DataList_GrHandle::iGetGrhandle(std::string& cFileName)
 }
 
 // 該当画像ハンドルデータ存在確認
-bool DataList_GrHandle::bCheckGrHandle(std::string& cFileName)
+bool DataList_Image::bCheckGrHandle(std::string& cFileName)
 {
 	// 引数
 	// cFileName	: 読み込む画像データのファイル名

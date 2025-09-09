@@ -1,6 +1,14 @@
 /* プログラムのメインループ */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "AppMain.h"
+// 関連クラス
+#include "Fps.h"
+#include "PlayerInput.h"
+#include "SceneServer.h"
+#include "DataListServer.h"
+// 共通定義
 #include "AppVariableDefine.h"
 #include "AppConstantDefine.h"
 #include "AppFunctionDefine.h"

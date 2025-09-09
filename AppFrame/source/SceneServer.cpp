@@ -1,6 +1,11 @@
 /* シーンサーバーの定義 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "SceneServer.h"
+// 関連クラス
+#include "Scene_Base.h"
+// 共通定義
 #include "AppFunctionDefine.h"
 
 // コンストラクタ
@@ -39,7 +44,7 @@ void SceneServer::SceneProcess()
 		}
 
 		/* 対象シーンの下層レイヤー計算停止フラグの確認 */
-		if (Scene->bGetLowerLayerProcessFlg() == true)
+		if (Scene->bGetLowerLayerUpdateStopFlg() == true)
 		{
 			// 下層レイヤー計算停止フラグが有効であるなら
 			/* シーン計算処理を終了する */
@@ -70,7 +75,7 @@ void SceneServer::SceneDraw()
 }
 
 // シーン追加予約
-void SceneServer::AddSceneReservation(std::shared_ptr<SceneBase> NewScene)
+void SceneServer::AddSceneReservation(std::shared_ptr<Scene_Base> NewScene)
 {
 	// ※シーンの追加自体は"AddScene"関数で行う
 	// 引数
@@ -84,7 +89,7 @@ void SceneServer::AddSceneReservation(std::shared_ptr<SceneBase> NewScene)
 }
 
 // シーン取得
-std::shared_ptr<SceneBase> SceneServer::GetScene(const std::string& cName)
+std::shared_ptr<Scene_Base> SceneServer::GetScene(const std::string& cName)
 {
 	// 引数
 	// cName		<-	取得したいシーンの名称
@@ -132,7 +137,7 @@ void SceneServer::AddScene()
 		DeleteAllAddScene();
 
 		/* レイヤー順序が大きい順に並び替える */
-		this->SceneSortLayerOrder();
+		SceneSortLayerOrder();
 
 		/* シーン追加フラグの無効化 */
 		this->bSceneAddFlg = false;
@@ -143,7 +148,7 @@ void SceneServer::AddScene()
 void SceneServer::SceneSortLayerOrder()
 {
 	/* 各レイヤーが所持する"レイヤー順序"が大きい順に並び替える */
-	pstSceneList.sort([](std::shared_ptr<SceneBase> SceneA, std::shared_ptr<SceneBase> SceneB)
+	pstSceneList.sort([](std::shared_ptr<Scene_Base> SceneA, std::shared_ptr<Scene_Base> SceneB)
 	{
 		return SceneA->iGetSceneLayerOrder() > SceneB->iGetSceneLayerOrder();
 	});
@@ -158,7 +163,7 @@ void SceneServer::DeleteUnnecessaryScene()
 	if (this->bSceneDeleteFlg == true)
 	{
 		/* 削除フラグが有効なシーンをを削除 */
-		pstSceneList.erase( std::remove_if(pstSceneList.begin(), pstSceneList.end(), [](std::shared_ptr<SceneBase> pScene)
+		pstSceneList.erase( std::remove_if(pstSceneList.begin(), pstSceneList.end(), [](std::shared_ptr<Scene_Base> pScene)
 		{
 			/* 削除フラグが有効であるか確認　*/
 			if (pScene->bGetDeleteFlg() == true)

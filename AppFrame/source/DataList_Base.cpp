@@ -1,6 +1,8 @@
 /* データリストのベースとなるクラスの定義 */
 
-#include "DataListBase.h"
+/* 使用する要素のインクルード */
+// ヘッダファイル
+#include "DataList_Base.h"
 
 // コンストラクタ
 DataList_Base::DataList_Base(const std::string& cName)

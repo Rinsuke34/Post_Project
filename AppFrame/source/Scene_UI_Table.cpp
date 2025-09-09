@@ -1,9 +1,11 @@
 /* シーン"UI(テーブル)"の定義 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "Scene_UI_Table.h"
 
 // コンストラクタ
-Scene_UI_Table::Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, std::string TableName) : SceneBase("Scene_UI_Table", 10000, false)
+Scene_UI_Table::Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, std::string TableName) : Scene_Base("Scene_UI_Table", 10000, false, false)
 {
 	// 引数
 	// iTableWidth					<- テーブルUIの横幅

@@ -1,6 +1,11 @@
 /* データリストサーバーの定義 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "DataListServer.h"
+// 関連クラス
+#include "DataList_Base.h"
+// 共通定義
 #include "AppFunctionDefine.h"
 
 // デストラクタ

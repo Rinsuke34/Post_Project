@@ -1,14 +1,18 @@
 /* 広域変数の宣言 */
 
 #pragma once
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <vector>
 #include <memory>
-
+// 共通定義
 #include "AppStructDefine.h"
-#include "Fps.h"
-#include "PlayerInput.h"
-#include "SceneServer.h"
-#include "DataListServer.h"
+
+/* 前方宣言 */
+class Fps;
+class PlayerInput;
+class SceneServer;
+class DataListServer;
 
 /* プログラム状態 */
 extern bool gbEndFlg;	// プログラム終了フラグ

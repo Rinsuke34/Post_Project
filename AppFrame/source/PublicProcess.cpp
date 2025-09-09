@@ -1,7 +1,10 @@
 /* 汎用的に使用できる計算式の定義 */
 
-#include "AppFunctionDefine.h"
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <algorithm>
+// 共通定義
+#include "AppFunctionDefine.h"
 
 // 値を範囲内に収める
 float PUBLIC_PROCESS::fClamp(float fValue, float fMax, float fMin)

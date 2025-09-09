@@ -1,9 +1,11 @@
 /* シーン"UI(ボタン)"の定義 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "Scene_UI_Button.h"
 
 // コンストラクタ
-Scene_UI_Button::Scene_UI_Button(int iButtonWidth, int iDrawPosX, int iDrawPosY, std::string ButtonName, int iInputType) : SceneBase("Scene_UI_Table", 10000, false)
+Scene_UI_Button::Scene_UI_Button(int iButtonWidth, int iDrawPosX, int iDrawPosY, std::string ButtonName, int iInputType) : Scene_Base("Scene_UI_Table", 10000, false, false)
 {
 	// 引数
 	// iButtonWidth					<- ボタンUIの横幅

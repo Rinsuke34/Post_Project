@@ -1,9 +1,15 @@
 /* データ制御処理の管理を行うクラスの宣言 */
 
 #pragma once
-#include "DataListBase.h"
+
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <list>
 #include <memory>
+#include <string>
+
+/* 前方宣言 */
+class DataList_Base;
 
 // データリストサーバークラス
 class DataListServer

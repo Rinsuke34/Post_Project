@@ -1,5 +1,7 @@
 /* データリスト"3Dモデル管理"クラスの定義 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "DataList_Model.h"
 
 // コンストラクタ
@@ -29,7 +31,7 @@ void DataList_Model::LoadModel(std::string modelName)
 	// modelName	: 3Dモデル名
 
 	/* 3Dモデルを読み込む */
-	// ※複製は行わない
+	// ※読み込みのみで複製はしない
 
 	/* 対象の3Dモデルが存在するか確認 */
 	if (bCheckModel(modelName) == false)

@@ -31,24 +31,6 @@
     <Filter Include="ソース ファイル\ゲーム内オブジェクト">
       <UniqueIdentifier>{763b151e-ca04-4133-81e5-0bb9346e510c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\地形">
-      <UniqueIdentifier>{73644b03-f3ca-4805-8483-195194a943d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\地形\3Dモデル">
-      <UniqueIdentifier>{58ad6540-4184-4268-bf0b-39806e88c461}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\地形\平面">
-      <UniqueIdentifier>{b92b052a-e6e5-45b5-8d9d-f425e7ee48eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形">
-      <UniqueIdentifier>{0afc8a32-3713-4a81-8e1f-b9c110a71d22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形\3Dモデル">
-      <UniqueIdentifier>{97abc575-3fb4-4e03-91c3-adddbcb6344f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\地形\平面">
-      <UniqueIdentifier>{3cdd1e52-1847-4705-960b-2143a1d88cb6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\データリスト">
       <UniqueIdentifier>{9ca8048b-1a6e-4789-b71e-d8ff4dd2f3ba}</UniqueIdentifier>
     </Filter>
@@ -67,6 +49,105 @@
     <Filter Include="ヘッダー ファイル\データリスト\画像データ管理">
       <UniqueIdentifier>{e311e996-1fbe-4e28-a2e0-eb7ee00d8f8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ステージ作成">
+      <UniqueIdentifier>{bc93f6e2-e202-4b0b-901b-8d0b2beab7c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ステージ作成">
+      <UniqueIdentifier>{e98f506c-8930-48cd-b161-9aeb83d3f49c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\オブジェクト管理">
+      <UniqueIdentifier>{aaa3a668-1fbf-4bb7-bd72-38b66c2ce58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\オブジェクト管理">
+      <UniqueIdentifier>{05d1ec9e-67e5-4841-bdc4-7dd73f298b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ロード">
+      <UniqueIdentifier>{f79c10ef-029a-436d-827b-6dad5732864c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ロード">
+      <UniqueIdentifier>{78a4b85a-7964-4832-868a-0aca65bf5c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームメイン">
+      <UniqueIdentifier>{ed21b199-d690-4874-a11a-69646c5abaf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ゲームメイン">
+      <UniqueIdentifier>{b879e5f2-080b-4050-81c9-0568cb0d4d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ゲームメイン\ステージ">
+      <UniqueIdentifier>{32a3caa8-9a80-47fa-a471-3c7c80ce88da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームメイン\ステージ">
+      <UniqueIdentifier>{7c377edb-8c7f-41b0-a833-d45a49c183f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\定義">
+      <UniqueIdentifier>{cef91479-a514-4f8a-8aa5-35ea10ddd82e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\ゲーム状態管理">
+      <UniqueIdentifier>{ac383c73-60f6-4b2e-9b70-631f19c821da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\ゲーム状態管理">
+      <UniqueIdentifier>{c3889014-d78c-4b02-989d-8131378571c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームメイン\ステージ\Json読み込み">
+      <UniqueIdentifier>{07a73545-2dc6-4b48-8e4f-510a3783c531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29">
+      <UniqueIdentifier>{0afc8a32-3713-4a81-8e1f-b9c110a71d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル">
+      <UniqueIdentifier>{97abc575-3fb4-4e03-91c3-adddbcb6344f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック">
+      <UniqueIdentifier>{92fef0a1-4800-43f7-9648-cfeaf446f1ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29">
+      <UniqueIdentifier>{73644b03-f3ca-4805-8483-195194a943d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル">
+      <UniqueIdentifier>{58ad6540-4184-4268-bf0b-39806e88c461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック">
+      <UniqueIdentifier>{d0104c39-7fd5-4613-b6d0-65708bdd51e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト">
+      <UniqueIdentifier>{a4f67a84-3769-4747-aaff-395511db91f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\バレット">
+      <UniqueIdentifier>{df28fd3d-28c3-4186-8472-1374043f0fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター">
+      <UniqueIdentifier>{32a5f4ad-2825-477b-9d5a-d9ecc43b06d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\アイテム">
+      <UniqueIdentifier>{1fb85478-5382-48c0-a4f4-f804ff07715d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29">
+      <UniqueIdentifier>{7c4262f9-d3eb-4652-a275-252e7b67775b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\バレット">
+      <UniqueIdentifier>{18559683-78be-43ce-8ab1-3f830e07e949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター">
+      <UniqueIdentifier>{52806cdf-72b1-4754-801b-8461c4219441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\アイテム">
+      <UniqueIdentifier>{47e6959d-540b-4af1-b0ad-855a44c06e80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー">
+      <UniqueIdentifier>{19b9d8c9-6a3f-4ecb-9fa3-1d936e6e34d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\プレイヤー">
+      <UniqueIdentifier>{f8435690-c17b-46c9-97c3-fc67bb6f2c0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC">
+      <UniqueIdentifier>{a957fac9-968d-4c85-8970-63694f78ea39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC">
+      <UniqueIdentifier>{5a235567-6286-49e4-acf3-0d518e88eb2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームメイン\ステージ\描写関係">
+      <UniqueIdentifier>{58292451-95f7-4aac-a863-af00de9009db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -76,22 +157,61 @@
       <Filter>ソース ファイル\シーン\タイトル</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Model.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\地形\3Dモデル</Filter>
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Base.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\地形</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Ground_Plane.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\地形\平面</Filter>
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29</Filter>
     </ClCompile>
     <ClCompile Include="source\Object_Base.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト</Filter>
     </ClCompile>
-    <ClCompile Include="source\DataList_GrHandle.cpp">
+    <ClCompile Include="source\DataList_Image.cpp">
       <Filter>ソース ファイル\データリスト\画像データ管理</Filter>
     </ClCompile>
     <ClCompile Include="source\DataList_Model.cpp">
       <Filter>ソース ファイル\データリスト\3Dモデル管理</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Stage.cpp">
+      <Filter>ソース ファイル\シーン\ゲームメイン\ステージ</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_StageCreate.cpp">
+      <Filter>ソース ファイル\シーン\ステージ作成</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataList_Object.cpp">
+      <Filter>ソース ファイル\データリスト\オブジェクト管理</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Load.cpp">
+      <Filter>ソース ファイル\シーン\ロード</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_GameMain.cpp">
+      <Filter>ソース ファイル\シーン\ゲームメイン</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Stage_Draw.cpp">
+      <Filter>ソース ファイル\シーン\ゲームメイン\ステージ\描写関係</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Stage_JsonLoad.cpp">
+      <Filter>ソース ファイル\シーン\ゲームメイン\ステージ\Json読み込み</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Ground_Block.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック</Filter>
+    </ClCompile>
+    <ClCompile Include="source\DataList_GameStatus.cpp">
+      <Filter>ソース ファイル\データリスト\ゲーム状態管理</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Actor_Base.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Base.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Player.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Player_Move.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Player_Draw.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,22 +219,58 @@
       <Filter>ヘッダー ファイル\シーン\タイトル</Filter>
     </ClInclude>
     <ClInclude Include="source\Ground_Model.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\地形\3Dモデル</Filter>
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル</Filter>
     </ClInclude>
     <ClInclude Include="source\Ground_Base.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\地形</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Ground_Plane.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\地形\平面</Filter>
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29</Filter>
     </ClInclude>
     <ClInclude Include="source\Object_Base.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト</Filter>
     </ClInclude>
-    <ClInclude Include="source\DataList_GrHandle.h">
+    <ClInclude Include="source\DataList_Image.h">
       <Filter>ヘッダー ファイル\データリスト\画像データ管理</Filter>
     </ClInclude>
     <ClInclude Include="source\DataList_Model.h">
       <Filter>ヘッダー ファイル\データリスト\3Dモデル管理</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_Stage.h">
+      <Filter>ヘッダー ファイル\シーン\ゲームメイン\ステージ</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_StageCreate.h">
+      <Filter>ヘッダー ファイル\シーン\ステージ作成</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_Object.h">
+      <Filter>ヘッダー ファイル\データリスト\オブジェクト管理</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_Load.h">
+      <Filter>ヘッダー ファイル\シーン\ロード</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_GameMain.h">
+      <Filter>ヘッダー ファイル\シーン\ゲームメイン</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ConstantDefine.h">
+      <Filter>ヘッダー ファイル\定義</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Ground_Block.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_GameStatus.h">
+      <Filter>ヘッダー ファイル\データリスト\ゲーム状態管理</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StructDefine.h">
+      <Filter>ヘッダー ファイル\定義</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Actor_Base.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Character_Base.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Character_Player.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\プレイヤー</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Test_ConstantDefine.h">
+      <Filter>ヘッダー ファイル\定義</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

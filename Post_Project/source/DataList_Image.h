@@ -1,14 +1,16 @@
 /* データリスト"画像データ管理"クラスの宣言 */
 
 #pragma once
+/* 使用する要素のインクルード */
+// 共通定義
 #include "AppFrame.h"
 
 // データリスト"画像データ管理"クラス
-class DataList_GrHandle : public DataList_Base
+class DataList_Image : public DataList_Base
 {
 	public:
-		DataList_GrHandle();			// コンストラクタ
-		virtual ~DataList_GrHandle();	// デストラクタ
+		DataList_Image();			// コンストラクタ
+		virtual ~DataList_Image();	// デストラクタ
 
 		/* 関数 */
 		void					LoadGrHandle(std::string& cFileName);				// 画像データ読み込み

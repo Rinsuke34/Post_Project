@@ -1,6 +1,9 @@
 /* プレイヤーの入力取得クラスの定義 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "PlayerInput.h"
+// 共通定義
 #include "AppConstantDefine.h"
 #include "AppVariableDefine.h"
 #include "AppFunctionDefine.h"

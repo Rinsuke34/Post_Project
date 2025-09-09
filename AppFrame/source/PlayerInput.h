@@ -1,8 +1,11 @@
 /* プレイヤーの入力を取得するクラスの宣言 */
 
 #pragma once
-#include <DxLib.h>
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <cstring>
+// 外部ライブラリ
+#include <DxLib.h>
 
 // 入力取得クラス
 class PlayerInput

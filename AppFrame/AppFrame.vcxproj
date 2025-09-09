@@ -19,14 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\DataListBase.cpp" />
+    <ClCompile Include="source\DataList_2DPartsAnimCreateTool.cpp" />
+    <ClCompile Include="source\DataList_Base.cpp" />
     <ClCompile Include="source\DataListServer.cpp" />
     <ClCompile Include="source\Fps.cpp" />
     <ClCompile Include="source\AppMain.cpp" />
     <ClCompile Include="source\PlayerInput.cpp" />
     <ClCompile Include="source\PublicFunction.cpp" />
     <ClCompile Include="source\PublicProcess.cpp" />
-    <ClCompile Include="source\SceneBase.cpp" />
+    <ClCompile Include="source\Scene_Base.cpp" />
     <ClCompile Include="source\SceneServer.cpp" />
     <ClCompile Include="source\AppVariableDefine.cpp" />
     <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp" />
@@ -36,13 +37,14 @@
   <ItemGroup>
     <ClInclude Include="source\AppFrame.h" />
     <ClInclude Include="source\AppConstantDefine.h" />
-    <ClInclude Include="source\DataListBase.h" />
+    <ClInclude Include="source\DataList_2DPartsAnimCreateTool.h" />
+    <ClInclude Include="source\DataList_Base.h" />
     <ClInclude Include="source\DataListServer.h" />
     <ClInclude Include="source\Fps.h" />
     <ClInclude Include="source\AppFunctionDefine.h" />
     <ClInclude Include="source\AppMain.h" />
     <ClInclude Include="source\PlayerInput.h" />
-    <ClInclude Include="source\SceneBase.h" />
+    <ClInclude Include="source\Scene_Base.h" />
     <ClInclude Include="source\SceneServer.h" />
     <ClInclude Include="source\AppStructDefine.h" />
     <ClInclude Include="source\AppVariableDefine.h" />

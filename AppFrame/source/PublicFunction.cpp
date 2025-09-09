@@ -1,15 +1,21 @@
 /* 汎用的に使用できる機能の定義 */
 
-#include "AppFunctionDefine.h"
-#include "AppVariableDefine.h"
-#include "Scene_2DPartsAnimCreateTool.h"
-
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <fstream>
 #include <thread>
 #include <chrono>
 #include <cstdio>
 #include <Windows.h>
 #include <filesystem>
+// 関連クラス
+#include "SceneServer.h"
+#include "DataListServer.h"
+#include "Scene_2DPartsAnimCreateTool.h"
+#include "DataList_2DPartsAnimCreateTool.h"
+// 共通定義
+#include "AppFunctionDefine.h"
+#include "AppVariableDefine.h"
 
 // 指定ファイルを完全に削除するまで待機
 void PUBLIC_FUNCTION::FileDeletesAndStand(const std::string& filename)
@@ -88,6 +94,6 @@ std::string	PUBLIC_FUNCTION::aOpenFileDialog(std::string Filter)
 // 2Dパーツアニメーション作成ツールの起動
 void PUBLIC_FUNCTION::Start2DPartsAnimCreateTool()
 {
-	// シーン"汎用2Dパーツアニメーションツール"を追加予約
+	/* シーン"汎用2Dパーツアニメーションツール"を追加予約 */
 	gpSceneServer->AddSceneReservation(std::make_shared<Scene_2DPartsAnimCreateTool>());
 }

@@ -1,5 +1,9 @@
 /* 地形(3Dモデル)クラスの宣言 */
 
+#pragma once
+
+/* 使用する要素のインクルード */
+// 基底クラス
 #include "Ground_Base.h"
 
 // 地形(3Dモデル)クラス
@@ -12,12 +16,6 @@ class Ground_Model : public Ground_Base
 		/* 関数 */
 		virtual void	InitialSetup();		// 初期設定
 		virtual void	Draw();				// 描画
-		void			Update_Collision();	// 更新(コリジョン情報)
-
-		// コリジョン接触判定
-		bool HitCheck(Struct_Collision::COLLISION_CAPSULE	stCapsule)	override;	// カプセル
-		bool HitCheck(Struct_Collision::COLLISION_SQHERE	stSqhere)	override;	// 球体
-		bool HitCheck(Struct_Collision::COLLISION_LINE		stLine)		override;	// 線分
 
 		/* セッター */
 		void SetModelHandle(int iModelHandle)	{ this->iModelHandle	= iModelHandle; }	// モデルハンドルを設定
@@ -32,13 +30,12 @@ class Ground_Model : public Ground_Base
 		VECTOR	GetScale()						{ return this->vecScale; }				// オブジェクトの拡大率を取得
 
 	private:
-		/* 関数 */
-		void	DrawFrameCollisionSet(bool bCollisionDraw);		// コリジョンフレームの描写設定
-
 		/* 変数 */
 		int iModelHandle;				// モデルハンドル
-		int iCollisionFrameNo;			// コリジョン用のフレーム番号
 		VECTOR	vecPosition;			// オブジェクトの座標
 		VECTOR	vecRotation;			// オブジェクトの回転量
 		VECTOR	vecScale;				// オブジェクトの拡大率(x,y,z方向それぞれの拡大倍率)
+
+		/* 関数 */
+		void SetUpCollision();			// コリジョンの設定
 };

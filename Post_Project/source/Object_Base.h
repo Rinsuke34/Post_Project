@@ -1,6 +1,9 @@
 /* オブジェクトのベースクラスの宣言 */
 
 #pragma once
+
+/* 使用する要素のインクルード */
+// 外部ライブラリ
 #include <DxLib.h>
 
 // オブジェクトベースクラス
@@ -14,6 +17,8 @@ class Object_Base
 		virtual void	InitialSetup()		{};	// 初期設定
 		virtual void	Update()			{};	// 更新
 		virtual void	Draw()				{};	// 描画
+		virtual void	Draw_Shadow();			// 描画(シャドウマップ用)
+		virtual void	Draw_Collision()	{};	// 描画(当たり判定)
 		
 		/* セッター */
 		void	SetDeleteFlg(bool bDeleteFlg) { this->bDeleteFlg = bDeleteFlg; }	// 削除フラグを設定(有効ならばオブジェクトを削除する)

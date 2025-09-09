@@ -1,9 +1,15 @@
 /* 実行中のシーンの管理を行うクラスの宣言 */
 
 #pragma once
-#include "SceneBase.h"
+
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <list>
 #include <memory>
+#include <string>
+
+/* 前方宣言 */
+class Scene_Base;
 
 // シーンサーバークラス
 class SceneServer
@@ -18,18 +24,18 @@ class SceneServer
 		void	DrawSceneList();	// データリスト描画(デバッグ用)
 
 		/* セッター */
-		void	AddSceneReservation(std::shared_ptr<SceneBase> NewScene);															// シーン追加予約
-		void	SetDeleteCurrentSceneFlg(bool bDeleteCurrentSceneFlg) { this->bDeleteCurrentSceneFlg = bDeleteCurrentSceneFlg; };	// シーン追加時の現行シーン削除フラグ設定
+		void	AddSceneReservation(std::shared_ptr<Scene_Base> NewScene);															// シーン追加予約
+		void	SetDeleteCurrentSceneFlg(bool bDeleteCurrentSceneFlg)	{ this->bDeleteCurrentSceneFlg = bDeleteCurrentSceneFlg; };	// シーン追加時の現行シーン削除フラグ設定
 
 		/* ゲッター */
-		std::shared_ptr<SceneBase>	GetScene(const std::string& cName);		// シーン取得
+		std::shared_ptr<Scene_Base>	GetScene(const std::string& cName);		// シーン取得
 		
 	private:
 		/* シーンリスト */
-		std::list<std::shared_ptr<SceneBase>> pstSceneList;
+		std::list<std::shared_ptr<Scene_Base>> pstSceneList;
 
 		/* 追加予定のシーンリスト */
-		std::list<std::shared_ptr<SceneBase>> pstAddSceneList;
+		std::list<std::shared_ptr<Scene_Base>> pstAddSceneList;
 
 		/* 関数 */
 		void	AddScene();						// シーンリストへのシーン追加

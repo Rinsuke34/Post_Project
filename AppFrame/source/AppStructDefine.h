@@ -1,9 +1,14 @@
 /* AppFrameで使用する構造体の宣言 */
 
 #pragma once
-#include <DxLib.h>
+
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <vector>
 #include <string>
+// 外部ライブラリ
+#include <DxLib.h>
+// 共通定義
 #include "AppConstantDefine.h"
 
 // 入力関連
@@ -54,6 +59,12 @@ namespace Struct_Collision
 		VECTOR	vecLineStart;		// 線分の始点
 		VECTOR	vecLineEnd;			// 線分の終点
 	};
+
+	struct COLLISION_BOX		// ボックスコリジョン
+	{
+		VECTOR	vecBoxCenter;		// 箱の中心
+		VECTOR	vecBoxHalfSize;		// 箱のサイズ(各軸の半径)
+	};
 };
 
 // 2Dパーツアニメーション関連
@@ -77,9 +88,17 @@ namespace Struct_2DPartsAnim
 		bool		bPartsFlipX;		// パーツの左右反転フラグ(有効であるならばパーツを反転する)
 	};
 
-	struct PARTS_ANIM_ANIM_DATA												// パーツアニメーションの情報
+	struct PARTS_ANIM_ANIM_DATA			// パーツアニメーションの情報
 	{
-		std::string													stAnimName;			// アニメーション名
+		std::string													AnimName;			// アニメーション名
 		std::vector<std::vector<PARTS_ANIM_PARTS_FRAME_DATA>>		PartsAnimFrameData;	// パーツアニメーションの時間単位での情報
 	};
+
+	struct PARTS_ANIM_DATA				// パーツアニメーション群の情報
+	{
+		std::string									FileName;		// パーツアニメーション群の名称(==ファイル名)
+		std::vector<PARTS_ANIM_PARTS_IMAGE_DATA>	PartsImageData;	// パーツの画像データ(アニメーション用パーツの画像データ)
+		std::vector<PARTS_ANIM_ANIM_DATA>			PartsAnimData;	// パーツアニメーションの情報(アニメーションのフレーム情報など)
+	};
+
 }

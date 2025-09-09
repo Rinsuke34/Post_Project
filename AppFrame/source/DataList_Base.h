@@ -1,8 +1,12 @@
 /* すべてのデータリストのベースとなるクラスの宣言 */
 
 #pragma once
-#include <DxLib.h>
+
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <string>
+// 外部ライブラリ
+#include <DxLib.h>
 
 // データリストベースクラス
 class DataList_Base

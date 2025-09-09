@@ -1,8 +1,13 @@
 /* フレームレート固定クラスの定義 */
 
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <math.h>
+// 外部ライブラリ
 #include "DxLib.h"
+// ヘッダファイル
 #include "Fps.h"
+// 共通定義
 #include "AppVariableDefine.h"
 #include "AppConstantDefine.h"
 

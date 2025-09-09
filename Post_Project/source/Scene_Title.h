@@ -1,10 +1,13 @@
 /* シーン"タイトル"の宣言 */
 
 #pragma once
+
+/* 使用する要素のインクルード */
+// 共通定義
 #include "AppFrame.h"
 
 // シーン"タイトル"
-class Scene_Title : public SceneBase
+class Scene_Title : public Scene_Base
 {
 	public:
 		Scene_Title();				// コンストラクタ

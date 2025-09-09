@@ -1,6 +1,13 @@
 /* 広域変数の初期化 */
 
+/* 使用する要素のインクルード */
+// ヘッダファイル
 #include "AppVariableDefine.h"
+// 関連クラス
+#include "Fps.h"
+#include "PlayerInput.h"
+#include "SceneServer.h"
+#include "DataListServer.h"
 
 /* プログラム状態 */
 bool gbEndFlg	= false;	// プログラム終了フラグ

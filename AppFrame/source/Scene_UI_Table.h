@@ -1,12 +1,17 @@
 /* シーン"UI(テーブル)"の宣言 */
 
 #pragma once
+
+/* 使用する要素のインクルード */
+// 標準ライブラリ
 #include <vector>
-#include "SceneBase.h"
+// 基底クラス
+#include "Scene_Base.h"
+// 共通定義
 #include "AppVariableDefine.h"
 
 // シーン"UI(テーブル)"
-class Scene_UI_Table : public SceneBase
+class Scene_UI_Table : public Scene_Base
 {
 	public:
 		Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, std::string TableName);	// コンストラクタ
