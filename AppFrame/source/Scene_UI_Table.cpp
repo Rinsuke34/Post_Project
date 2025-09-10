@@ -24,12 +24,6 @@ Scene_UI_Table::Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, st
 	this->vecElement.clear();
 }
 
-// デストラクタ
-Scene_UI_Table::~Scene_UI_Table()
-{
-
-}
-
 // 更新
 void Scene_UI_Table::Update()
 {

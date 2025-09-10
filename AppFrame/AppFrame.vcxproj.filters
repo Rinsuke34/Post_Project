@@ -129,9 +129,6 @@
     <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp">
       <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン</Filter>
     </ClCompile>
-    <ClCompile Include="source\Scene_UI_Button.cpp">
-      <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
-    </ClCompile>
     <ClCompile Include="source\Scene_UI_Table.cpp">
       <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
     </ClCompile>
@@ -178,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="source\Scene_2DPartsAnimCreateTool.h">
       <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\シーン</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Scene_UI_Button.h">
-      <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_UI_Table.h">
       <Filter>ヘッダー ファイル\汎用2Dパーツアニメーション\シーン\UI</Filter>

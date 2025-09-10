@@ -21,7 +21,8 @@ Character_Player::Character_Player() : Character_Base()
 
 	/* 初期化 */
 	this->AnimFileName	= "Test_Player";	// アニメーションファイル名
-	this->NowMotionName	= "Delay";			// 現在のモーション名
+//	this->NowMotionName	= "Delay";			// 現在のモーション名
+	this->NowMotionName = "Move";			// 現在のモーション名
 	this->iMotionCount	= 0;
 
 	// パーツアニメーションセットアップ
@@ -49,7 +50,7 @@ void Character_Player::Update()
 {
 	/* 移動・重力処理 */
 	Update_ApplyGravity();
-	Update_ApplyMovement();	
+	Update_ApplyMovement();
 
 	/* ワールドマップ上の座標を設定 */
 	this->pDataList_GameStatus->SetPlayerPosition_WoldMap(this->vecBasePosition);

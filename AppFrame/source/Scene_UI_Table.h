@@ -15,7 +15,7 @@ class Scene_UI_Table : public Scene_Base
 {
 	public:
 		Scene_UI_Table(int iTableWidth, int iDrawPosX, int iDrawPosY, std::string TableName);	// コンストラクタ
-		virtual ~Scene_UI_Table();		// デストラクタ
+		virtual ~Scene_UI_Table() {};		// デストラクタ
 
 		/* 関数 */
 		virtual void	Update()			override;	// 更新

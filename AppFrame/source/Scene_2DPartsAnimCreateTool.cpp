@@ -25,9 +25,9 @@ Scene_2DPartsAnimCreateTool::Scene_2DPartsAnimCreateTool() : Scene_Base("Scene_2
 	gbMouseCursorNotDepictedFlg			= false;
 
 	/* UIの作成 */
-	paUI_Table[0] = std::make_shared<Scene_UI_Table>(400, 16, 16 * 5, "パーツリスト");					// 0:パーツリスト
-	paUI_Table[1] = std::make_shared<Scene_UI_Table>(400, 16, 16 * 20, "アニメーションリスト");			// 1:アニメーションリスト
-	paUI_Table[2] = std::make_shared<Scene_UI_Table>(400, 16, 16 * 35, "選択時間でのパーツリスト");		// 2:選択時間でのパーツリスト
+	paUI_Table[0] = std::make_shared<Scene_UI_Table>(TABLE_SIZE_W, FONT_SIZE, FONT_SIZE * 5, "パーツリスト");					// 0:パーツリスト
+	paUI_Table[1] = std::make_shared<Scene_UI_Table>(TABLE_SIZE_W, FONT_SIZE, FONT_SIZE * 20, "アニメーションリスト");			// 1:アニメーションリスト
+	paUI_Table[2] = std::make_shared<Scene_UI_Table>(TABLE_SIZE_W, FONT_SIZE, FONT_SIZE * 35, "選択時間でのパーツリスト");		// 2:選択時間でのパーツリスト
 
 	// UIの登録
 	for (int i = 0; i < 3; ++i)
@@ -69,15 +69,15 @@ void Scene_2DPartsAnimCreateTool::Update()
 	if (gstKeyboardInputData.igInput[INPUT_TRG] & MOUSE_INPUT_LEFT)
 	{
 		/* マウスカーソルがファイル名部分に重なっている状態であるか確認 */
-		if (gstKeyboardInputData.iMouseX >= 16 && gstKeyboardInputData.iMouseX <= 400 &&
-			gstKeyboardInputData.iMouseY >= 16 * 1 && gstKeyboardInputData.iMouseY <= 16 * 3)
+		if (gstKeyboardInputData.iMouseX >= FONT_SIZE && gstKeyboardInputData.iMouseX <= TABLE_SIZE_W &&
+			gstKeyboardInputData.iMouseY >= FONT_SIZE && gstKeyboardInputData.iMouseY <= FONT_SIZE * 3)
 		{
 			// マウスカーソルがファイル名部分に重なっている場合
 			this->bNameSelectedFlg = true;
 			this->bTimeSelectedFlg = false;
 		}
-		else if (gstKeyboardInputData.iMouseX >= 16 && gstKeyboardInputData.iMouseX <= 1920 - 16 &&
-			gstKeyboardInputData.iMouseY >= 1080 - 16 * 4 && gstKeyboardInputData.iMouseY <= 1080 - 16 * 2)
+		else if (gstKeyboardInputData.iMouseX >= FONT_SIZE && gstKeyboardInputData.iMouseX <= SCREEN_SIZE_WIDE - FONT_SIZE &&
+			gstKeyboardInputData.iMouseY >= SCREEN_SIZE_HEIGHT - FONT_SIZE * 4 && gstKeyboardInputData.iMouseY <= SCREEN_SIZE_HEIGHT - FONT_SIZE * 2)
 		{
 			// マウスカーソルが時間部分に重なっている場合
 			this->bNameSelectedFlg = false;
@@ -174,82 +174,19 @@ void Scene_2DPartsAnimCreateTool::Draw()
 	SetFontSize(16);
 
 	/* 背景描写 */
-	DrawBox(0, 0, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT, GetColor(255, 255, 255), TRUE);
-	DrawLine(SCREEN_SIZE_WIDE / 2, 0, SCREEN_SIZE_WIDE / 2, SCREEN_SIZE_HEIGHT, GetColor(255, 0, 0));
-	DrawLine(0, SCREEN_SIZE_HEIGHT / 2, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT / 2, GetColor(0, 0, 255));
-	static const int iStandardSize = 256;	// 標準の四角形のサイズ
-	DrawBox(SCREEN_SIZE_WIDE / 2 - iStandardSize / 2, SCREEN_SIZE_HEIGHT / 2 - iStandardSize / 2, SCREEN_SIZE_WIDE / 2 + iStandardSize / 2, SCREEN_SIZE_HEIGHT / 2 + iStandardSize / 2, GetColor(0, 255, 0), FALSE);
+	Draw_BackGround();
 
 	/* 現在のアニメーションの選択時間に登録されたパーツを描写 */
-	int iSelectAnimIndex = paUI_Table[1]->iGetSelectElementIndex(); // 選択中のアニメーションのインデックス
-	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size())
-	{
-		const auto& animData = PartsAnimData[iSelectAnimIndex];
-		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size())
-		{
-			const auto& frameData = animData.PartsAnimFrameData[iSelectTime];
-			for (const auto& part : frameData)
-			{
-				int iGrHandle = -1;
-				for (const auto& image : PartsImageData)
-				{
-					if (image.stPartsName == part.stPartsName)
-					{
-						iGrHandle = image.iPartsGrHandle;
-						break;
-					}
-				}
-				if (iGrHandle != -1)
-				{
-					int iGrSizeX, iGrSizeY;
-					GetGraphSize(iGrHandle, &iGrSizeX, &iGrSizeY);
-					DrawRotaGraph3(
-						static_cast<int>(part.fPartsX + (SCREEN_SIZE_WIDE / 2)),		// 画像を回転描写する画面上での中心座標X
-						static_cast<int>(part.fPartsY + (SCREEN_SIZE_HEIGHT / 2)),		// 画像を回転描写する画面上での中心座標Y
-						static_cast<int>(iGrSizeX / 2),									// 画像を回転描写する画像上での中心座標X
-						static_cast<int>(iGrSizeY / 2),									// 画像を回転描写する画像上での中心座標Y
-						part.fPartsScaleX,												// 横方向の拡大率
-						part.fPartsScaleY,												// 縦方向の拡大率
-						part.fPartsAngle,												// 画像の回転角度(ラジアン)
-						iGrHandle,														// 描写するグラフィックハンドル
-						TRUE,															// 画像の透明度を有効にするかどうか
-						part.bPartsFlipX);												// 画像を左右反転して描写するかどうか
-				}
-			}
-		}
-	}
+	Draw_CurrentPartsAtSelectTime();
 
 	/* ファイル名描写 */
-	DrawBox(16, 16 * 1, 400, 16 * 2, GetColor(0, 0, 0), TRUE);
-	DrawBox(16, 16 * 1, 400, 16 * 3, GetColor(0, 0, 0), FALSE);
-	DrawString(16, 16 * 1, "ファイル名", GetColor(255, 255, 255));
-	DrawString(16, 16 * 2, this->FileName.c_str(), GetColor(0, 0, 0));
-	if (this->bNameSelectedFlg == true)
-	{
-		DrawBox(16, 16 * 1, 400, 16 * 3, GetColor(255, 0, 0), FALSE);
-	}
+	Draw_SelectFileName();
 
 	/* 現在のアニメーションの時間描写 */
-	DrawBox(16, 1080 - 16 * 4, 1920 - 16, 1080 - 16 * 3, GetColor(0, 0, 0), TRUE);
-	DrawString(16, 1080 - 16 * 4, "時間", GetColor(255, 255, 255));
-	DrawBox(16, 1080 - 16 * 3, 1920 - 16, 1080 - 16 * 2, GetColor(128, 128, 128), FALSE);
-	// 時間部分
-	DrawBox(16, 1080 - 16 * 3 + 4, 1920 - 16, 1080 - 16 * 2 - 4, GetColor(128, 128, 128), TRUE);
-	// 最大時間が0の場合は赤色バーを非表示
-	if (iAnimMaxTime > 0)
-	{
-		// 割合計算
-		float rate = static_cast<float>(iSelectTime) / static_cast<float>(iAnimMaxTime);
-		if (rate > 1.0f) rate = 1.0f;
-		if (rate < 0.0f) rate = 0.0f;
-		int barStartX = 16;
-		int barEndX = static_cast<int>(16 + (1920 - 16 - 16) * rate);
-		DrawBox(barStartX, 1080 - 16 * 3 + 4, barEndX, 1080 - 16 * 2 - 4, GetColor(255, 0, 0), TRUE);
-	}
-	if (this->bTimeSelectedFlg == true)
-	{
-		DrawBox(16, 1080 - 16 * 4, 1920 - 16, 1080 - 16 * 2, GetColor(255, 0, 0), FALSE);
-	}
+	Draw_SelectTime();
+
+	/* 選択中のパーツの詳細描写 */
+	Draw_PartsStatus();
 }
 
 // パーツアニメーションのデータ読み込み
@@ -423,9 +360,9 @@ bool Scene_2DPartsAnimCreateTool::bSavePartsAnimData()
 void Scene_2DPartsAnimCreateTool::NewPartsAnimFile()
 {
 	/* ファイル名を入力(半角文字) */
-	char cAnimName[20];
+	char cAnimName[MAX_INPUT_NUMBER];
 	DrawBox(0, 0, 400, 16, GetColor(0, 0, 0), TRUE);
-	int iReturn = KeyInputSingleCharString(0, 0, 20, cAnimName, TRUE);
+	int iReturn = KeyInputSingleCharString(0, 0, MAX_INPUT_NUMBER, cAnimName, TRUE);
 	if (iReturn == 1)
 	{
 		// 正常に入力された場合
@@ -456,17 +393,17 @@ void Scene_2DPartsAnimCreateTool::AddAnimPaarts()
 		int iGrHandle = LoadGraph(path.c_str());
 
 		/* パーツ名を入力(半角文字) */
-		char cPartsName[20];
-		DrawBox(0, 0, 400, 16, GetColor(0, 0, 0), TRUE);
-		int iReturn = KeyInputSingleCharString(0, 0, 20, cPartsName, TRUE);
+		char cPartsName[MAX_INPUT_NUMBER];
+		DrawBox(0, 0, TABLE_SIZE_W, FONT_SIZE, GetColor(0, 0, 0), TRUE);
+		int iReturn = KeyInputSingleCharString(0, 0, MAX_INPUT_NUMBER, cPartsName, TRUE);
 		if (iGrHandle != -1 && iReturn == 1)
 		{
 			// グラフィックハンドルが取得でき、正常に名称が入力された場合
 			/* パーツの画像データに入力された情報を追加する */
 			Struct_2DPartsAnim::PARTS_ANIM_PARTS_IMAGE_DATA stPartsImageData;
-			stPartsImageData.stPartsName = cPartsName;	// パーツ名を設定
-			stPartsImageData.stPartsPath = path;			// パーツの画像ファイルパスを設定
-			stPartsImageData.iPartsGrHandle = iGrHandle;	// パーツの画像のグラフィックハンドルを設定
+			stPartsImageData.stPartsName	= cPartsName;	// パーツ名を設定
+			stPartsImageData.stPartsPath	= path;			// パーツの画像ファイルパスを設定
+			stPartsImageData.iPartsGrHandle	= iGrHandle;	// パーツの画像のグラフィックハンドルを設定
 
 			/* パーツの画像データをパーツアニメーション群に追加 */
 			this->PartsImageData.push_back(stPartsImageData);
@@ -477,9 +414,9 @@ void Scene_2DPartsAnimCreateTool::AddAnimPaarts()
 void Scene_2DPartsAnimCreateTool::AddAnim()
 {
 	/* アニメーションの名称を入力(半角文字) */
-	char cAnimName[20];
-	DrawBox(0, 0, 400, 16, GetColor(0, 0, 0), TRUE);
-	int iReturn = KeyInputSingleCharString(0, 0, 20, cAnimName, TRUE);
+	char cAnimName[MAX_INPUT_NUMBER];
+	DrawBox(0, 0, TABLE_SIZE_W, FONT_SIZE, GetColor(0, 0, 0), TRUE);
+	int iReturn = KeyInputSingleCharString(0, 0, MAX_INPUT_NUMBER, cAnimName, TRUE);
 	if (iReturn == 1)
 	{
 		// 正常に入力された場合
@@ -644,10 +581,13 @@ void Scene_2DPartsAnimCreateTool::SetUiTableElement()
 
 	// 選択した時間でのパーツリスト
 	std::vector<std::string> framePartsNameList;
-	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size()) {
+	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size())
+	{
 		const auto& animData = PartsAnimData[iSelectAnimIndex];
-		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size()) {
-			for (const auto& part : animData.PartsAnimFrameData[iSelectTime]) {
+		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size())
+		{
+			for (const auto& part : animData.PartsAnimFrameData[iSelectTime])
+			{
 				framePartsNameList.push_back(part.stPartsName);
 			}
 		}
@@ -663,12 +603,10 @@ void Scene_2DPartsAnimCreateTool::ChangeSelectPartsStatus()
 	// 選択中のパーツリストのインデックス
 	int iSelectPartsIndex = paUI_Table[2]->iGetSelectElementIndex();
 	// インデックス範囲チェック
-	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size() &&
-		iSelectPartsIndex >= 0)
+	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size() && iSelectPartsIndex >= 0)
 	{
 		auto& animData = PartsAnimData[iSelectAnimIndex];
-		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size() &&
-			iSelectPartsIndex < animData.PartsAnimFrameData[iSelectTime].size())
+		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size() && iSelectPartsIndex < animData.PartsAnimFrameData[iSelectTime].size())
 		{
 			auto& partData = animData.PartsAnimFrameData[iSelectTime][iSelectPartsIndex];
 			// 位置変更
@@ -714,6 +652,128 @@ void Scene_2DPartsAnimCreateTool::ChangeSelectPartsStatus()
 				if (partData.fPartsScaleX < 0.1f) partData.fPartsScaleX = 0.1f;
 				if (partData.fPartsScaleY < 0.1f) partData.fPartsScaleY = 0.1f;
 			}
+		}
+	}
+}
+
+// 背景描写
+void Scene_2DPartsAnimCreateTool::Draw_BackGround()
+{
+	DrawBox(0, 0, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT, GetColor(255, 255, 255), TRUE);
+	DrawLine(SCREEN_SIZE_WIDE / 2, 0, SCREEN_SIZE_WIDE / 2, SCREEN_SIZE_HEIGHT, GetColor(255, 0, 0));
+	DrawLine(0, SCREEN_SIZE_HEIGHT / 2, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT / 2, GetColor(0, 0, 255));
+	DrawBox(SCREEN_SIZE_WIDE / 2 - STANDARD_SIZE / 2, SCREEN_SIZE_HEIGHT / 2 - STANDARD_SIZE / 2, SCREEN_SIZE_WIDE / 2 + STANDARD_SIZE / 2, SCREEN_SIZE_HEIGHT / 2 + STANDARD_SIZE / 2, GetColor(0, 255, 0), FALSE);
+}
+
+// 現在のアニメーションの選択時間に登録されたパーツを描写
+void Scene_2DPartsAnimCreateTool::Draw_CurrentPartsAtSelectTime()
+{
+	/* 選択中のアニメーションのインデックスを取得 */
+	int iSelectAnimIndex = paUI_Table[1]->iGetSelectElementIndex();
+
+	/* 選択中のアニメーションの指定時間に登録されたパーツを描写 */
+	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size())
+	{
+		const auto& animData = PartsAnimData[iSelectAnimIndex];
+		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size())
+		{
+			const auto& frameData = animData.PartsAnimFrameData[iSelectTime];
+			for (const auto& part : frameData)
+			{
+				int iGrHandle = -1;
+				for (const auto& image : PartsImageData)
+				{
+					if (image.stPartsName == part.stPartsName)
+					{
+						iGrHandle = image.iPartsGrHandle;
+						break;
+					}
+				}
+				if (iGrHandle != -1)
+				{
+					int iGrSizeX, iGrSizeY;
+					GetGraphSize(iGrHandle, &iGrSizeX, &iGrSizeY);
+					DrawRotaGraph3(
+						static_cast<int>(part.fPartsX + (SCREEN_SIZE_WIDE / 2)),		// 画像を回転描写する画面上での中心座標X
+						static_cast<int>(part.fPartsY + (SCREEN_SIZE_HEIGHT / 2)),		// 画像を回転描写する画面上での中心座標Y
+						static_cast<int>(iGrSizeX / 2),									// 画像を回転描写する画像上での中心座標X
+						static_cast<int>(iGrSizeY / 2),									// 画像を回転描写する画像上での中心座標Y
+						part.fPartsScaleX,												// 横方向の拡大率
+						part.fPartsScaleY,												// 縦方向の拡大率
+						part.fPartsAngle,												// 画像の回転角度(ラジアン)
+						iGrHandle,														// 描写するグラフィックハンドル
+						TRUE,															// 画像の透明度を有効にするかどうか
+						part.bPartsFlipX);												// 画像を左右反転して描写するかどうか
+				}
+			}
+		}
+	}
+}
+
+// ファイル名描写
+void Scene_2DPartsAnimCreateTool::Draw_SelectFileName()
+{
+	/* ファイル名を描写 */
+	DrawBox(FONT_SIZE, FONT_SIZE * 1, TABLE_SIZE_W, FONT_SIZE * 2, GetColor(0, 0, 0), TRUE);
+	DrawBox(FONT_SIZE, FONT_SIZE * 1, TABLE_SIZE_W, FONT_SIZE * 3, GetColor(0, 0, 0), FALSE);
+	DrawString(FONT_SIZE, FONT_SIZE * 1, "ファイル名", GetColor(255, 255, 255));
+	DrawString(FONT_SIZE, FONT_SIZE * 2, this->FileName.c_str(), GetColor(0, 0, 0));
+	if (this->bNameSelectedFlg == true)
+	{
+		DrawBox(FONT_SIZE, FONT_SIZE * 1, TABLE_SIZE_W, FONT_SIZE * 3, GetColor(255, 0, 0), FALSE);
+	}
+}
+
+// 選択中の時間描写
+void Scene_2DPartsAnimCreateTool::Draw_SelectTime()
+{
+	/* 現在のアニメーションの選択時間等を描写 */
+	DrawBox(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 4, SCREEN_SIZE_WIDE - FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 3, GetColor(0, 0, 0), TRUE);
+	DrawString(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 4, "時間", GetColor(255, 255, 255));
+	DrawBox(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 3, SCREEN_SIZE_WIDE - FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 2, GetColor(128, 128, 128), FALSE);
+	// 時間部分
+	DrawBox(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 3 + 4, SCREEN_SIZE_WIDE - FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 2 - 4, GetColor(128, 128, 128), TRUE);
+	// 最大時間が0の場合は赤色バーを非表示
+	if (iAnimMaxTime > 0)
+	{
+		// 割合計算
+		float rate = static_cast<float>(iSelectTime) / static_cast<float>(iAnimMaxTime);
+		if (rate > 1.0f) rate = 1.0f;
+		if (rate < 0.0f) rate = 0.0f;
+		int barStartX = FONT_SIZE;
+		int barEndX = static_cast<int>(FONT_SIZE + (SCREEN_SIZE_WIDE - FONT_SIZE * 2) * rate);
+		DrawBox(barStartX, SCREEN_SIZE_HEIGHT - FONT_SIZE * 3 + 4, barEndX, SCREEN_SIZE_HEIGHT - FONT_SIZE * 2 - 4, GetColor(255, 0, 0), TRUE);
+	}
+	if (this->bTimeSelectedFlg == true)
+	{
+		DrawBox(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 4, SCREEN_SIZE_WIDE - FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 2, GetColor(255, 0, 0), FALSE);
+	}
+	// 最大時間、現在時間を描写
+	DrawFormatString(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 6, GetColor(0, 0, 0), "現在時間: %d", this->iSelectTime);
+	DrawFormatString(FONT_SIZE, SCREEN_SIZE_HEIGHT - FONT_SIZE * 5, GetColor(0, 0, 0), "最大時間: %d", this->iAnimMaxTime);
+}
+
+// 選択中のパーツの状態描写
+void Scene_2DPartsAnimCreateTool::Draw_PartsStatus()
+{
+	/* 選択中のパーツの情報を描写 */
+	// 選択中のアニメーションのインデックス
+	int iSelectAnimIndex = paUI_Table[1]->iGetSelectElementIndex();
+	// 選択中のパーツリストのインデックス
+	int iSelectPartsIndex = paUI_Table[2]->iGetSelectElementIndex();
+	// インデックス範囲チェック
+	if (iSelectAnimIndex >= 0 && iSelectAnimIndex < PartsAnimData.size() && iSelectPartsIndex >= 0)
+	{
+		auto& animData = PartsAnimData[iSelectAnimIndex];
+		if (iSelectTime >= 0 && iSelectTime < animData.PartsAnimFrameData.size() && iSelectPartsIndex < animData.PartsAnimFrameData[iSelectTime].size())
+		{
+			auto& partData = animData.PartsAnimFrameData[iSelectTime][iSelectPartsIndex];
+			DrawFormatString(SCREEN_SIZE_WIDE - TABLE_SIZE_W, FONT_SIZE * 1, GetColor(0, 0, 0), "PosX: %.1f", partData.fPartsX);
+			DrawFormatString(SCREEN_SIZE_WIDE - TABLE_SIZE_W, FONT_SIZE * 2, GetColor(0, 0, 0), "PosY: %.1f", partData.fPartsY);
+			DrawFormatString(SCREEN_SIZE_WIDE - TABLE_SIZE_W, FONT_SIZE * 3, GetColor(0, 0, 0), "ScaleX: %.2f", partData.fPartsScaleX);
+			DrawFormatString(SCREEN_SIZE_WIDE - TABLE_SIZE_W, FONT_SIZE * 4, GetColor(0, 0, 0), "ScaleY: %.2f", partData.fPartsScaleY);
+			DrawFormatString(SCREEN_SIZE_WIDE - TABLE_SIZE_W, FONT_SIZE * 5, GetColor(0, 0, 0), "Angle: %.2f", partData.fPartsAngle);
+			DrawFormatString(SCREEN_SIZE_WIDE - TABLE_SIZE_W, FONT_SIZE * 6, GetColor(0, 0, 0), "FlipX: %s", partData.bPartsFlipX ? "True" : "False");
 		}
 	}
 }
