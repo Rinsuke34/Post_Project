@@ -9,6 +9,7 @@
 /* 前方宣言 */
 class DataList_Object;
 class DataList_GameStatus;
+class DataList_StageCreate;
 
 // シーン"ステージ"
 class Scene_Stage : public Scene_Base
@@ -43,6 +44,7 @@ class Scene_Stage : public Scene_Base
 		// データリストへのポインタ
 		std::shared_ptr<DataList_Object>		pDataList_Object;		// オブジェクト管理
 		std::shared_ptr<DataList_GameStatus>	pDataList_GameStatus;	// ゲーム状態管理
+		std::shared_ptr<DataList_StageCreate>	pDataList_StageCreate;	// ステージクリエイト情報管理
 		// 画像データ
 		int iScreenHandle_Stage;					// ステージ
 		int iScreenHandle_ShadowMap[SHADOWMAP_MAX];	// シャドウマップ(0:静的オブジェクト/1:動的オブジェクト)

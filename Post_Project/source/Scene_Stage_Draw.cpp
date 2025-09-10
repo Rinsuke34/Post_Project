@@ -33,6 +33,10 @@ void Scene_Stage::Draw()
 // カメラ設定
 void Scene_Stage::DrawSetup_CameraPosition()
 {
+	/* カメラ座標 */
+	VECTOR vecCameraPosition	= VGet(0.f, 0.f, 0.f);
+	VECTOR vecCameraTarget		= VGet(0.f, 0.f, 0.f);
+
 	/* 3D基本設定 */
 	SetUseZBuffer3D(TRUE);
 	SetWriteZBuffer3D(TRUE);
@@ -42,17 +46,30 @@ void Scene_Stage::DrawSetup_CameraPosition()
 	// ※デフォルトの黒色だと暗すぎるので赤色に変更
 	SetGlobalAmbientLight(GetColorF(0.5f, 0.5f, 0.5f, 1.0f));
 
-	/* プレイヤー座標を取得 */
-	VECTOR vecPlayerPos = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
+	/* ゲーム状態管理データリストが読み込まれているか確認 */
+	if (this->pDataList_GameStatus != nullptr)
+	{
+		// 読み込まれている場合
+		/* プレイヤー座標からカメラ設定を実施 */
+		VECTOR vecPlayerPos = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
+
+		/* カメラ設定 */
+		vecCameraPosition	= VAdd(vecPlayerPos, VGet(0.f, 1000.f, -500.f));
+		vecCameraTarget		= VAdd(vecPlayerPos, VGet(0.f, 10.f, 0.f));
+	}
+	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
+	else if (this->pDataList_StageCreate != nullptr)
+	{
+		// 読み込まれている場合
+
+	}
+	
+	/* カメラ設定 */
+	SetCameraPositionAndTarget_UpVecY(vecCameraPosition, vecCameraTarget);
 
 	///* カメラの手前と奥のクリップ距離を設定 */
 	//// ※スカイスフィア半径(25000)から余裕を少し持たせた値に仮設定
 	//SetCameraNearFar(INIT_CAMERA_NEAR, INIT_CAMERA_FAR);
-
-	/* カメラ設定 */
-	VECTOR vecCameraPosition	= VAdd(vecPlayerPos, VGet(0.f, 1000.f, -500.f));
-	VECTOR vecCameraTarget		= VAdd(vecPlayerPos, VGet(0.f, 10.f, 0.f));
-	SetCameraPositionAndTarget_UpVecY(vecCameraPosition, vecCameraTarget);
 
 	///* 3Dサウンドのリスナー位置とリスナー前方位置を設定 */
 	//Set3DSoundListenerPosAndFrontPos_UpVecY(this->StageStatusList->vecGetCameraPosition(), this->StageStatusList->vecGetCameraTarget());

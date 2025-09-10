@@ -178,6 +178,7 @@
     <ClCompile Include="source\DataList_Image.cpp" />
     <ClCompile Include="source\DataList_Model.cpp" />
     <ClCompile Include="source\DataList_Object.cpp" />
+    <ClCompile Include="source\DataList_StageCreate.cpp" />
     <ClCompile Include="source\Ground_Base.cpp" />
     <ClCompile Include="source\Ground_Block.cpp" />
     <ClCompile Include="source\Ground_Model.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="source\DataList_Image.h" />
     <ClInclude Include="source\DataList_Model.h" />
     <ClInclude Include="source\DataList_Object.h" />
+    <ClInclude Include="source\DataList_StageCreate.h" />
     <ClInclude Include="source\Ground_Base.h" />
     <ClInclude Include="source\Ground_Block.h" />
     <ClInclude Include="source\Ground_Model.h" />

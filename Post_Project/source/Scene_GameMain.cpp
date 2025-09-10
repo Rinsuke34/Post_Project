@@ -3,7 +3,6 @@
 /* 使用する要素のインクルード */
 // ヘッダファイル
 #include "Scene_GameMain.h"
-
 // 関連クラス
 #include "Scene_Stage.h"
 #include "DataList_Object.h"
@@ -27,7 +26,9 @@ Scene_GameMain::Scene_GameMain() : Scene_Base("Scene_GameMain", 0, false, false)
 // デストラクタ
 Scene_GameMain::~Scene_GameMain()
 {
-
+	 /* データリスト削除 */
+	gpDataListServer->DeleteDataList("DataList_GameStatus");	// ゲーム状態管理
+	gpDataListServer->DeleteDataList("DataList_Object");		// オブジェクト管理
 }
 
 // 更新

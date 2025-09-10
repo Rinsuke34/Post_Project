@@ -73,12 +73,6 @@
     <Filter Include="ヘッダー ファイル\シーン\ゲームメイン">
       <UniqueIdentifier>{b879e5f2-080b-4050-81c9-0568cb0d4d9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\シーン\ゲームメイン\ステージ">
-      <UniqueIdentifier>{32a3caa8-9a80-47fa-a471-3c7c80ce88da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\シーン\ゲームメイン\ステージ">
-      <UniqueIdentifier>{7c377edb-8c7f-41b0-a833-d45a49c183f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\定義">
       <UniqueIdentifier>{cef91479-a514-4f8a-8aa5-35ea10ddd82e}</UniqueIdentifier>
     </Filter>
@@ -87,9 +81,6 @@
     </Filter>
     <Filter Include="ソース ファイル\データリスト\ゲーム状態管理">
       <UniqueIdentifier>{c3889014-d78c-4b02-989d-8131378571c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\シーン\ゲームメイン\ステージ\Json読み込み">
-      <UniqueIdentifier>{07a73545-2dc6-4b48-8e4f-510a3783c531}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29">
       <UniqueIdentifier>{0afc8a32-3713-4a81-8e1f-b9c110a71d22}</UniqueIdentifier>
@@ -145,8 +136,23 @@
     <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC">
       <UniqueIdentifier>{5a235567-6286-49e4-acf3-0d518e88eb2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\シーン\ゲームメイン\ステージ\描写関係">
+    <Filter Include="ソース ファイル\シーン\ステージ">
+      <UniqueIdentifier>{7c377edb-8c7f-41b0-a833-d45a49c183f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ステージ\Json読み込み">
+      <UniqueIdentifier>{07a73545-2dc6-4b48-8e4f-510a3783c531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ステージ\描写関係">
       <UniqueIdentifier>{58292451-95f7-4aac-a863-af00de9009db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ステージ">
+      <UniqueIdentifier>{32a3caa8-9a80-47fa-a471-3c7c80ce88da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\ステージクリエイト情報管理">
+      <UniqueIdentifier>{f463ce31-42ee-422a-945f-de7c2cb925f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\ステージクリエイト情報管理">
+      <UniqueIdentifier>{7b1c2231-d255-41b1-a1f6-065730ed759c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +178,7 @@
       <Filter>ソース ファイル\データリスト\3Dモデル管理</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_Stage.cpp">
-      <Filter>ソース ファイル\シーン\ゲームメイン\ステージ</Filter>
+      <Filter>ソース ファイル\シーン\ステージ</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_StageCreate.cpp">
       <Filter>ソース ファイル\シーン\ステージ作成</Filter>
@@ -187,10 +193,10 @@
       <Filter>ソース ファイル\シーン\ゲームメイン</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_Stage_Draw.cpp">
-      <Filter>ソース ファイル\シーン\ゲームメイン\ステージ\描写関係</Filter>
+      <Filter>ソース ファイル\シーン\ステージ\描写関係</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_Stage_JsonLoad.cpp">
-      <Filter>ソース ファイル\シーン\ゲームメイン\ステージ\Json読み込み</Filter>
+      <Filter>ソース ファイル\シーン\ステージ\Json読み込み</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Block.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック</Filter>
@@ -213,6 +219,9 @@
     <ClCompile Include="source\Character_Player_Draw.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
     </ClCompile>
+    <ClCompile Include="source\DataList_StageCreate.cpp">
+      <Filter>ソース ファイル\データリスト\ステージクリエイト情報管理</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
@@ -234,7 +243,7 @@
       <Filter>ヘッダー ファイル\データリスト\3Dモデル管理</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_Stage.h">
-      <Filter>ヘッダー ファイル\シーン\ゲームメイン\ステージ</Filter>
+      <Filter>ヘッダー ファイル\シーン\ステージ</Filter>
     </ClInclude>
     <ClInclude Include="source\Scene_StageCreate.h">
       <Filter>ヘッダー ファイル\シーン\ステージ作成</Filter>
@@ -271,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="source\Test_ConstantDefine.h">
       <Filter>ヘッダー ファイル\定義</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_StageCreate.h">
+      <Filter>ヘッダー ファイル\データリスト\ステージクリエイト情報管理</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
