@@ -27,11 +27,19 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 
 	std::shared_ptr<DataList_StageCreate>	pDataList_StageCreate;	// ステージクリエイト情報管理
 
-	/* テクスチャ読み込み */
-	JsonLoad_Texture();
+	/* ゲーム状態管理データリストが読み込まれているか確認 */
+	if (this->pDataList_GameStatus != nullptr)
+	{
+		// 読み込まれている場合
+		/* ワールドマップ(中央)読み込み */
+		JsonLoad_WoldMap_Center();
+	}
+	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
+	else if (this->pDataList_StageCreate != nullptr)
+	{
+		// 読み込まれている場合
 
-	/* ワールドマップ(中央)読み込み */
-	JsonLoad_WoldMap_Center();
+	}	
 }
 
 // デストラクタ

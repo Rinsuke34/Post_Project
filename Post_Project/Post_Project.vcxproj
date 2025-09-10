@@ -181,6 +181,7 @@
     <ClCompile Include="source\DataList_StageCreate.cpp" />
     <ClCompile Include="source\Ground_Base.cpp" />
     <ClCompile Include="source\Ground_Block.cpp" />
+    <ClCompile Include="source\Ground_Marker.cpp" />
     <ClCompile Include="source\Ground_Model.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\Object_Base.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="source\DataList_StageCreate.h" />
     <ClInclude Include="source\Ground_Base.h" />
     <ClInclude Include="source\Ground_Block.h" />
+    <ClInclude Include="source\Ground_Marker.h" />
     <ClInclude Include="source\Ground_Model.h" />
     <ClInclude Include="source\Object_Base.h" />
     <ClInclude Include="source\Scene_GameMain.h" />

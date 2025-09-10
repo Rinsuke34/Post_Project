@@ -196,5 +196,5 @@ void Ground_Block::Draw()
 
 		// ŽlŠpŒ`i”Âƒ|ƒŠƒSƒ“j‚Ì•`‰æ
 		DrawPolygonIndexed3D(aVertex, 8, IndexBack, 2, *this->apiGrHandle[FACE_TYPE_SIDE], TRUE);
-	}	
+	}
 }

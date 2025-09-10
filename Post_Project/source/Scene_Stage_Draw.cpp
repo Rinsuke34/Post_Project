@@ -7,27 +7,39 @@
 // 関連クラス
 #include "DataList_Object.h"
 #include "DataList_GameStatus.h"
+#include "DataList_StageCreate.h"
 // 共通定義
 #include "ConstantDefine.h"
 
 // 描画
 void Scene_Stage::Draw()
 {
-	/* シャドウマップ描写 */
-	DrawSetup_ShadowMap();
+	/* ゲーム状態管理データリストが読み込まれているか確認 */
+	if (this->pDataList_GameStatus != nullptr)
+	{
+		// 読み込まれている場合
+		/* シャドウマップ描写 */
+		DrawSetup_ShadowMap();
 
-	/* ステージ描写 */
-	DrawSetup_Stage();
+		/* ステージ描写 */
+		DrawSetup_Stage();
+
+		///* シャドウマップ描写 */
+		//TestDrawShadowMap(this->iScreenHandle_ShadowMap[0], 0, 0, 256, 256);
+		//TestDrawShadowMap(this->iScreenHandle_ShadowMap[1], 0, 256, 256, 512);
+	}
+	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
+	else if (this->pDataList_StageCreate != nullptr)
+	{
+		// 読み込まれている場合
+		DrawSetup_Stage_StageCreate();
+	}
 
 	/* ステージ画像を描写 */
 	DrawExtendGraph(0, 0, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT, this->iScreenHandle_Stage, FALSE);
 
 	/* カメラ設定 */
 	DrawSetup_CameraPosition();
-
-	/* シャドウマップ描写 */
-	TestDrawShadowMap(this->iScreenHandle_ShadowMap[0], 0, 0, 256, 256);
-	TestDrawShadowMap(this->iScreenHandle_ShadowMap[1], 0, 256, 256, 512);
 }
 
 // カメラ設定
@@ -54,25 +66,22 @@ void Scene_Stage::DrawSetup_CameraPosition()
 		VECTOR vecPlayerPos = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
 
 		/* カメラ設定 */
-		vecCameraPosition	= VAdd(vecPlayerPos, VGet(0.f, 1000.f, -500.f));
-		vecCameraTarget		= VAdd(vecPlayerPos, VGet(0.f, 10.f, 0.f));
+		vecCameraTarget		= VAdd(vecPlayerPos,	VGet(0.f, 10.f, 0.f));
+		vecCameraPosition	= VAdd(vecCameraTarget, VGet(0.f, 1000.f, -500.f));
 	}
 	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
 	else if (this->pDataList_StageCreate != nullptr)
 	{
 		// 読み込まれている場合
-
+		/* 選択中の座標からカメラの座標を算出 */
+		vecCameraTarget.x = this->pDataList_StageCreate->vecGetSelectPos().x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2);
+		vecCameraTarget.y = this->pDataList_StageCreate->vecGetSelectPos().y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2);
+		vecCameraTarget.z = this->pDataList_StageCreate->vecGetSelectPos().z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2);
+		vecCameraPosition = VAdd(vecCameraTarget, VGet(0.f, 1000.f, -500.f));
 	}
 	
 	/* カメラ設定 */
 	SetCameraPositionAndTarget_UpVecY(vecCameraPosition, vecCameraTarget);
-
-	///* カメラの手前と奥のクリップ距離を設定 */
-	//// ※スカイスフィア半径(25000)から余裕を少し持たせた値に仮設定
-	//SetCameraNearFar(INIT_CAMERA_NEAR, INIT_CAMERA_FAR);
-
-	///* 3Dサウンドのリスナー位置とリスナー前方位置を設定 */
-	//Set3DSoundListenerPosAndFrontPos_UpVecY(this->StageStatusList->vecGetCameraPosition(), this->StageStatusList->vecGetCameraTarget());
 }
 
 // シャドウマップ作成
@@ -161,6 +170,61 @@ void Scene_Stage::DrawSetup_Stage()
 	/* オブジェクト描写(半透明部分のみ) */
 	// ※ 地形を描写してしまうとシャドウマップが適用されなくなるので描写しない
 	this->pDataList_Object->Draw_Actor();
+
+	/* メイン画面への描写を終了 */
+	SetDrawScreen(DX_SCREEN_BACK);
+}
+
+// ステージの描写(ステージクリエイト用)
+void Scene_Stage::DrawSetup_Stage_StageCreate()
+{
+	/* ステージ描写開始 */
+	SetDrawScreen(this->iScreenHandle_Stage);
+
+	/* 画面クリア */
+	ClearDrawScreen();
+
+	/* カメラ設定 */
+	DrawSetup_CameraPosition();
+
+	/* 全ての地形オブジェクトの描写 */
+	this->pDataList_StageCreate->Draw_GroundObject();
+
+	VECTOR_INT	vecSelectPos		= this->pDataList_StageCreate->vecGetSelectPos();
+	/* ポジションをワールド座標に変換 */
+	VECTOR vecPosition;
+	vecPosition.x = vecSelectPos.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2);
+	vecPosition.y = vecSelectPos.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2);
+	vecPosition.z = vecSelectPos.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2);
+
+	VECTOR		vecMapTileHarfSize	= VGet(MAP_BLOCK_SIZE_X / 2, MAP_BLOCK_SIZE_Y / 2, MAP_BLOCK_SIZE_Z / 2);
+
+	/* 選択中の座標を描写 */
+	// 頂点を設定
+	VECTOR aVertex[8];
+	aVertex[0] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
+	aVertex[1] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
+	aVertex[2] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
+	aVertex[3] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
+	aVertex[4] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
+	aVertex[5] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
+	aVertex[6] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
+	aVertex[7] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
+
+	// 線分を描画
+	DrawLine3D(aVertex[0], aVertex[1], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[1], aVertex[5], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[5], aVertex[4], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[4], aVertex[0], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[2], aVertex[3], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[3], aVertex[7], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[7], aVertex[6], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[6], aVertex[2], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[0], aVertex[2], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[1], aVertex[3], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[4], aVertex[6], GetColor(255, 255, 255));
+	DrawLine3D(aVertex[5], aVertex[7], GetColor(255, 255, 255));
+	
 
 	/* メイン画面への描写を終了 */
 	SetDrawScreen(DX_SCREEN_BACK);

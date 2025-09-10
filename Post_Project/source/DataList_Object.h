@@ -10,6 +10,7 @@
 
 /* 前方宣言 */
 class Ground_Base;
+class Ground_Marker;
 class Actor_Base;
 
 // データリスト"オブジェクト管理"クラス
@@ -51,19 +52,19 @@ class DataList_Object : public DataList_Base
 		void	DeleteFlagged_AllActor();		// アクター
 
 		/* セッター */
-		void	AddTexture(TEXTURE_DATA stTexture)									{ this->TextureDataList.push_back(stTexture); };	// テクスチャデータ追加
-		void	AddObject_Ground(std::shared_ptr<Ground_Base> pGround, int iAreaNo)	{ this->pGroundList[iAreaNo].push_back(pGround); };	// 指定エリアの地形追加
-		void	AddObject_Actor(std::shared_ptr<Actor_Base> pActor)					{ this->pActorList.push_back(pActor); };			// アクター追加
+		void	AddObject_Ground(std::shared_ptr<Ground_Base> pGround, int iAreaNo)		{ this->pGroundList[iAreaNo].push_back(pGround); };	// 指定エリアの地形追加
+		void	AddObject_Marker(std::shared_ptr<Ground_Marker> pMarker, int iAreaNo)	{ this->pMarkerList[iAreaNo].push_back(pMarker); };	// 指定エリアのマーカー追加
+		void	AddObject_Actor(std::shared_ptr<Actor_Base> pActor)						{ this->pActorList.push_back(pActor); };			// アクター追加
 
 		/* ゲッター */
-		std::vector<TEXTURE_DATA>&					GetTextureDataList()		{ return this->TextureDataList; }		// テクスチャデータリスト取得
-		std::vector<std::shared_ptr<Ground_Base>>&	GetGroundList(int iAreaNo)	{ return this->pGroundList[iAreaNo]; }	// 指定エリアの地形リスト取得
-		std::vector<std::shared_ptr<Actor_Base>>& GetActorList()				{ return this->pActorList; }			// アクタリスト取得
+		std::vector<std::shared_ptr<Ground_Base>>&		GetGroundList(int iAreaNo)	{ return this->pGroundList[iAreaNo]; }	// 指定エリアの地形リスト取得
+		std::vector<std::shared_ptr<Ground_Marker>>&	GetMarkerList(int iAreaNo)	{ return this->pMarkerList[iAreaNo]; }	// 指定エリアのマーカーリスト取得
+		std::vector<std::shared_ptr<Actor_Base>>&		GetActorList()				{ return this->pActorList; }			// アクタリスト取得
 
 	private:
 		/* 変数 */
 		// リスト
-		std::vector<TEXTURE_DATA>					TextureDataList;				// テクスチャリスト
 		std::vector<std::shared_ptr<Ground_Base>>	pGroundList[AREA_NO_MAX];		// 地形リスト[エリア番号]
+		std::vector<std::shared_ptr<Ground_Marker>> pMarkerList[AREA_NO_MAX];		// マーカーリスト
 		std::vector<std::shared_ptr<Actor_Base>>	pActorList;						// アクターリスト
 };

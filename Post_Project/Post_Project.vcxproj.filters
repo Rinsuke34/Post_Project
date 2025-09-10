@@ -154,6 +154,12 @@
     <Filter Include="ソース ファイル\データリスト\ステージクリエイト情報管理">
       <UniqueIdentifier>{7b1c2231-d255-41b1-a1f6-065730ed759c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー">
+      <UniqueIdentifier>{630c74da-9b07-4cf1-b94e-06e93eeea0e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー">
+      <UniqueIdentifier>{b6ba8a3c-1a42-409f-af4e-5c0a2a2aada4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -222,6 +228,9 @@
     <ClCompile Include="source\DataList_StageCreate.cpp">
       <Filter>ソース ファイル\データリスト\ステージクリエイト情報管理</Filter>
     </ClCompile>
+    <ClCompile Include="source\Ground_Marker.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
@@ -283,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="source\DataList_StageCreate.h">
       <Filter>ヘッダー ファイル\データリスト\ステージクリエイト情報管理</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Ground_Marker.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

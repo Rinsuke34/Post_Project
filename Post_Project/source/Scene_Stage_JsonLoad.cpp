@@ -9,64 +9,16 @@
 // ヘッダファイル
 #include "Scene_Stage.h"
 // 関連クラス
+#include "DataList_Model.h"
 #include "DataList_Image.h"
 #include "DataList_Object.h"
 #include "Ground_Block.h"
+#include "Ground_Model.h"
+#include "Ground_Marker.h"
 #include "Character_Player.h"
 // 共通定義
 #include "ConstantDefine.h"
 #include "StructDefine.h"
-
-// テクスチャ読み込み
-void Scene_Stage::JsonLoad_Texture()
-{
-	/* テクスチャデータを読み込み、テクスチャデータリストに登録する */
-	// ※テクスチャ読み込みを完了させてからマップデータの読み込みは行うこと
-
-	// Jsonファイル読み込み
-	std::string FilePath = "resource/MapData/Texture_Data.json";
-
-	std::ifstream ifs(FilePath);
-	if (!ifs) return;
-
-	using json = nlohmann::json;
-	json j;
-	ifs >> j;
-
-	// テクスチャデータリストへの設定
-	for (const auto& elem : j)
-	{
-		TEXTURE_DATA data;
-		data.BlockName		= elem.value("BlockName", "");
-		data.iBlockIndex	= elem.value("BlockIndex", -1);
-		data.aImageName[0]	= elem.value("ImageName_Upper", "");
-		data.aImageName[1]	= elem.value("ImageName_Side", "");
-		data.aImageName[2]	= elem.value("ImageName_Under", "");
-
-		this->pDataList_Object->AddTexture(data);
-	}
-
-	// データリスト"画像データ管理"へテクスチャの登録
-	std::shared_ptr<DataList_Image>	pDataList_Image	= std::dynamic_pointer_cast<DataList_Image>(gpDataListServer->GetDataList("DataList_Image"));
-	for (auto& texData : this->pDataList_Object->GetTextureDataList())
-	{
-		// 上面
-		if (!texData.aImageName[0].empty())
-		{
-			pDataList_Image->LoadGrHandle(texData.aImageName[0]);
-		}
-		// 横面
-		if (!texData.aImageName[1].empty())
-		{
-			pDataList_Image->LoadGrHandle(texData.aImageName[1]);
-		}
-		// 下面
-		if (!texData.aImageName[2].empty())
-		{
-			pDataList_Image->LoadGrHandle(texData.aImageName[2]);
-		}
-	}
-}
 
 // ワールドマップ読み込み(中央)
 void Scene_Stage::JsonLoad_WoldMap_Center()
@@ -74,8 +26,11 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 	/* マップデータ読み込み */
 	// ※テクスチャ読み込みが完了している状態で実行すること
 
-	/* データリスト"画像データ管理"取得 */
+		/* データリスト取得 */
+	// 画像データ管理
 	std::shared_ptr<DataList_Image>	pDataList_Image = std::dynamic_pointer_cast<DataList_Image>(gpDataListServer->GetDataList("DataList_Image"));
+	// 3Dモデルデータ管理
+	std::shared_ptr<DataList_Model>	pDataList_Model = std::dynamic_pointer_cast<DataList_Model>(gpDataListServer->GetDataList("DataList_Model"));
 
 	/* Jsonファイル読み込み */
 	std::string FilePath = "resource/MapData/MapData_Wold/AreaData_Front.json";
@@ -114,7 +69,7 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 					pGroundBlock->SetBoxCollision(stBox);
 
 					// テクスチャ設定
-					auto& TextureDataList = this->pDataList_Object->GetTextureDataList();
+					auto& TextureDataList = pDataList_Image->GetTextureDataList();
 					for (auto& texData : TextureDataList)
 					{
 						if (texData.iBlockIndex == BlockIndex)
@@ -183,6 +138,70 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 	}
 
 	/* 地形(3Dモデル)データ抽出 */
+	auto& GroundModel = j["Ground_Model"];
+	for (const auto& elem : GroundModel)
+	{
+		/* 3Dモデル情報取得 */
+		MODEL_DATA data;
+		data.ModelName = elem.value("ModelName", "");
+		elem.at("Position").at("x").get_to(data.vecPosition.x);
+		elem.at("Position").at("y").get_to(data.vecPosition.y);
+		elem.at("Position").at("z").get_to(data.vecPosition.z);
+		elem.at("Rotation").at("x").get_to(data.vecRotation.x);
+		elem.at("Rotation").at("y").get_to(data.vecRotation.y);
+		elem.at("Rotation").at("z").get_to(data.vecRotation.z);
+		elem.at("Scale").at("x").get_to(data.vecScale.x);
+		elem.at("Scale").at("y").get_to(data.vecScale.y);
+		elem.at("Scale").at("z").get_to(data.vecScale.z);
+
+		/* ポジションをワールド座標に変換 */
+		VECTOR vecPosition;
+		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2);
+		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2);
+		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2);
+
+		/* 3Dモデルデータを作成 */
+		std::shared_ptr<Ground_Model> pGroundModel = std::make_shared<Ground_Model>();
+
+		pGroundModel->SetModelHandle(pDataList_Model->iGetModel(data.ModelName));
+		pGroundModel->SetPosition(vecPosition);
+		pGroundModel->SetRotation(data.vecRotation);
+		pGroundModel->SetScale(data.vecScale);
+		pGroundModel->InitialSetup();
+
+		/* オブジェクトリストに登録 */
+		this->pDataList_Object->AddObject_Ground(pGroundModel, AREA_NO_CENTER);
+	}
+
+	/* マーカー情報抽出 */
+	auto& MarkerList = j["Marker"];
+	for (const auto& elem : MarkerList)
+	{
+		/* マーカー情報作成 */
+		MARKER_DATA data;
+		data.MarkerName = elem.value("MarkerName", "");
+		elem.at("Position").at("x").get_to(data.vecPosition.x);
+		elem.at("Position").at("y").get_to(data.vecPosition.y);
+		elem.at("Position").at("z").get_to(data.vecPosition.z);
+		elem.at("Rotation").at("x").get_to(data.vecRotation.x);
+		elem.at("Rotation").at("y").get_to(data.vecRotation.y);
+		elem.at("Rotation").at("z").get_to(data.vecRotation.z);
+
+		/* ポジションをワールド座標に変換 */
+		VECTOR vecPosition;
+		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2);
+		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2);
+		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2);
+
+		/* マーカーデータを作成 */
+		std::shared_ptr<Ground_Marker> pMarker = std::make_shared<Ground_Marker>();
+		pMarker->SetMarkerName(data.MarkerName);
+		pMarker->SetBoxCenter(vecPosition);
+		pMarker->SetRotation(data.vecRotation);
+
+		/* マーカー情報を保存 */
+		this->pDataList_Object->AddObject_Marker(pMarker, AREA_NO_CENTER);
+	}
 
 	/* プレイヤー追加(仮) */
 	std::shared_ptr<Character_Player> pPlayer = std::make_shared<Character_Player>();

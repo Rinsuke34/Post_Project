@@ -7,7 +7,6 @@
 #include "AppFrame.h"
 
 /* 前方宣言 */
-class DataList_Object;
 class DataList_StageCreate;
 
 // シーン"ステージ作成"
@@ -24,6 +23,5 @@ class Scene_StageCreate : public Scene_Base
 	private:
 		/* 変数 */
 		// データリストへのポインタ
-		std::shared_ptr<DataList_Object>		pDataList_Object;		// オブジェクト管理
 		std::shared_ptr<DataList_StageCreate>	pDataList_StageCreate;	// ステージクリエイト情報管理
 };

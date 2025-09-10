@@ -77,7 +77,6 @@ void Character_Player::Draw_Animation()
 
 	// 四角形（板ポリゴン）の描画
 	DrawPolygonIndexed3D(aVertex, 8, IndexBack, 2, this->iScreenHandle_Animation, TRUE);
-//	DrawPolygonIndexed3D(aVertex, 8, IndexBack, 2, this->iTestCg, TRUE);
 }
 
 // アニメーション更新

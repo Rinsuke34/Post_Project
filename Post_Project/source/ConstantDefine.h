@@ -31,9 +31,12 @@ static const VECTOR AREA_ORIGIN_POS[AREA_NO_MAX] =
 	{ AREA_SIZE_BLOCK_X * MAP_BLOCK_SIZE_X * 1.f,	0.f,	AREA_SIZE_BLOCK_Z * MAP_BLOCK_SIZE_Z * 2.f},
 	{ AREA_SIZE_BLOCK_X * MAP_BLOCK_SIZE_X * 2.f,	0.f,	AREA_SIZE_BLOCK_Z * MAP_BLOCK_SIZE_Z * 2.f}
 };
+// ワールドマップの種類
+static const int WOLD_MAP_TYPE_CENTER	= 0;	// 中心エリア
+static const int WOLD_MAP_TYPE_SIDE		= 1;	// サイドエリア
 
 /* 当たり判定系 */
-static float COLLISION_CHECK_DISTANCE			= 50000.f;	// 当たり判定を行う直線距離(※各頂点の二乗の距離がこれより大きいなら非接触と判定する)
+static float COLLISION_CHECK_DISTANCE			= 40000.f;	// 当たり判定を行う直線距離(※各頂点の二乗の距離がこれより大きいなら非接触と判定する)
 static float COLLISION_CHECK_CEILING_PREVENTION = 20.f;		// 天井すりぬけ防止用の補正値
 static float COLLISION_CHECK_FLOOR_MARGIN		= -20.f;	// 横方向への移動時に床に対する誤判定防止用の補正値
 static float COLLISION_PUSH_MAX_LOOP			= 10;		// 押し出し判定の最大ループ回数(無限ループ対策)

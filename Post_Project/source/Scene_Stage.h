@@ -33,11 +33,11 @@ class Scene_Stage : public Scene_Base
 		// 読み込み関係
 		void	JsonLoad_WoldMap_Center();	// ワールドマップ読み込み(中央)
 		void	JsonLoad_DungeonMap();		// ダンジョンマップ読み込み
-		void	JsonLoad_Texture();			// テクスチャ読み込み
 		// 描写関係
-		void	DrawSetup_CameraPosition();	// カメラ設定
-		void	DrawSetup_ShadowMap();		// シャドウマップ作成
-		void	DrawSetup_Stage();			// ステージの描写
+		void	DrawSetup_CameraPosition();		// カメラ設定
+		void	DrawSetup_ShadowMap();			// シャドウマップ作成
+		void	DrawSetup_Stage();				// ステージの描写
+		void	DrawSetup_Stage_StageCreate();	// ステージの描写(ステージクリエイト用)
 		
 
 		/* 変数 */

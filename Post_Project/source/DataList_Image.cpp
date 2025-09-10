@@ -1,14 +1,21 @@
 /* データリスト"画像データ管理"クラスの定義 */
 
 /* 使用する要素のインクルード */
+// 標準ライブラリ
+#include <fstream>
 // ヘッダファイル
 #include "DataList_Image.h"
+// 共通定義
+#include "StructDefine.h"
 
 // コンストラクタ
 DataList_Image::DataList_Image() : DataList_Base("DataList_Image")
 {
 	/* 初期化 */
 	this->GrHandleList.clear();	// 画像データリスト
+
+	/* テクスチャ読み込み */
+	JsonLoad_Texture();
 }
 
 // デストラクタ
@@ -38,32 +45,6 @@ void DataList_Image::LoadGrHandle(std::string& cFileName)
 
 		/* 画像データ読み込み */
 		int GrHandle = LoadGraph(FileName.c_str());
-
-		/* 画像データをリストに追加 */
-		this->GrHandleList[cFileName] = GrHandle;
-	}
-
-	return;
-}
-
-// 画像データ読み込み(2Dパーツアニメーション用)
-void DataList_Image::LoadGrHandle_2DPartsAnim(std::string& cFileName)
-{
-	// 引数
-	// cFileName		<-	読み込む画像データのファイル名
-
-	/* 対象の画像データが読み込まれていないか確認 */
-	if (bCheckGrHandle(cFileName) == false)
-	{
-		// 読み込まれていない場合
-		/* 画像のファイルパスを取得 */
-		std::filesystem::path currentDir	= std::filesystem::current_path();
-		std::filesystem::path parentDir		= currentDir.parent_path();
-		std::filesystem::path resourceDir	= parentDir / "AnimData_Resource";
-		std::filesystem::path absPath		= resourceDir / (cFileName + ".png");
-
-		/* 画像データ読み込み */
-		int GrHandle = LoadGraph(absPath.generic_string().c_str());
 
 		/* 画像データをリストに追加 */
 		this->GrHandleList[cFileName] = GrHandle;
@@ -126,4 +107,53 @@ bool DataList_Image::bCheckGrHandle(std::string& cFileName)
 	}
 
 	return bReturn;
+}
+
+// テクスチャ読み込み
+void DataList_Image::JsonLoad_Texture()
+{
+	/* テクスチャデータを読み込み、テクスチャデータリストに登録する */
+
+	/* Jsonファイル読み込み */
+	std::string FilePath = "resource/MapData/Texture_Data.json";
+
+	std::ifstream ifs(FilePath);
+	if (!ifs) return;
+
+	using json = nlohmann::json;
+	json j;
+	ifs >> j;
+
+	/* テクスチャデータリストへの設定 */
+	for (const auto& elem : j)
+	{
+		TEXTURE_DATA data;
+		data.BlockName		= elem.value("BlockName", "");
+		data.iBlockIndex	= elem.value("BlockIndex", -1);
+		data.aImageName[0]	= elem.value("ImageName_Upper", "");
+		data.aImageName[1]	= elem.value("ImageName_Side", "");
+		data.aImageName[2]	= elem.value("ImageName_Under", "");
+
+		this->AddTexture(data);
+	}
+
+	/* データリスト"画像データ管理"へテクスチャ画像の登録 */
+	for (auto& texData : this->GetTextureDataList())
+	{
+		// 上面
+		if (!texData.aImageName[0].empty())
+		{
+			this->LoadGrHandle(texData.aImageName[0]);
+		}
+		// 横面
+		if (!texData.aImageName[1].empty())
+		{
+			this->LoadGrHandle(texData.aImageName[1]);
+		}
+		// 下面
+		if (!texData.aImageName[2].empty())
+		{
+			this->LoadGrHandle(texData.aImageName[2]);
+		}
+	}
 }
