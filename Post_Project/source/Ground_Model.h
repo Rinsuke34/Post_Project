@@ -14,8 +14,8 @@ class Ground_Model : public Ground_Base
 		virtual ~Ground_Model();	// デストラクタ
 
 		/* 関数 */
-		virtual void	InitialSetup();		// 初期設定
-		virtual void	Draw();				// 描画
+		virtual void	InitialSetup()	override;		// 初期設定
+		virtual void	Draw()			override;		// 描画
 
 		/* セッター */
 		void SetModelHandle(int iModelHandle)	{ this->iModelHandle	= iModelHandle; }	// モデルハンドルを設定

@@ -34,12 +34,6 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 		/* ワールドマップ(中央)読み込み */
 		JsonLoad_WoldMap_Center();
 	}
-	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
-	else if (this->pDataList_StageCreate != nullptr)
-	{
-		// 読み込まれている場合
-
-	}	
 }
 
 // デストラクタ
@@ -56,6 +50,15 @@ Scene_Stage::~Scene_Stage()
 // 更新
 void Scene_Stage::Update()
 {
-
+	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
+	if (this->pDataList_StageCreate != nullptr)
+	{
+		// 読み込まれている場合
+		if (gstKeyboardInputData.cgInput[INPUT_REL][KEY_INPUT_ESCAPE] == TRUE)
+		{
+			/* シーンを削除(ステージ作成シーンに遷移) */
+			this->bDeleteFlg = true;
+		}
+	}
 }
 

@@ -26,7 +26,7 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 	/* マップデータ読み込み */
 	// ※テクスチャ読み込みが完了している状態で実行すること
 
-		/* データリスト取得 */
+	/* データリスト取得 */
 	// 画像データ管理
 	std::shared_ptr<DataList_Image>	pDataList_Image = std::dynamic_pointer_cast<DataList_Image>(gpDataListServer->GetDataList("DataList_Image"));
 	// 3Dモデルデータ管理

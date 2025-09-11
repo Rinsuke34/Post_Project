@@ -28,7 +28,7 @@ class Ground_Block : public Ground_Base
 		static const int DIRECTION_MAX		= 6;	// 方向数
 
 		/* 関数 */
-		virtual void	Draw();			// 描画
+		virtual void	Draw()	override;			// 描画
 
 		/* セッター */
 		void SetBoxCollision(Struct_Collision::COLLISION_BOX stBox)				{ this->stBox						= stBox; }			// ボックスコリジョンの情報を設定

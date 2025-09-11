@@ -27,7 +27,7 @@ Ground_Model::~Ground_Model()
 void Ground_Model::InitialSetup()
 {
 	/* À•WÝ’è */
-	MV1TerminateCollInfo(this->iModelHandle);
+	MV1SetPosition(this->iModelHandle, this->vecPosition);
 
 	/* ‰ñ“]—ÊÝ’è */
 	MV1SetRotationXYZ(this->iModelHandle, this->vecRotation);
@@ -57,6 +57,6 @@ void Ground_Model::Draw()
 // ƒRƒŠƒWƒ‡ƒ“‚ÌÝ’è
 void Ground_Model::SetUpCollision()
 {
-	this->stBox.vecBoxCenter	= { 0.f, 0.f, 0.f };
+	this->stBox.vecBoxCenter	= this->vecPosition;
 	this->stBox.vecBoxHalfSize	= { 0.f, 0.f, 0.f };
 }

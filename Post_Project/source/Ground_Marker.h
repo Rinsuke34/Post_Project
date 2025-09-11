@@ -13,6 +13,12 @@ class Ground_Marker : public Ground_Base
 		Ground_Marker();				// コンストラクタ
 		virtual ~Ground_Marker() {};	// デストラクタ
 
+		/* 定数 */
+		static const int MARKER_CENTER_SIZE_HALF = 16;	// 中心点の半径
+
+		/* 関数 */
+		virtual void	Draw()	override;			// 描画
+
 		/* セッター */
 		void SetMarkerName(const std::string& cMarkerName)	{ this->MarkerName			= cMarkerName; }	// マーカー名を設定
 		void SetBoxCenter(VECTOR vecBoxCenter)				{ this->stBox.vecBoxCenter	= vecBoxCenter; }	// コリジョンの中心座標を設定

@@ -42,7 +42,7 @@ void DataList_StageCreate::Load_WoldMapList()
 	// ※登録されているマップから編集するマップデータを選択する
 
 	/* JSONファイル読み込み */
-	std::string FilePath = "resource/MapData/MapData_Wold/MapList.json";
+	std::string FilePath = "resource/MapData/MapData_Wold/WoldMapList.json";
 
 	std::ifstream ifs(FilePath);
 	if (!ifs) return;
@@ -186,13 +186,8 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 		pGroundModel->SetScale(data.vecScale);
 		pGroundModel->InitialSetup();
 
-		/* ポジションからどこに代入するのかを算出 */
-		int iX = static_cast<int>(data.vecPosition.x / MAP_BLOCK_SIZE_X);
-		int iY = static_cast<int>(data.vecPosition.y / MAP_BLOCK_SIZE_Y);
-		int iZ = static_cast<int>(data.vecPosition.z / MAP_BLOCK_SIZE_Z);
-
 		/* 3Dモデルデータを保存 */
-		this->pGoundObject[iX][iY][iZ] = pGroundModel;
+		this->pGoundObject[data.vecPosition.x][data.vecPosition.y][data.vecPosition.z] = pGroundModel;
 	}
 
 	/* マーカー情報抽出 */
@@ -221,13 +216,8 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 		pGroundMarker->SetBoxCenter(vecPosition);
 		pGroundMarker->SetRotation(data.vecRotation);
 
-		/* ポジションからどこに代入するのかを算出 */
-		int iX = static_cast<int>(data.vecPosition.x / MAP_BLOCK_SIZE_X);
-		int iY = static_cast<int>(data.vecPosition.y / MAP_BLOCK_SIZE_Y);
-		int iZ = static_cast<int>(data.vecPosition.z / MAP_BLOCK_SIZE_Z);
-
 		/* マーカーデータを保存 */
-		this->pGoundObject[iX][iY][iZ] = pGroundMarker;
+		this->pGoundObject[data.vecPosition.x][data.vecPosition.y][data.vecPosition.z] = pGroundMarker;
 	}
 }
 

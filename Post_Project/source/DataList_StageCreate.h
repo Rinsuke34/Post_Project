@@ -24,7 +24,8 @@ class DataList_StageCreate : public DataList_Base
 		void Draw_GroundObject();				// 地形オブジェクト描画
 
 		/* ゲッター */
-		VECTOR_INT	vecGetSelectPos() { return this->vecSelectPos; }	// 選択座標を取得
+		VECTOR_INT	vecGetSelectPos()					{ return this->vecSelectPos; }	// 選択座標を取得
+		std::vector<WOLD_MAP_DATA>& GetMapDataList()	{ return this->MapDataList; }	// マップリストを取得
 
 		/* セッター */
 		void	SetSelectPos(VECTOR_INT vecSelectPos)	{ this->vecSelectPos = vecSelectPos; }	// 選択座標を設定
