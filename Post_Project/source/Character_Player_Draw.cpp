@@ -35,10 +35,10 @@ void Character_Player::Draw_Animation()
 	float fYLean		= sqrtf(fHeight * fHeight - TOPVIEW_LEAN_AMOUNT * TOPVIEW_LEAN_AMOUNT);
 
 	VERTEX3D aVertex[4];
-	aVertex[0].pos = VGet(this->vecBasePosition.x + fHalfWide, this->vecBasePosition.y + fYLean,	this->vecBasePosition.z + TOPVIEW_LEAN_AMOUNT);
-	aVertex[1].pos = VGet(this->vecBasePosition.x + fHalfWide, this->vecBasePosition.y,				this->vecBasePosition.z);
-	aVertex[2].pos = VGet(this->vecBasePosition.x - fHalfWide, this->vecBasePosition.y + fYLean,	this->vecBasePosition.z + TOPVIEW_LEAN_AMOUNT);
-	aVertex[3].pos = VGet(this->vecBasePosition.x - fHalfWide, this->vecBasePosition.y,				this->vecBasePosition.z);
+	aVertex[0].pos = VGet(this->vecBasePosition.x + fHalfWide, this->vecBasePosition.y + fYLean,	this->vecBasePosition.z - 32.f + TOPVIEW_LEAN_AMOUNT);
+	aVertex[1].pos = VGet(this->vecBasePosition.x + fHalfWide, this->vecBasePosition.y,				this->vecBasePosition.z - 32.f);
+	aVertex[2].pos = VGet(this->vecBasePosition.x - fHalfWide, this->vecBasePosition.y + fYLean,	this->vecBasePosition.z - 32.f + TOPVIEW_LEAN_AMOUNT);
+	aVertex[3].pos = VGet(this->vecBasePosition.x - fHalfWide, this->vecBasePosition.y,				this->vecBasePosition.z - 32.f);
 
 	// ’¸“_‚Ì‰Šú‰»
 	for (int i = 0; i < 4; ++i)

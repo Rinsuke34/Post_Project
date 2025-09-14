@@ -22,13 +22,12 @@ class Ground_Block : public Ground_Base
 		static const int DIRECTION_X_PLUS	= 0;	// +X方向
 		static const int DIRECTION_X_MINUS	= 1;	// -X方向
 		static const int DIRECTION_Y_PLUS	= 2;	// +Y方向
-		static const int DIRECTION_Y_MINUS	= 3;	// -Y方向
-		static const int DIRECTION_Z_PLUS	= 4;	// +Z方向
-		static const int DIRECTION_Z_MINUS	= 5;	// -Z方向
-		static const int DIRECTION_MAX		= 6;	// 方向数
+		static const int DIRECTION_Z_MINUS	= 3;	// -Z方向
+		static const int DIRECTION_MAX		= 4;	// 方向数
 
 		/* 関数 */
-		virtual void	Draw()	override;			// 描画
+		virtual void	InitialSetup()	override;	// 初期設定
+		virtual void	Draw()			override;	// 描画
 
 		/* セッター */
 		void SetBoxCollision(Struct_Collision::COLLISION_BOX stBox)				{ this->stBox						= stBox; }			// ボックスコリジョンの情報を設定
@@ -46,4 +45,5 @@ class Ground_Block : public Ground_Base
 		std::shared_ptr<int>			apiGrHandle[3];					// 使用する画像のハンドル(0:上面, 1:横面: 2,下面)
 		bool							bFaceDrawFlg[DIRECTION_MAX];	// 面の描画フラグ
 		int								iBlockId;						// ブロックのID
+		VERTEX3D						aVertex[8];						// 頂点データ
 };

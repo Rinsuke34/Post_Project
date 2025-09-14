@@ -20,9 +20,40 @@
 #include "ConstantDefine.h"
 #include "StructDefine.h"
 
-// ワールドマップ読み込み(中央)
-void Scene_Stage::JsonLoad_WoldMap_Center()
+// ワールドマップリスト読み込み
+void Scene_Stage::JsonLoad_WoldMapList()
 {
+	/* ワールドマップのリストを読み込む */
+	// ※登録されているマップから編集するマップデータを選択する
+
+	/* JSONファイル読み込み */
+	std::string FilePath = "resource/MapData/MapData_Wold/WoldMapList.json";
+
+	std::ifstream ifs(FilePath);
+	if (!ifs) return;
+
+	using json = nlohmann::json;
+	json j;
+	ifs >> j;
+
+	/* マップリストデータ抽出 */
+	for (const auto& elem : j)
+	{
+		WOLD_MAP_DATA data;
+		data.MapName = elem.value("MapName", "");
+		data.iMapType = elem.value("MapType", 0);
+		this->MapDataList.push_back(data);
+	}
+}
+
+// ワールドマップを読み込む
+void Scene_Stage::JsonLoad_WoldMap(int iAreaNo, std::string MapName)
+{
+	// 引数
+	// iAreaNo		<- 読み込むエリア番号(AREA_NO_CENTERなど)
+	// MapName		<- 読み込むマップデータの名前
+
+
 	/* マップデータ読み込み */
 	// ※テクスチャ読み込みが完了している状態で実行すること
 
@@ -33,7 +64,7 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 	std::shared_ptr<DataList_Model>	pDataList_Model = std::dynamic_pointer_cast<DataList_Model>(gpDataListServer->GetDataList("DataList_Model"));
 
 	/* Jsonファイル読み込み */
-	std::string FilePath = "resource/MapData/MapData_Wold/AreaData_Front.json";
+	std::string FilePath = "resource/MapData/MapData_Wold/" + MapName + ".json";
 
 	std::ifstream ifs(FilePath);
 	if (!ifs) return;
@@ -44,7 +75,7 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 
 	/* 地形(ブロック)データ抽出 */
 	auto& GroundBlock = j["Ground_Block"];
-	
+
 	for (int iY = 0; iY < AREA_SIZE_BLOCK_Y; ++iY)
 	{
 		for (int iZ = 0; iZ < AREA_SIZE_BLOCK_Z; ++iZ)
@@ -61,11 +92,11 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 					// コリジョン設定
 					Struct_Collision::COLLISION_BOX stBox;
 					stBox.vecBoxCenter = VGet(
-						AREA_ORIGIN_POS[AREA_NO_CENTER].x + iX * MAP_BLOCK_SIZE_X + MAP_BLOCK_SIZE_X / 2.f,
-						AREA_ORIGIN_POS[AREA_NO_CENTER].y + iY * MAP_BLOCK_SIZE_Y + MAP_BLOCK_SIZE_Y / 2.f,
-						AREA_ORIGIN_POS[AREA_NO_CENTER].z + iZ * MAP_BLOCK_SIZE_Z + MAP_BLOCK_SIZE_Z / 2.f
+						AREA_ORIGIN_POS[iAreaNo].x + iX * MAP_BLOCK_SIZE_X + MAP_BLOCK_SIZE_X / 2.f,
+						AREA_ORIGIN_POS[iAreaNo].y + iY * MAP_BLOCK_SIZE_Y + MAP_BLOCK_SIZE_Y / 2.f,
+						AREA_ORIGIN_POS[iAreaNo].z + iZ * MAP_BLOCK_SIZE_Z + MAP_BLOCK_SIZE_Z / 2.f
 					);
-					stBox.vecBoxHalfSize = VGet(MAP_BLOCK_SIZE_X / 2.f , MAP_BLOCK_SIZE_Y / 2.f, MAP_BLOCK_SIZE_Z / 2.f);
+					stBox.vecBoxHalfSize = VGet(MAP_BLOCK_SIZE_X / 2.f, MAP_BLOCK_SIZE_Y / 2.f, MAP_BLOCK_SIZE_Z / 2.f);
 					pGroundBlock->SetBoxCollision(stBox);
 
 					// テクスチャ設定
@@ -96,12 +127,11 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 					/* ブロックの面の描写設定 */
 					// ※ 隣接するブロックがある場合、その面は描写しない
 					// ※ 各方向の境界面は必ず描写する
+					// ※ +Zと-Y方向はカメラの向きの関係で描写しない
 					static const int aiDirOffset[Ground_Block::DIRECTION_MAX][3] = {
 						{+1,  0,  0}, // +X
 						{-1,  0,  0}, // -X
 						{ 0, +1,  0}, // +Y
-						{ 0, -1,  0}, // -Y
-						{ 0,  0, +1}, // +Z
 						{ 0,  0, -1}  // -Z
 					};
 
@@ -130,8 +160,11 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 						}
 					}
 
+					/* 初期化処理 */
+					pGroundBlock->InitialSetup();
+
 					// オブジェクトリストに登録
-					this->pDataList_Object->AddObject_Ground(pGroundBlock, AREA_NO_CENTER);
+					this->pDataList_Object->AddObject_Ground(pGroundBlock, iAreaNo);
 				}
 			}
 		}
@@ -156,9 +189,9 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 
 		/* ポジションをワールド座標に変換 */
 		VECTOR vecPosition;
-		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].x;
-		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].y;
-		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].z;
+		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2) + AREA_ORIGIN_POS[iAreaNo].x;
+		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2) + AREA_ORIGIN_POS[iAreaNo].y;
+		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2) + AREA_ORIGIN_POS[iAreaNo].z;
 
 		/* 3Dモデルデータを作成 */
 		std::shared_ptr<Ground_Model> pGroundModel = std::make_shared<Ground_Model>();
@@ -170,7 +203,7 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 		pGroundModel->InitialSetup();
 
 		/* オブジェクトリストに登録 */
-		this->pDataList_Object->AddObject_Ground(pGroundModel, AREA_NO_CENTER);
+		this->pDataList_Object->AddObject_Ground(pGroundModel, iAreaNo);
 	}
 
 	/* マーカー情報抽出 */
@@ -189,9 +222,9 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 
 		/* ポジションをワールド座標に変換 */
 		VECTOR vecPosition;
-		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].x;
-		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].y;
-		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].z;
+		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2) + AREA_ORIGIN_POS[iAreaNo].x;
+		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2) + AREA_ORIGIN_POS[iAreaNo].y;
+		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2) + AREA_ORIGIN_POS[iAreaNo].z;
 
 		/* マーカーデータを作成 */
 		std::shared_ptr<Ground_Marker> pMarker = std::make_shared<Ground_Marker>();
@@ -200,6 +233,6 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 		pMarker->SetRotation(data.vecRotation);
 
 		/* マーカー情報を保存 */
-		this->pDataList_Object->AddObject_Marker(pMarker, AREA_NO_CENTER);
+		this->pDataList_Object->AddObject_Marker(pMarker, iAreaNo);
 	}
 }

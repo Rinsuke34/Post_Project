@@ -5,6 +5,7 @@
 /* 使用する要素のインクルード */
 // 共通定義
 #include "AppFrame.h"
+#include "StructDefine.h"
 
 /* 前方宣言 */
 class DataList_Object;
@@ -31,7 +32,8 @@ class Scene_Stage : public Scene_Base
 	private:
 		/* 関数 */
 		// 読み込み関係
-		void	JsonLoad_WoldMap_Center();		// ワールドマップ読み込み(中央)
+		void	JsonLoad_WoldMapList();								// ワールドマップリスト読み込み
+		void	JsonLoad_WoldMap(int iAreaNo, std::string MapName);	// ワールドマップを読み込む
 		// 描写関係
 		void	DrawSetup_CameraPosition();		// カメラ設定
 		void	DrawSetup_ShadowMap();			// シャドウマップ作成
@@ -48,4 +50,6 @@ class Scene_Stage : public Scene_Base
 		// 画像データ
 		int iScreenHandle_Stage;					// ステージ
 		int iScreenHandle_ShadowMap[SHADOWMAP_MAX];	// シャドウマップ(0:静的オブジェクト/1:動的オブジェクト)
+		// マップの情報
+		std::vector<WOLD_MAP_DATA>	MapDataList;	// マップ情報リスト
 };

@@ -119,7 +119,7 @@ void Scene_Stage::DrawSetup_ShadowMap()
 	{
 		/* ライト方向設定 */
 		// ※ ライトの方向は少し奥とする
-		SetShadowMapLightDirection(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND], VNorm(VGet(1.f, -1.f, 1.f)));
+		SetShadowMapLightDirection(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND], VNorm(VGet(0.5f, -1.f, 1.f)));
 
 		/* シャドウマップの範囲指定 */
 		// ※ プレイヤー座標を中心に設定
@@ -200,9 +200,9 @@ void Scene_Stage::DrawSetup_Stage_StageCreate()
 
 	VECTOR		vecMapTileHarfSize	= VGet(MAP_BLOCK_SIZE_X / 2, MAP_BLOCK_SIZE_Y / 2, MAP_BLOCK_SIZE_Z / 2);
 
-	/* 選択中の座標を描写 */
-	// 頂点を設定
+	/* 範囲描写 */
 	VECTOR aVertex[8];
+	// 選択中の座標の頂点を設定
 	aVertex[0] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
 	aVertex[1] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
 	aVertex[2] = VGet(vecPosition.x + vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
@@ -211,21 +211,8 @@ void Scene_Stage::DrawSetup_Stage_StageCreate()
 	aVertex[5] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y + vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
 	aVertex[6] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z + vecMapTileHarfSize.z);
 	aVertex[7] = VGet(vecPosition.x - vecMapTileHarfSize.x, vecPosition.y - vecMapTileHarfSize.y, vecPosition.z - vecMapTileHarfSize.z);
-
-	// 線分を描画
-	DrawLine3D(aVertex[0], aVertex[1], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[1], aVertex[5], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[5], aVertex[4], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[4], aVertex[0], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[2], aVertex[3], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[3], aVertex[7], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[7], aVertex[6], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[6], aVertex[2], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[0], aVertex[2], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[1], aVertex[3], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[4], aVertex[6], GetColor(255, 255, 255));
-	DrawLine3D(aVertex[5], aVertex[7], GetColor(255, 255, 255));
-	
+	// 選択中の座標を四角形で描写
+	PUBLIC_FUNCTION::DrawCubeLine3D(aVertex, GetColor(255, 255, 0));
 
 	/* メイン画面への描写を終了 */
 	SetDrawScreen(DX_SCREEN_BACK);

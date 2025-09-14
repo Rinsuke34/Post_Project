@@ -142,10 +142,20 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 			for (int iX = 0; iX < AREA_SIZE_BLOCK_X; ++iX)
 			{
 				/* ブロックID読み込み */
-				int BlockIndex = GroundBlock.at(iY).at(iZ).at(iX).get<int>();
+				int iBlockIndex = -1;
+				try
+				{
+					// 要素があるなら読み込む
+					iBlockIndex = GroundBlock.at(iY).at(iZ).at(iX).get<int>();
+				}
+				catch (...)
+				{
+					// 要素がないならブロックを無しに設定
+					iBlockIndex = -1;
+				}
 
 				/* 何かしらのブロックがあるか確認 */
-				if (BlockIndex == -1)
+				if (iBlockIndex == -1)
 				{
 					// ブロックがない場合
 					continue;
@@ -167,7 +177,7 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 				auto& TextureDataList = pDataList_Image->GetTextureDataList();
 				for (auto& texData : TextureDataList)
 				{
-					if (texData.iBlockIndex == BlockIndex)
+					if (texData.iBlockIndex == iBlockIndex)
 					{
 						// 上面
 						if (!texData.aImageName[0].empty())
@@ -196,7 +206,10 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 				}
 
 				/* ブロックIDを登録 */
-				pGroundBlock->SetBlockId(BlockIndex);
+				pGroundBlock->SetBlockId(iBlockIndex);
+
+				/* 初期化処理 */
+				pGroundBlock->InitialSetup();
 
 				/* ブロックデータを保存 */
 				this->pGoundObject[iX][iY][iZ] = pGroundBlock;

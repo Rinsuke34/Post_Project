@@ -169,7 +169,7 @@ void Scene_StageCreate::Update_EditMap()
 	}
 
 	/* 現在選択中のオブジェクトを配置 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_Z] == TRUE)
+	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_Z] == TRUE)
 	{
 		switch (this->iSelectObjectTypeIndex)
 		{
@@ -191,7 +191,7 @@ void Scene_StageCreate::Update_EditMap()
 	}
 
 	/* 現在選択中のオブジェクトを削除 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_X] == TRUE)
+	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_X] == TRUE)
 	{
 		/* 選択中の座標に登録されたオブジェクトを削除 */
 		this->pDataList_StageCreate->DeleteGroundObject(this->pDataList_StageCreate->vecGetSelectPos());
@@ -317,6 +317,9 @@ void Scene_StageCreate::Add_Block()
 
 	/* ブロックIDを登録 */
 	pGroundBlock->SetBlockId(iBlockID);
+
+	/* 初期設定 */
+	pGroundBlock->InitialSetup();
 
 	/* ブロックをマップのオブジェクトに追加 */
 	this->pDataList_StageCreate->AddGroundObject(this->pDataList_StageCreate->vecGetSelectPos(), pGroundBlock);

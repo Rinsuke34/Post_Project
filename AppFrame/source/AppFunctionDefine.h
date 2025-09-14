@@ -44,4 +44,5 @@ namespace PUBLIC_FUNCTION
 	void		FileDeletesAndStand(const std::string& filename);																		// 指定ファイルを完全に削除するまで待機
 	std::string	aOpenFileDialog(std::string Filter);																					// ファイル選択ダイアログを表示
 	void		Start2DPartsAnimCreateTool();																							// 2Dパーツアニメーション作成ツールを起動
+	void		DrawCubeLine3D(VECTOR aVertex[8], unsigned int iColor);																	// 立方体型の線を描画
 }

@@ -28,11 +28,25 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 	std::shared_ptr<DataList_StageCreate>	pDataList_StageCreate;	// ステージクリエイト情報管理
 
 	/* ゲーム状態管理データリストが読み込まれているか確認 */
+	// ※ゲーム状態管理データリストがある場合、ゲームメインから遷移してきたと判断
 	if (this->pDataList_GameStatus != nullptr)
 	{
 		// 読み込まれている場合
+		// ワールドマップリスト読み込み
+		JsonLoad_WoldMapList();
+
 		/* ワールドマップ(中央)読み込み */
-		JsonLoad_WoldMap_Center();
+		JsonLoad_WoldMap(AREA_NO_CENTER, "AreaData_Front");
+//		JsonLoad_WoldMap_Center();
+
+		JsonLoad_WoldMap(0, "AreaData_Plain");
+		JsonLoad_WoldMap(1, "AreaData_Plain");
+		JsonLoad_WoldMap(2, "AreaData_Plain");
+		JsonLoad_WoldMap(3, "AreaData_Plain");
+		JsonLoad_WoldMap(5, "AreaData_Plain");
+		JsonLoad_WoldMap(6, "AreaData_Plain");
+		JsonLoad_WoldMap(7, "AreaData_Plain");
+		JsonLoad_WoldMap(8, "AreaData_Plain");
 
 		/* オブジェクト初期設定 */
 		Setup_PlaceObject();
@@ -54,6 +68,7 @@ Scene_Stage::~Scene_Stage()
 void Scene_Stage::Update()
 {
 	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
+	// ※ステージクリエイト情報管理データリストがある場合、ステージクリエイトから遷移してきたと判断
 	if (this->pDataList_StageCreate != nullptr)
 	{
 		// 読み込まれている場合

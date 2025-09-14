@@ -97,3 +97,24 @@ void PUBLIC_FUNCTION::Start2DPartsAnimCreateTool()
 	/* シーン"汎用2Dパーツアニメーションツール"を追加予約 */
 	gpSceneServer->AddSceneReservation(std::make_shared<Scene_2DPartsAnimCreateTool>());
 }
+
+// 立方体型の線を描画
+void PUBLIC_FUNCTION::DrawCubeLine3D(VECTOR aVertex[8], unsigned int iColor)
+{
+	// 引数
+	// aVertex	<- 立方体の頂点配列(8頂点分)
+	// iColor	<- 立方体の色
+
+	DrawLine3D(aVertex[0], aVertex[1], iColor);
+	DrawLine3D(aVertex[1], aVertex[5], iColor);
+	DrawLine3D(aVertex[5], aVertex[4], iColor);
+	DrawLine3D(aVertex[4], aVertex[0], iColor);
+	DrawLine3D(aVertex[2], aVertex[3], iColor);
+	DrawLine3D(aVertex[3], aVertex[7], iColor);
+	DrawLine3D(aVertex[7], aVertex[6], iColor);
+	DrawLine3D(aVertex[6], aVertex[2], iColor);
+	DrawLine3D(aVertex[0], aVertex[2], iColor);
+	DrawLine3D(aVertex[1], aVertex[3], iColor);
+	DrawLine3D(aVertex[4], aVertex[6], iColor);
+	DrawLine3D(aVertex[5], aVertex[7], iColor);
+}

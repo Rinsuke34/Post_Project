@@ -22,31 +22,51 @@ Ground_Block::Ground_Block() : Ground_Base()
 		this->bFaceDrawFlg[iIndex] = false;
 	}
 	this->iBlockId = 0;
+	for (int i = 0; i < 8; ++i)
+	{
+		this->aVertex[i] = VERTEX3D();
+	}
+}
+
+// 初期設定
+// ※必ずコリジョン情報を設定した後に呼び出すこと
+void Ground_Block::InitialSetup()
+{
+	/* 中心座標を基準とした立方体の頂点座標を算出 */
+	// ※軽量化のため、初期化処理で一度だけ計算し、描画時は頂点データをコピーして使用する
+	this->aVertex[0].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	this->aVertex[1].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	this->aVertex[2].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	this->aVertex[3].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	this->aVertex[4].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	this->aVertex[5].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	this->aVertex[6].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	this->aVertex[7].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	// 頂点の初期化
+	for (int i = 0; i < 8; ++i)
+	{
+		this->aVertex[i].dif = GetColorU8(255, 255, 255, 255);
+		this->aVertex[i].spc = GetColorU8(0, 0, 0, 0);
+		this->aVertex[i].su = 1.f;
+		this->aVertex[i].sv = 1.f;
+	}
 }
 
 // 描画
 void Ground_Block::Draw()
 {
-	/* 中心座標を基準とした立方体の頂点座標を計算 */
-	VERTEX3D aVertex[8];
-	aVertex[0].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[1].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	aVertex[2].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[3].pos = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	aVertex[4].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[5].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	aVertex[6].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[7].pos = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	// 頂点の初期化
-	for (int i = 0; i < 8; ++i)
+	/* 画面外であるなら描写しない */
+	// ※スクリーン座標のZ値が1.f以上、あるいは0.f以下なら描写しない
+	VECTOR vecScreenPos = ConvWorldPosToScreenPos(this->stBox.vecBoxCenter);
+
+	float fScreenPosZ = vecScreenPos.z;
+	if ( fScreenPosZ <= 0.f || 1.f <= fScreenPosZ)
 	{
-		aVertex[i].dif	= GetColorU8(255, 255, 255, 255);
-		aVertex[i].spc	= GetColorU8(0, 0, 0, 0);
-		aVertex[i].su	= 1.f;
-		aVertex[i].sv	= 1.f;
+		return;
 	}
 
 	/* 各面の描画 */
+	// ※+Zと-Y方向はカメラの位置関係で基本見えないので描写しない
 	// +X方向
 	if (bFaceDrawFlg[DIRECTION_X_PLUS])
 	{
@@ -122,56 +142,56 @@ void Ground_Block::Draw()
 		// 四角形（板ポリゴン）の描画
 		DrawPolygonIndexed3D(aVertex, 8, IndexTop, 2, *this->apiGrHandle[FACE_TYPE_TOP], TRUE);
 	}
-	// -Y方向
-	if (bFaceDrawFlg[DIRECTION_Y_MINUS])
-	{
-		// インデックスデータ（底面の2ポリゴン）
-		unsigned short IndexBottom[6] = { 6, 3, 2, 7, 3, 6 };
+	//// -Y方向
+	//if (bFaceDrawFlg[DIRECTION_Y_MINUS])
+	//{
+	//	// インデックスデータ（底面の2ポリゴン）
+	//	unsigned short IndexBottom[6] = { 6, 3, 2, 7, 3, 6 };
 
-		// 法線ベクトルを設定
-		for (int i = 0; i < 8; ++i)
-		{
-			aVertex[i].norm = VGet(0.0f, -1.0f, 0.0f);
-		}
+	//	// 法線ベクトルを設定
+	//	for (int i = 0; i < 8; ++i)
+	//	{
+	//		aVertex[i].norm = VGet(0.0f, -1.0f, 0.0f);
+	//	}
 
-		// uv座標を設定
-		aVertex[2].u = 1.f;
-		aVertex[2].v = 0.f;
-		aVertex[3].u = 1.f;
-		aVertex[3].v = 1.f;
-		aVertex[6].u = 0.f;
-		aVertex[6].v = 0.f;
-		aVertex[7].u = 0.f;
-		aVertex[7].v = 1.f;
+	//	// uv座標を設定
+	//	aVertex[2].u = 1.f;
+	//	aVertex[2].v = 0.f;
+	//	aVertex[3].u = 1.f;
+	//	aVertex[3].v = 1.f;
+	//	aVertex[6].u = 0.f;
+	//	aVertex[6].v = 0.f;
+	//	aVertex[7].u = 0.f;
+	//	aVertex[7].v = 1.f;
 
-		// 四角形（板ポリゴン）の描画
-		DrawPolygonIndexed3D(aVertex, 8, IndexBottom, 2, *this->apiGrHandle[FACE_TYPE_BOTTOM], TRUE);
-	}
+	//	// 四角形（板ポリゴン）の描画
+	//	DrawPolygonIndexed3D(aVertex, 8, IndexBottom, 2, *this->apiGrHandle[FACE_TYPE_BOTTOM], TRUE);
+	//}
 	// +Z方向
-	if (bFaceDrawFlg[DIRECTION_Z_PLUS])
-	{
-		// インデックスデータ（手前面の2ポリゴン）
-		unsigned short IndexFront[6] = { 2, 0, 6, 6, 0, 4 };
+	//if (bFaceDrawFlg[DIRECTION_Z_PLUS])
+	//{
+	//	// インデックスデータ（手前面の2ポリゴン）
+	//	unsigned short IndexFront[6] = { 2, 0, 6, 6, 0, 4 };
 
-		// 法線ベクトルを設定
-		for (int i = 0; i < 8; ++i)
-		{
-			aVertex[i].norm = VGet(0.0f, 0.0f, +1.0f);
-		}
+	//	// 法線ベクトルを設定
+	//	for (int i = 0; i < 8; ++i)
+	//	{
+	//		aVertex[i].norm = VGet(0.0f, 0.0f, +1.0f);
+	//	}
 
-		// uv座標を設定
-		aVertex[0].u = 1.f;
-		aVertex[0].v = 0.f;
-		aVertex[2].u = 1.f;
-		aVertex[2].v = 1.f;
-		aVertex[4].u = 0.f;
-		aVertex[4].v = 0.f;
-		aVertex[6].u = 0.f;
-		aVertex[6].v = 1.f;
+	//	// uv座標を設定
+	//	aVertex[0].u = 1.f;
+	//	aVertex[0].v = 0.f;
+	//	aVertex[2].u = 1.f;
+	//	aVertex[2].v = 1.f;
+	//	aVertex[4].u = 0.f;
+	//	aVertex[4].v = 0.f;
+	//	aVertex[6].u = 0.f;
+	//	aVertex[6].v = 1.f;
 
-		// 四角形（板ポリゴン）の描画
-		DrawPolygonIndexed3D(aVertex, 8, IndexFront, 2, *this->apiGrHandle[FACE_TYPE_SIDE], TRUE);
-	}
+	//	// 四角形（板ポリゴン）の描画
+	//	DrawPolygonIndexed3D(aVertex, 8, IndexFront, 2, *this->apiGrHandle[FACE_TYPE_SIDE], TRUE);
+	//}
 	// -Z方向
 	if (bFaceDrawFlg[DIRECTION_Z_MINUS])
 	{
