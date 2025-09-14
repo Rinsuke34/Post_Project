@@ -23,6 +23,11 @@ class Scene_StageCreate : public Scene_Base
 		// 描写座標
 		static const int DRAW_MAPNAME_X		= 50;	// マップ名描写位置X
 		static const int DRAW_MAPNAME_Y		= 200;	// マップ名描写位置Y
+		// 選択中の追加オブジェクトの種類
+		static const int ADD_OBJECT_TYPE_BLOCK	= 0;	// ブロック追加
+		static const int ADD_OBJECT_TYPE_MODEL	= 1;	// モデル追加
+		static const int ADD_OBJECT_TYPE_MARKER	= 2;	// マーカー追加
+		static const int ADD_OBJECT_TYPE_MAX	= 3;	// オブジェクトの種類
 
 		/* 関数 */
 		virtual void	Update()			override;	// 更新
@@ -33,12 +38,17 @@ class Scene_StageCreate : public Scene_Base
 		// データリストへのポインタ
 		std::shared_ptr<DataList_StageCreate>	pDataList_StageCreate;	// ステージクリエイト情報管理
 		// その他
-		int	iNowPhase;			// 現在のフェーズ
-		int iSelectMapIndex;	// 選択中のマップのインデックス番号
+		int	iNowPhase;				// 現在のフェーズ
+		int iSelectMapIndex;		// 選択中のマップのインデックス番号
+		int iSelectObjectTypeIndex;	// 選択中の追加オブジェクトの種類のインデックス番号
+		int iSelectObjectNameIndex;	// 選択中の追加オブジェクトの名前のインデックス番号
 
 		/* 関数 */
 		void Update_SelectMap();	// マップ選択フェーズの更新
 		void Update_EditMap();		// マップ編集フェーズの更新
 		void Draw_SelectMap();		// マップ選択フェーズの描写
 		void Draw_EditMap();		// マップ編集フェーズの描写
+		void Add_Block();			// 地形オブジェクト追加(ブロック)
+		void Add_Model();			// 地形オブジェクト追加(モデル)
+		void Add_Marker();			// 地形オブジェクト追加(マーカー)
 };

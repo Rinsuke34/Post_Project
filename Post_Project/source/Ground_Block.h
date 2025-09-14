@@ -34,13 +34,16 @@ class Ground_Block : public Ground_Base
 		void SetBoxCollision(Struct_Collision::COLLISION_BOX stBox)				{ this->stBox						= stBox; }			// ボックスコリジョンの情報を設定
 		void SetTextureHandle(int iFaceType, std::shared_ptr<int> iGrhandle)	{ this->apiGrHandle[iFaceType]		= iGrhandle; };		// 面のテクスチャハンドルを設定(0:上面, 1:横面, 2:下面)
 		void SetFaceDrawFlg(int iDirection, bool bFaceDrawFlg)					{ this->bFaceDrawFlg[iDirection]	= bFaceDrawFlg; };	// 面の描画フラグを設定(0:+X, 1:-X, 2:+Y, 3:-Y, 4:+Z, 5:-Z)
+		void SetBlockId(int iBlockId)											{ this->iBlockId					= iBlockId; }		// ブロックのIDを設定
 
 		/* ゲッター */
-		Struct_Collision::COLLISION_BOX GetBoxCollision()				{ return stBox; }						// ボックスコリジョンの情報を取得
-		bool							GetFaceDrawFlg(int iDirection)	{ return bFaceDrawFlg[iDirection]; }	// 面の描写フラグを取得
+		Struct_Collision::COLLISION_BOX GetBoxCollision()				{ return this->stBox; }						// ボックスコリジョンの情報を取得
+		bool							GetFaceDrawFlg(int iDirection)	{ return this->bFaceDrawFlg[iDirection]; }	// 面の描写フラグを取得
+		int								iGetBlockId()					{ return this->iBlockId; }					// ブロックのIDを取得
 
 	private:
 		/* 変数 */
 		std::shared_ptr<int>			apiGrHandle[3];					// 使用する画像のハンドル(0:上面, 1:横面: 2,下面)
 		bool							bFaceDrawFlg[DIRECTION_MAX];	// 面の描画フラグ
+		int								iBlockId;						// ブロックのID
 };

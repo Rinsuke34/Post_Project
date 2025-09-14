@@ -33,6 +33,53 @@ DataList_StageCreate::DataList_StageCreate() : DataList_Base("DataList_StageCrea
 	/* ワールドマップリスト読み込み */
 	MapDataList.clear();
 	Load_WoldMapList();
+
+	/* オブジェクトデータ読み込み */
+	Load_ObjectData();
+}
+
+// オブジェクトデータ読み込み
+void DataList_StageCreate::Load_ObjectData()
+{
+	/* オブジェクトデータを読み込む */
+	// ※ブロック、3Dモデル、マーカの種類を読み込む
+
+	/* JSONファイル読み込み */
+	std::string FilePath = "resource/MapData/Object_Data.json";
+
+	std::ifstream ifs(FilePath);
+	if (!ifs) return;
+
+	using json = nlohmann::json;
+	json j;
+	ifs >> j;
+
+	/* ブロック名リスト抽出 */
+	if (j.contains("Block") && j["Block"].is_array())
+	{
+		for (const auto& name : j["Block"])
+		{
+			this->ObjectNameList[OBJECT_TYPE_BLOCK].push_back(name.get<std::string>());
+		}
+	}
+
+	/* モデル名リスト抽出 */
+	if (j.contains("Model") && j["Model"].is_array())
+	{
+		for (const auto& name : j["Model"])
+		{
+			this->ObjectNameList[OBJECT_TYPE_MODEL].push_back(name.get<std::string>());
+		}
+	}
+
+	/* マーカー名リスト抽出 */
+	if (j.contains("Marker") && j["Marker"].is_array())
+	{
+		for (const auto& name : j["Marker"])
+		{
+			this->ObjectNameList[OBJECT_TYPE_MARKER].push_back(name.get<std::string>());
+		}
+	}
 }
 
 // ワールドマップリスト読み込み
@@ -148,6 +195,9 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 					pGroundBlock->SetFaceDrawFlg(iDir, true);
 				}
 
+				/* ブロックIDを登録 */
+				pGroundBlock->SetBlockId(BlockIndex);
+
 				/* ブロックデータを保存 */
 				this->pGoundObject[iX][iY][iZ] = pGroundBlock;
 			}
@@ -186,6 +236,9 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 		pGroundModel->SetScale(data.vecScale);
 		pGroundModel->InitialSetup();
 
+		/* 3Dモデル名を保存 */
+		pGroundModel->SetModelName(data.ModelName);
+
 		/* 3Dモデルデータを保存 */
 		this->pGoundObject[data.vecPosition.x][data.vecPosition.y][data.vecPosition.z] = pGroundModel;
 	}
@@ -221,6 +274,117 @@ void DataList_StageCreate::Load_MapData(std::string MapName)
 	}
 }
 
+// ワールドマップデータ保存
+void DataList_StageCreate::Save_MapData(std::string MapName)
+{
+	// 引数
+	// MapName		<- 保存するマップデータの名前
+
+	/* 保存するファイル名を設定 */
+	std::string FilePath = "resource/MapData/MapData_Wold/" + MapName + ".json";
+
+	using json = nlohmann::json;
+	json j;
+
+	/* 地形(ブロック)の情報を保存 */
+	j["Ground_Block"] = json::array();
+	for (int iY = 0; iY < AREA_SIZE_BLOCK_Y; ++iY)
+	{
+		json arrY = json::array();
+		for (int iZ = 0; iZ < AREA_SIZE_BLOCK_Z; ++iZ)
+		{
+			json arrZ = json::array();
+			for (int iX = 0; iX < AREA_SIZE_BLOCK_X; ++iX)
+			{
+				int blockIndex = -1;
+				auto pObj = this->pGoundObject[iX][iY][iZ];
+				
+				if (pObj != nullptr)
+				{
+					/* ブロックIDを取得 */
+					auto pBlock = std::dynamic_pointer_cast<Ground_Block>(pObj);
+					if (pBlock)
+					{
+						// ブロックであるなら
+						/* ブロックIDを出力 */
+						blockIndex = pBlock->iGetBlockId();
+					}
+				}
+				arrZ.push_back(blockIndex);
+			}
+			arrY.push_back(arrZ);
+		}
+		j["Ground_Block"].push_back(arrY);
+	}
+
+	/* 地形(モデル)の情報を保存 */
+	j["Ground_Model"] = json::array();
+	for (int iX = 0; iX < AREA_SIZE_BLOCK_X; ++iX)
+	{
+		for (int iY = 0; iY < AREA_SIZE_BLOCK_Y; ++iY)
+		{
+			for (int iZ = 0; iZ < AREA_SIZE_BLOCK_Z; ++iZ)
+			{
+				auto pObj = this->pGoundObject[iX][iY][iZ];
+				if (pObj != nullptr)
+				{
+					/* 3Dモデルの情報を取得 */
+					auto pModel = std::dynamic_pointer_cast<Ground_Model>(pObj);
+					if (pModel)
+					{
+						json modelObj;
+						modelObj["ModelName"] = pModel->GetModelName();
+						// 配列インデックス座標を保存
+						modelObj["Position"] = { {"x", iX}, {"y", iY}, {"z", iZ} };
+						// 回転・スケール
+						VECTOR rot = pModel->GetRotation();
+						VECTOR scl = pModel->GetScale();
+						modelObj["Rotation"] = { {"x", rot.x}, {"y", rot.y}, {"z", rot.z} };
+						modelObj["Scale"] = { {"x", scl.x}, {"y", scl.y}, {"z", scl.z} };
+						j["Ground_Model"].push_back(modelObj);
+					}
+				}
+			}
+		}
+	}
+
+	/* 地形(マーカー)の情報を保存 */
+	j["Marker"] = json::array();
+	for (int iX = 0; iX < AREA_SIZE_BLOCK_X; ++iX)
+	{
+		for (int iY = 0; iY < AREA_SIZE_BLOCK_Y; ++iY)
+		{
+			for (int iZ = 0; iZ < AREA_SIZE_BLOCK_Z; ++iZ)
+			{
+				auto pObj = this->pGoundObject[iX][iY][iZ];
+				if (pObj != nullptr)
+				{
+					/* マーカーの情報を取得 */
+					auto pMarker = std::dynamic_pointer_cast<Ground_Marker>(pObj);
+					if (pMarker)
+					{
+						json markerObj;
+						markerObj["MarkerName"] = pMarker->GetMarkerName();
+						// 配列インデックス座標を保存
+						markerObj["Position"] = { {"x", iX}, {"y", iY}, {"z", iZ} };
+						VECTOR rot = pMarker->vecGetRotation();
+						markerObj["Rotation"] = { {"x", rot.x}, {"y", rot.y}, {"z", rot.z} };
+						j["Marker"].push_back(markerObj);
+					}
+				}
+			}
+		}
+	}
+
+	/* Jsonファイル出力 */
+	std::ofstream ofs(FilePath);
+	if (ofs.is_open())
+	{
+		ofs << j.dump(4);
+		ofs.close();
+	}
+}
+
 // 地形オブジェクト描画
 void DataList_StageCreate::Draw_GroundObject()
 {
@@ -253,4 +417,48 @@ void DataList_StageCreate::Reset_MapData()
 			}
 		}
 	}
+}
+
+// オブジェクトを削除
+void DataList_StageCreate::AddGroundObject(VECTOR_INT AddPos, std::shared_ptr<Ground_Base> AddObject)
+{
+	// 引数
+	// AddPos		<- 追加する座標(ブロック単位)
+	// AddObject	<- 追加するオブジェクト
+
+	/* 座標が範囲内か確認 */
+	if (AddPos.x < 0 || AddPos.x >= AREA_SIZE_BLOCK_X ||
+		AddPos.y < 0 || AddPos.y >= AREA_SIZE_BLOCK_Y ||
+		AddPos.z < 0 || AddPos.z >= AREA_SIZE_BLOCK_Z)
+	{
+		// 範囲外の場合
+		return;
+	}
+
+	/* 既にオブジェクトがある場合は削除 */
+	if (this->pGoundObject[AddPos.x][AddPos.y][AddPos.z] != nullptr)
+	{
+		this->pGoundObject[AddPos.x][AddPos.y][AddPos.z] = nullptr;
+	}
+
+	/* オブジェクトを追加 */
+	this->pGoundObject[AddPos.x][AddPos.y][AddPos.z] = AddObject;
+}
+
+// オブジェクトを削除
+void DataList_StageCreate::DeleteGroundObject(VECTOR_INT DeletePos)
+{
+	// 引数
+	// DeletePos	<- 削除する座標(ブロック単位)
+
+	/* 座標が範囲内か確認 */
+	if (DeletePos.x < 0 || DeletePos.x >= AREA_SIZE_BLOCK_X ||
+		DeletePos.y < 0 || DeletePos.y >= AREA_SIZE_BLOCK_Y ||
+		DeletePos.z < 0 || DeletePos.z >= AREA_SIZE_BLOCK_Z)
+	{
+		// 範囲外の場合
+		return;
+	}
+	/* オブジェクトを削除 */
+	this->pGoundObject[DeletePos.x][DeletePos.y][DeletePos.z] = nullptr;
 }

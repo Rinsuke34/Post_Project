@@ -48,7 +48,6 @@ void Ground_Model::Draw()
 	/* 透明度確認 */
 	if (OpacityRate > 0.f)
 	{
-		// 完全に透明でない場合
 		/* モデル描写 */
 		MV1DrawModel(this->iModelHandle);
 	}

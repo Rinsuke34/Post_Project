@@ -22,6 +22,7 @@ class DataList_Image : public DataList_Base
 
 		/* ゲッター */
 		std::vector<TEXTURE_DATA>& GetTextureDataList() { return this->TextureDataList; }		// テクスチャデータリスト取得
+		int iGetBlockID(std::string BlockName);													// ブロックのIDを取得
 
 	private:
 		/* 変数 */

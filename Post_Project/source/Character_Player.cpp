@@ -21,8 +21,8 @@ Character_Player::Character_Player() : Character_Base()
 
 	/* 初期化 */
 	this->AnimFileName	= "Test_Player";	// アニメーションファイル名
-//	this->NowMotionName	= "Delay";			// 現在のモーション名
-	this->NowMotionName = "Move";			// 現在のモーション名
+	this->NowMotionName	= "Delay";			// 現在のモーション名
+	//this->NowMotionName = "Move";			// 現在のモーション名
 	this->iMotionCount	= 0;
 
 	// パーツアニメーションセットアップ

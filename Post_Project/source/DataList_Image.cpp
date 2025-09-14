@@ -157,3 +157,27 @@ void DataList_Image::JsonLoad_Texture()
 		}
 	}
 }
+
+// ブロックのIDを取得
+int DataList_Image::iGetBlockID(std::string BlockName)
+{
+	// 引数
+	// BlockName	: ブロック名(ファイル名)
+	// 戻り値
+	// int			: ブロックのID(見つからなかった場合は-1を返す)
+
+	int iReturn = -1;
+
+	/* ブロック名からブロックIDを取得 */
+	for (auto& texData : this->GetTextureDataList())
+	{
+		if (texData.BlockName == BlockName)
+		{
+			// ブロック名が一致した場合
+			iReturn = texData.iBlockIndex;
+			break;
+		}
+	}
+
+	return iReturn;
+}

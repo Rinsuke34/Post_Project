@@ -9,8 +9,8 @@
 class DataList_GameStatus : public DataList_Base
 {
 	public:
-		DataList_GameStatus();			// コンストラクタ
-		virtual ~DataList_GameStatus();	// デストラクタ
+		DataList_GameStatus();				// コンストラクタ
+		virtual ~DataList_GameStatus() {};	// デストラクタ
 
 		/* セッター */
 		void SetPlayerPosition_WoldMap(VECTOR vecPosition)	{ this->vecPlayerPosition_WoldMap = vecPosition; }	// プレイヤーのワールドマップ座標の設定
@@ -21,4 +21,5 @@ class DataList_GameStatus : public DataList_Base
 	private:
 		/* 変数 */
 		VECTOR	vecPlayerPosition_WoldMap;	// プレイヤーのワールドマップ座標
+		
 };

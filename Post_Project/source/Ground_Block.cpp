@@ -16,12 +16,12 @@ Ground_Block::Ground_Block() : Ground_Base()
 		this->apiGrHandle[iIndex] = nullptr;
 	}
 	this->stBox.vecBoxCenter	= VGet(0.0f, 0.0f, 0.0f);
-	this->stBox.vecBoxHalfSize		= VGet(1.0f, 1.0f, 1.0f);
-
+	this->stBox.vecBoxHalfSize	= VGet(1.0f, 1.0f, 1.0f);
 	for (int iIndex = 0; iIndex < DIRECTION_MAX; ++iIndex)
 	{
 		this->bFaceDrawFlg[iIndex] = false;
 	}
+	this->iBlockId = 0;
 }
 
 // •`‰æ
@@ -41,9 +41,9 @@ void Ground_Block::Draw()
 	for (int i = 0; i < 8; ++i)
 	{
 		aVertex[i].dif	= GetColorU8(255, 255, 255, 255);
-		aVertex[i].spc	= GetColorU8(125, 125, 125, 255);
-		aVertex[i].su	= 0.f;
-		aVertex[i].sv	= 0.f;
+		aVertex[i].spc	= GetColorU8(0, 0, 0, 0);
+		aVertex[i].su	= 1.f;
+		aVertex[i].sv	= 1.f;
 	}
 
 	/* Še–Ê‚Ì•`‰æ */

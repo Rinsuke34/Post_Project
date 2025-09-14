@@ -31,15 +31,15 @@ class Scene_Stage : public Scene_Base
 	private:
 		/* 関数 */
 		// 読み込み関係
-		void	JsonLoad_WoldMap_Center();	// ワールドマップ読み込み(中央)
-		void	JsonLoad_DungeonMap();		// ダンジョンマップ読み込み
+		void	JsonLoad_WoldMap_Center();		// ワールドマップ読み込み(中央)
 		// 描写関係
 		void	DrawSetup_CameraPosition();		// カメラ設定
 		void	DrawSetup_ShadowMap();			// シャドウマップ作成
 		void	DrawSetup_Stage();				// ステージの描写
 		void	DrawSetup_Stage_StageCreate();	// ステージの描写(ステージクリエイト用)
+		// 設定関係
+		void	Setup_PlaceObject();			// オブジェクト配置
 		
-
 		/* 変数 */
 		// データリストへのポインタ
 		std::shared_ptr<DataList_Object>		pDataList_Object;		// オブジェクト管理

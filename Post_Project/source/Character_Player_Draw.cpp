@@ -23,8 +23,6 @@ void Character_Player::Draw()
 	DrawLine3D(VAdd(this->vecBasePosition, VGet(100.f, 0.f, 0.f)), VAdd(this->vecBasePosition, VGet(-100.f, 0.f, 0.f)), GetColor(255, 0, 0));
 	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 100.f, 0.f)), VAdd(this->vecBasePosition, VGet(0.f, -100.f, 0.f)), GetColor(0, 255, 0));
 	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 0.f, 100.f)), VAdd(this->vecBasePosition, VGet(0.f, 0.f, -100.f)), GetColor(0, 0, 255));
-
-	DrawTriangle3D(VAdd(this->vecBasePosition, VGet(0.f, 0.f, 0.f)), VAdd(this->vecBasePosition, VGet(50.f, 0.f, 0.f)), VAdd(this->vecBasePosition, VGet(0.f, 50.f, 0.f)), GetColor(255, 255, 0), TRUE);
 }
 
 // アニメーション描写

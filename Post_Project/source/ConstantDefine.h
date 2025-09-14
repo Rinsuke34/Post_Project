@@ -8,9 +8,9 @@ static const float MAP_BLOCK_SIZE_X = 64.f;		// X軸のマップタイルの大きさ
 static const float MAP_BLOCK_SIZE_Y = 32.f;		// Y軸のマップタイルの大きさ
 static const float MAP_BLOCK_SIZE_Z = 64.f;		// Z軸のマップタイルの大きさ
 // エリアサイズ
-static const int AREA_SIZE_BLOCK_X = 64;	// X軸のエリアの大きさ(ブロック数単位)
+static const int AREA_SIZE_BLOCK_X = 32;	// X軸のエリアの大きさ(ブロック数単位)
 static const int AREA_SIZE_BLOCK_Y = 8;		// X軸のエリアの大きさ(ブロック数単位)
-static const int AREA_SIZE_BLOCK_Z = 64;	// X軸のエリアの大きさ(ブロック数単位)
+static const int AREA_SIZE_BLOCK_Z = 32;	// X軸のエリアの大きさ(ブロック数単位)
 // エリア情報
 // ※エリアは9つで構成される(中心エリア+周囲8エリア)
 // エリア0 | エリア1 | エリア2

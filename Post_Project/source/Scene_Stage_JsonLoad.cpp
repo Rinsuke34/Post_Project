@@ -156,9 +156,9 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 
 		/* ポジションをワールド座標に変換 */
 		VECTOR vecPosition;
-		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2);
-		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2);
-		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2);
+		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].x;
+		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].y;
+		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].z;
 
 		/* 3Dモデルデータを作成 */
 		std::shared_ptr<Ground_Model> pGroundModel = std::make_shared<Ground_Model>();
@@ -189,9 +189,9 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 
 		/* ポジションをワールド座標に変換 */
 		VECTOR vecPosition;
-		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2);
-		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2);
-		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2);
+		vecPosition.x = data.vecPosition.x * MAP_BLOCK_SIZE_X + (MAP_BLOCK_SIZE_X / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].x;
+		vecPosition.y = data.vecPosition.y * MAP_BLOCK_SIZE_Y + (MAP_BLOCK_SIZE_Y / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].y;
+		vecPosition.z = data.vecPosition.z * MAP_BLOCK_SIZE_Z + (MAP_BLOCK_SIZE_Z / 2) + AREA_ORIGIN_POS[AREA_NO_CENTER].z;
 
 		/* マーカーデータを作成 */
 		std::shared_ptr<Ground_Marker> pMarker = std::make_shared<Ground_Marker>();
@@ -202,15 +202,4 @@ void Scene_Stage::JsonLoad_WoldMap_Center()
 		/* マーカー情報を保存 */
 		this->pDataList_Object->AddObject_Marker(pMarker, AREA_NO_CENTER);
 	}
-
-	/* プレイヤー追加(仮) */
-	std::shared_ptr<Character_Player> pPlayer = std::make_shared<Character_Player>();
-	pPlayer->SetPosition(VGet(6144.f, 300.f, 6144.f));
-	this->pDataList_Object->AddObject_Actor(pPlayer);
-}
-
-// ダンジョンマップ読み込み
-void Scene_Stage::JsonLoad_DungeonMap()
-{
-
 }

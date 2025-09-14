@@ -139,12 +139,6 @@
     <Filter Include="ソース ファイル\シーン\ステージ">
       <UniqueIdentifier>{7c377edb-8c7f-41b0-a833-d45a49c183f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\シーン\ステージ\Json読み込み">
-      <UniqueIdentifier>{07a73545-2dc6-4b48-8e4f-510a3783c531}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\シーン\ステージ\描写関係">
-      <UniqueIdentifier>{58292451-95f7-4aac-a863-af00de9009db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\シーン\ステージ">
       <UniqueIdentifier>{32a3caa8-9a80-47fa-a471-3c7c80ce88da}</UniqueIdentifier>
     </Filter>
@@ -198,12 +192,6 @@
     <ClCompile Include="source\Scene_GameMain.cpp">
       <Filter>ソース ファイル\シーン\ゲームメイン</Filter>
     </ClCompile>
-    <ClCompile Include="source\Scene_Stage_Draw.cpp">
-      <Filter>ソース ファイル\シーン\ステージ\描写関係</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Scene_Stage_JsonLoad.cpp">
-      <Filter>ソース ファイル\シーン\ステージ\Json読み込み</Filter>
-    </ClCompile>
     <ClCompile Include="source\Ground_Block.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック</Filter>
     </ClCompile>
@@ -230,6 +218,15 @@
     </ClCompile>
     <ClCompile Include="source\Ground_Marker.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Stage_JsonLoad.cpp">
+      <Filter>ソース ファイル\シーン\ステージ</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Stage_Setup.cpp">
+      <Filter>ソース ファイル\シーン\ステージ</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_Stage_Draw.cpp">
+      <Filter>ソース ファイル\シーン\ステージ</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

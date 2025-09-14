@@ -33,6 +33,9 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 		// 読み込まれている場合
 		/* ワールドマップ(中央)読み込み */
 		JsonLoad_WoldMap_Center();
+
+		/* オブジェクト初期設定 */
+		Setup_PlaceObject();
 	}
 }
 
@@ -61,4 +64,3 @@ void Scene_Stage::Update()
 		}
 	}
 }
-

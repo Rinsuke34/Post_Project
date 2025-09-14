@@ -24,7 +24,7 @@ void Scene_Stage::Draw()
 		/* ステージ描写 */
 		DrawSetup_Stage();
 
-		///* シャドウマップ描写 */
+		/* シャドウマップ描写 */
 		//TestDrawShadowMap(this->iScreenHandle_ShadowMap[0], 0, 0, 256, 256);
 		//TestDrawShadowMap(this->iScreenHandle_ShadowMap[1], 0, 256, 256, 512);
 	}
@@ -56,7 +56,7 @@ void Scene_Stage::DrawSetup_CameraPosition()
 
 	/* グローバルアンビエントライトカラーを赤色に設定 */
 	// ※デフォルトの黒色だと暗すぎるので赤色に変更
-	SetGlobalAmbientLight(GetColorF(0.5f, 0.5f, 0.5f, 1.0f));
+	SetGlobalAmbientLight(GetColorF(0.5f, 0.5f, 0.5f, 0.f));
 
 	/* ゲーム状態管理データリストが読み込まれているか確認 */
 	if (this->pDataList_GameStatus != nullptr)
@@ -67,7 +67,7 @@ void Scene_Stage::DrawSetup_CameraPosition()
 
 		/* カメラ設定 */
 		vecCameraTarget		= VAdd(vecPlayerPos,	VGet(0.f, 10.f, 0.f));
-		vecCameraPosition	= VAdd(vecCameraTarget, VGet(0.f, 1000.f, -500.f));
+		vecCameraPosition	= VAdd(vecCameraTarget, VGet(0.f, 500.f, -250.f));
 	}
 	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
 	else if (this->pDataList_StageCreate != nullptr)
@@ -119,7 +119,7 @@ void Scene_Stage::DrawSetup_ShadowMap()
 	{
 		/* ライト方向設定 */
 		// ※ ライトの方向は少し奥とする
-		SetShadowMapLightDirection(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND], VNorm(VGet(0.f, -1.f, 1.f)));
+		SetShadowMapLightDirection(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND], VNorm(VGet(1.f, -1.f, 1.f)));
 
 		/* シャドウマップの範囲指定 */
 		// ※ プレイヤー座標を中心に設定
@@ -158,7 +158,8 @@ void Scene_Stage::DrawSetup_Stage()
 	MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_NOT_SEMITRANS_ONLY);
 
 	/* オブジェクト描写(半透明部分を除く) */
-	this->pDataList_Object->Draw_All();
+	this->pDataList_Object->Draw_Ground();
+	this->pDataList_Object->Draw_Actor();
 
 	/* 描写に使用するシャドウマップの設定を解除 */
 	SetUseShadowMap(0, -1);

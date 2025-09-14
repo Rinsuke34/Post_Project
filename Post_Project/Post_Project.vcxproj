@@ -191,6 +191,7 @@
     <ClCompile Include="source\Scene_StageCreate.cpp" />
     <ClCompile Include="source\Scene_Stage_Draw.cpp" />
     <ClCompile Include="source\Scene_Stage_JsonLoad.cpp" />
+    <ClCompile Include="source\Scene_Stage_Setup.cpp" />
     <ClCompile Include="source\Scene_Title.cpp" />
   </ItemGroup>
   <ItemGroup>

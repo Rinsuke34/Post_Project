@@ -18,23 +18,26 @@ class Ground_Model : public Ground_Base
 		virtual void	Draw()			override;		// 描画
 
 		/* セッター */
-		void SetModelHandle(int iModelHandle)	{ this->iModelHandle	= iModelHandle; }	// モデルハンドルを設定
-		void SetPosition(VECTOR vecPosition)	{ this->vecPosition		= vecPosition; }	// オブジェクトの座標を設定
-		void SetRotation(VECTOR vecRotation)	{ this->vecRotation		= vecRotation; }	// オブジェクトの回転量を設定
-		void SetScale(VECTOR vecScale)			{ this->vecScale		= vecScale; }		// オブジェクトの拡大率を設定
+		void SetModelHandle(int iModelHandle)		{ this->iModelHandle	= iModelHandle; }	// モデルハンドルを設定
+		void SetPosition(VECTOR vecPosition)		{ this->vecPosition		= vecPosition; }	// オブジェクトの座標を設定
+		void SetRotation(VECTOR vecRotation)		{ this->vecRotation		= vecRotation; }	// オブジェクトの回転量を設定
+		void SetScale(VECTOR vecScale)				{ this->vecScale		= vecScale; }		// オブジェクトの拡大率を設定
+		void SetModelName(std::string ModelName)	{ this->ModelName		= ModelName; }		// モデル名(ファイル名)を設定
 
 		/* ゲッター */
 		int	GetModelHandle()					{ return this->iModelHandle; }			// モデルハンドルを取得
 		VECTOR	GetPosition()					{ return this->vecPosition; }			// オブジェクトの座標を取得
 		VECTOR	GetRotation()					{ return this->vecRotation; }			// オブジェクトの回転量を取得
 		VECTOR	GetScale()						{ return this->vecScale; }				// オブジェクトの拡大率を取得
+		std::string	GetModelName()				{ return this->ModelName; }				// モデル名(ファイル名)を取得
 
 	private:
 		/* 変数 */
-		int iModelHandle;				// モデルハンドル
-		VECTOR	vecPosition;			// オブジェクトの座標
-		VECTOR	vecRotation;			// オブジェクトの回転量
-		VECTOR	vecScale;				// オブジェクトの拡大率(x,y,z方向それぞれの拡大倍率)
+		int			iModelHandle;		// モデルハンドル
+		VECTOR		vecPosition;		// オブジェクトの座標
+		VECTOR		vecRotation;		// オブジェクトの回転量
+		VECTOR		vecScale;			// オブジェクトの拡大率(x,y,z方向それぞれの拡大倍率)
+		std::string	ModelName;			// モデル名(ファイル名)
 
 		/* 関数 */
 		void SetUpCollision();			// コリジョンの設定
