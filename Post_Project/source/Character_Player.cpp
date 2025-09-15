@@ -12,25 +12,19 @@
 // コンストラクタ
 Character_Player::Character_Player() : Character_Base()
 {
-	// データリスト取得
-	this->pDataList_GameStatus				= std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));							// ゲーム状態管理
-	this->pDataList_2DPartsAnimCreateTool	= std::dynamic_pointer_cast<DataList_2DPartsAnimCreateTool>(gpDataListServer->GetDataList("DataList_2DPartsAnimCreateTool"));	// 2Dパーツアニメーションツール
-
-	// 画像データ作成
-	this->iScreenHandle_Animation	= MakeScreen(CHARACTER_PARTS_ANIM_DRAW_SIZE_WIDE, CHARACTER_PARTS_ANIM_DRAW_SIZE_HEIGHT, TRUE);
-
 	/* 初期化 */
-	this->AnimFileName	= "Test_Player";	// アニメーションファイル名
-	this->NowMotionName	= "Delay";			// 現在のモーション名
-	//this->NowMotionName = "Move";			// 現在のモーション名
-	this->iMotionCount	= 0;
+	this->iMotionCount		= 0;
+	this->bMotionLoopFlg	= true;
 
+	/* アニメーション初期設定 */
+	// アニメーション設定
+	this->AnimFileName		= "Test_Player";
+	this->NowMotionName		= "Delay";
 	// パーツアニメーションセットアップ
 	this->pDataList_2DPartsAnimCreateTool->LoadPartsAnimData(this->AnimFileName);
-	
-	/* コリジョン設定 */
-	// ※仮設定
-	this->stBox.vecBoxHalfSize	= VGet(64 / 2, 32 / 2, 64 / 2);
+
+	/* チームタグ設定 */
+	this->SetTeamTag("Player");
 
 	/* ステータス関係 */
 	// ※仮設定
@@ -40,9 +34,7 @@ Character_Player::Character_Player() : Character_Base()
 // デストラクタ
 Character_Player::~Character_Player()
 {
-	/* 画像データ削除 */
-	// アニメーション用
-	DeleteGraph(this->iScreenHandle_Animation);
+	
 }
 
 // 更新
@@ -59,5 +51,5 @@ void Character_Player::Update()
 	Character_Base::Update();
 
 	/* アニメーションの更新 */
-	Update_Animation();
+	Character_Base::Update_Animation();
 }

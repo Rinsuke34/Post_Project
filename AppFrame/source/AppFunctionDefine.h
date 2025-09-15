@@ -36,6 +36,7 @@ namespace PUBLIC_PROCESS
 	std::string	aShiftJisToUtf8(std::string ShiftJis);																					// Shift-JIS → UTF-8 変換
 	std::string	aCutShitfJisString(std::string ShiftJis, int iLength);																	// Shift-JIS文字列を指定文字数でカット
 	std::string aInsertNewLine(std::string ShiftJis, int iLength);																		// Shift-JIS文字列を指定文字数で改行
+	bool		bIsFloatDiffWithinThreshold(float fA, float fB, float fThreshold);														// 2つのfloat型の値の差が閾値以内であるか確認
 }
 
 // 汎用機能系

@@ -12,7 +12,9 @@
 // コンストラクタ
 Ground_Base::Ground_Base() : Object_Base()
 {
-
+	/* 初期化 */
+	this->stBox.vecBoxCenter	= VGet(0.0f, 0.0f, 0.0f);
+	this->stBox.vecBoxHalfSize	= VGet(0.f, 0.f, 0.f);
 }
 
 // コリジョン接触判定
@@ -71,8 +73,8 @@ bool Ground_Base::HitCheck(Struct_Collision::COLLISION_LINE stLine)
 	// bool		: 接触している(true) / 接触していない(false)
 
 	// ボックスの各軸の最小値と最大値を配列で取得
-	float boxCenter[3] = { this->stBox.vecBoxCenter.x, this->stBox.vecBoxCenter.y, this->stBox.vecBoxCenter.z };
-	float boxSize[3] = { this->stBox.vecBoxHalfSize.x,   this->stBox.vecBoxHalfSize.y,   this->stBox.vecBoxHalfSize.z };
+	float boxCenter[3]	= { this->stBox.vecBoxCenter.x,		this->stBox.vecBoxCenter.y,		this->stBox.vecBoxCenter.z };
+	float boxSize[3]	= { this->stBox.vecBoxHalfSize.x,   this->stBox.vecBoxHalfSize.y,   this->stBox.vecBoxHalfSize.z };
 	float boxMin[3], boxMax[3];
 	for (int i = 0; i < 3; ++i)
 	{
@@ -81,9 +83,9 @@ bool Ground_Base::HitCheck(Struct_Collision::COLLISION_LINE stLine)
 	}
 
 	// 線分の始点・終点・方向ベクトルを配列で取得
-	float start[3] = { stLine.vecLineStart.x, stLine.vecLineStart.y, stLine.vecLineStart.z };
-	float end[3] = { stLine.vecLineEnd.x,   stLine.vecLineEnd.y,   stLine.vecLineEnd.z };
-	float dir[3] = { end[0] - start[0], end[1] - start[1], end[2] - start[2] };
+	float start[3]	= { stLine.vecLineStart.x, stLine.vecLineStart.y, stLine.vecLineStart.z };
+	float end[3]	= { stLine.vecLineEnd.x,   stLine.vecLineEnd.y,   stLine.vecLineEnd.z };
+	float dir[3]	= { end[0] - start[0], end[1] - start[1], end[2] - start[2] };
 
 	float tmin = 0.0f;
 	float tmax = 1.0f;
@@ -133,7 +135,7 @@ bool Ground_Base::HitCheck(Struct_Collision::COLLISION_BOX stBox)
 	if (std::abs(VSquareSize(VSub(stBox.vecBoxCenter, this->stBox.vecBoxCenter))) > COLLISION_CHECK_DISTANCE)
 	{
 		// 判定を行う距離外である場合は接触していないとみなす
-		return false;
+//		return false;
 	}
 
 	// 自身のボックスの最小・最大座標を取得
@@ -189,29 +191,29 @@ VECTOR Ground_Base::HitPosition(Struct_Collision::COLLISION_LINE stLine)
 	// VECTOR	: 接触した座標(最もStartに近い点) / 接触していない場合はEnd座標(終点)を返す
 
 	// ボックスの各軸の最小値と最大値を配列で取得
-	float boxCenter[3]	= { this->stBox.vecBoxCenter.x,		this->stBox.vecBoxCenter.y,		this->stBox.vecBoxCenter.z };
-	float boxSize[3]	= { this->stBox.vecBoxHalfSize.x,	this->stBox.vecBoxHalfSize.y,	this->stBox.vecBoxHalfSize.z };
-	float boxMin[3], boxMax[3];
-	for (int i = 0; i < 3; ++i)
+	float fBoxCenter[3]	= { this->stBox.vecBoxCenter.x, this->stBox.vecBoxCenter.y, this->stBox.vecBoxCenter.z };
+	float fBoxSize[3]	= { this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxHalfSize.z };
+	float fBoxMin[3], fBoxMax[3];
+	for (int iAxis = 0; iAxis < 3; ++iAxis)
 	{
-		boxMin[i] = boxCenter[i] - boxSize[i] / 2.0f;
-		boxMax[i] = boxCenter[i] + boxSize[i] / 2.0f;
+		fBoxMin[iAxis] = fBoxCenter[iAxis] - fBoxSize[iAxis] / 2.0f;
+		fBoxMax[iAxis] = fBoxCenter[iAxis] + fBoxSize[iAxis] / 2.0f;
 	}
 
 	// 線分の始点・終点・方向ベクトルを配列で取得
-	float start[3] = { stLine.vecLineStart.x, stLine.vecLineStart.y, stLine.vecLineStart.z };
-	float end[3] = { stLine.vecLineEnd.x, stLine.vecLineEnd.y, stLine.vecLineEnd.z };
-	float dir[3] = { end[0] - start[0], end[1] - start[1], end[2] - start[2] };
+	float fStart[3]	= { stLine.vecLineStart.x, stLine.vecLineStart.y, stLine.vecLineStart.z };
+	float fEnd[3]	= { stLine.vecLineEnd.x,   stLine.vecLineEnd.y,   stLine.vecLineEnd.z };
+	float fDir[3]	= { fEnd[0] - fStart[0], fEnd[1] - fStart[1], fEnd[2] - fStart[2] };
 
-	float tmin = 0.0f;
-	float tmax = 1.0f;
+	float fTmin = 0.0f;
+	float fTmax = 1.0f;
 
 	// スラブ法で交差判定とtmin算出
-	for (int i = 0; i < 3; ++i)
+	for (int iAxis = 0; iAxis < 3; ++iAxis)
 	{
-		if (fabs(dir[i]) < 1e-6f)
+		if (fabs(fDir[iAxis]) < 1e-6f)
 		{
-			if (start[i] < boxMin[i] || start[i] > boxMax[i])
+			if (fStart[iAxis] < fBoxMin[iAxis] || fStart[iAxis] > fBoxMax[iAxis])
 			{
 				// 交差しない
 				return stLine.vecLineStart;
@@ -219,16 +221,16 @@ VECTOR Ground_Base::HitPosition(Struct_Collision::COLLISION_LINE stLine)
 		}
 		else
 		{
-			float ood = 1.0f / dir[i];
-			float t1 = (boxMin[i] - start[i]) * ood;
-			float t2 = (boxMax[i] - start[i]) * ood;
-			if (t1 > t2)
+			float fOod = 1.0f / fDir[iAxis];
+			float fT1 = (fBoxMin[iAxis] - fStart[iAxis]) * fOod;
+			float fT2 = (fBoxMax[iAxis] - fStart[iAxis]) * fOod;
+			if (fT1 > fT2)
 			{
-				std::swap(t1, t2);
+				std::swap(fT1, fT2);
 			}
-			tmin = std::max(tmin, t1);
-			tmax = std::min(tmax, t2);
-			if (tmin > tmax)
+			fTmin = std::max(fTmin, fT1);
+			fTmax = std::min(fTmax, fT2);
+			if (fTmin > fTmax)
 			{
 				// 交差しない
 				return stLine.vecLineStart;
@@ -236,14 +238,14 @@ VECTOR Ground_Base::HitPosition(Struct_Collision::COLLISION_LINE stLine)
 		}
 	}
 
-	// tminが0～1の範囲なら交点あり
-	if (tmin >= 0.0f && tmin <= 1.0f)
+	// fTminが0～1の範囲なら交点あり
+	if (fTmin >= 0.0f && fTmin <= 1.0f)
 	{
-		VECTOR hitPos;
-		hitPos.x = start[0] + dir[0] * tmin;
-		hitPos.y = start[1] + dir[1] * tmin;
-		hitPos.z = start[2] + dir[2] * tmin;
-		return hitPos;
+		VECTOR vecHitPos;
+		vecHitPos.x = fStart[0] + fDir[0] * fTmin;
+		vecHitPos.y = fStart[1] + fDir[1] * fTmin;
+		vecHitPos.z = fStart[2] + fDir[2] * fTmin;
+		return vecHitPos;
 	}
 	else
 	{

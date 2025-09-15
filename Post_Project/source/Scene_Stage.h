@@ -40,7 +40,10 @@ class Scene_Stage : public Scene_Base
 		void	DrawSetup_Stage();				// ステージの描写
 		void	DrawSetup_Stage_StageCreate();	// ステージの描写(ステージクリエイト用)
 		// 設定関係
-		void	Setup_PlaceObject();			// オブジェクト配置
+		void	Setup_LoadMarker_CenterArea();	// マーカー情報読み込み(中央エリア)
+		void	Setup_LoadMarker_SideArea();	// マーカー情報読み込み(外側エリア)
+		void	Setup_PlaceObject_CenterArea();	// オブジェクト配置(中央エリア)
+		void	Setup_PlaceObject_SideArea();	// オブジェクト配置(外側エリア)
 		
 		/* 変数 */
 		// データリストへのポインタ

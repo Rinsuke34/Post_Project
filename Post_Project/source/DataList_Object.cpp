@@ -7,6 +7,7 @@
 #include "Object_Base.h"
 #include "Ground_Base.h"
 #include "Actor_Base.h"
+#include "Ground_Model.h"
 
 // コンストラクタ
 DataList_Object::DataList_Object() : DataList_Base("DataList_Object")
@@ -26,6 +27,7 @@ void DataList_Object::InitialSetup_All()
 {
 	InitialSetup_Ground();
 	InitialSetup_Actor();
+	InitialSetup_Building();
 }
 
 // 地形
@@ -49,12 +51,22 @@ void DataList_Object::InitialSetup_Actor()
 	}
 }
 
+// 建造物
+void DataList_Object::InitialSetup_Building()
+{
+	for (auto& BuildingList : this->pBuildingList)
+	{
+		BuildingList->InitialSetup();
+	}
+}
+
 /* オブジェクト更新 */
 // すべてのオブジェクト
 void DataList_Object::Update_All()
 {
 	Update_Ground();
 	Update_Actor();
+	Update_Building();
 }
 
 // 地形
@@ -78,12 +90,22 @@ void DataList_Object::Update_Actor()
 	}
 }
 
+// 建造物
+void DataList_Object::Update_Building()
+{
+	for (auto& BuildingList : this->pBuildingList)
+	{
+		BuildingList->Update();
+	}
+}
+
 /* オブジェクト描画 */
 // すべてのオブジェクト
 void DataList_Object::Draw_All()
 {
 	Draw_Ground();
 	Draw_Actor();
+	Draw_Building();
 }
 
 // 地形
@@ -107,12 +129,22 @@ void DataList_Object::Draw_Actor()
 	}
 }
 
+// 建造物
+void DataList_Object::Draw_Building()
+{
+	for (auto& BuildingList : this->pBuildingList)
+	{
+		BuildingList->Draw();
+	}
+}
+
 // オブジェクト描写(シャドウマップ用)
 // すべてのオブジェクト
 void DataList_Object::Draw_All_Shadow()
 {
 	Draw_Ground_Shadow();
 	Draw_Actor_Shadow();
+	Draw_Building_Shadow();
 }
 
 // 地形
@@ -136,12 +168,22 @@ void DataList_Object::Draw_Actor_Shadow()
 	}
 }
 
+// 建造物
+void DataList_Object::Draw_Building_Shadow()
+{
+	for (auto& BuildingList : this->pBuildingList)
+	{
+		BuildingList->Draw_Shadow();
+	}
+}
+
 // オブジェクト描写(当たり判定)
 // すべてのオブジェクト
 void DataList_Object::Draw_All_Collision()
 {
 	Draw_Ground_Collision();
 	Draw_Actor_Collision();
+	Draw_Building_Collision();
 }
 
 // 地形
@@ -165,12 +207,22 @@ void DataList_Object::Draw_Actor_Collision()
 	}
 }
 
+// 建造物
+void DataList_Object::Draw_Building_Collision()
+{
+	for (auto& BuildingList : this->pBuildingList)
+	{
+		BuildingList->Draw_Collision();
+	}
+}
+
 /* 削除フラグが有効なオブジェクト削除 */
 // すべてのオブジェクト
 void DataList_Object::DeleteFlagged_AllObject()
 {
 	DeleteFlagged_AllGround();
 	DeleteFlagged_AllActor();
+	DeleteFlagged_AllBuilding();
 }
 
 // 地形
@@ -207,5 +259,22 @@ void DataList_Object::DeleteFlagged_AllActor()
 			}
 		),
 		pActorList.end()
+	);
+}
+
+// 建造物
+void DataList_Object::DeleteFlagged_AllBuilding()
+{
+	this->pBuildingList.erase(
+		std::remove_if(
+			pBuildingList.begin(),
+			pBuildingList.end(),
+			[](const std::shared_ptr<Ground_Model>& pBuilding)
+			{
+				// 削除フラグが有効であるか確認
+				return pBuilding && pBuilding->bGetDeleteFlg();
+			}
+		),
+		pBuildingList.end()
 	);
 }

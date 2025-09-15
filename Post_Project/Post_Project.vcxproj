@@ -170,7 +170,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Actor_Base.cpp" />
+    <ClCompile Include="source\Building_CoreTree.cpp" />
     <ClCompile Include="source\Character_Base.cpp" />
+    <ClCompile Include="source\Character_Enemy_Slime_Blue.cpp" />
     <ClCompile Include="source\Character_Player.cpp" />
     <ClCompile Include="source\Character_Player_Draw.cpp" />
     <ClCompile Include="source\Character_Player_Move.cpp" />
@@ -201,7 +203,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Actor_Base.h" />
+    <ClInclude Include="source\Building_CoreTree.h" />
     <ClInclude Include="source\Character_Base.h" />
+    <ClInclude Include="source\Character_Enemy_Slime_Blue.h" />
     <ClInclude Include="source\Character_Player.h" />
     <ClInclude Include="source\ConstantDefine.h" />
     <ClInclude Include="source\DataList_GameStatus.h" />

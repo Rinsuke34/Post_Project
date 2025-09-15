@@ -5,7 +5,7 @@
 /* ƒ}ƒbƒvŒn */
 // ƒuƒƒbƒNƒTƒCƒY
 static const float MAP_BLOCK_SIZE_X = 64.f;		// XŽ²‚Ìƒ}ƒbƒvƒ^ƒCƒ‹‚Ì‘å‚«‚³
-static const float MAP_BLOCK_SIZE_Y = 32.f;		// YŽ²‚Ìƒ}ƒbƒvƒ^ƒCƒ‹‚Ì‘å‚«‚³
+static const float MAP_BLOCK_SIZE_Y = 64.f;		// YŽ²‚Ìƒ}ƒbƒvƒ^ƒCƒ‹‚Ì‘å‚«‚³
 static const float MAP_BLOCK_SIZE_Z = 64.f;		// ZŽ²‚Ìƒ}ƒbƒvƒ^ƒCƒ‹‚Ì‘å‚«‚³
 // ƒGƒŠƒAƒTƒCƒY
 static const int AREA_SIZE_BLOCK_X = 35;	// XŽ²‚ÌƒGƒŠƒA‚Ì‘å‚«‚³(ƒuƒƒbƒN”’PˆÊ)
@@ -34,12 +34,18 @@ static const VECTOR AREA_ORIGIN_POS[AREA_NO_MAX] =
 // ƒ[ƒ‹ƒhƒ}ƒbƒv‚ÌŽí—Þ
 static const int WOLD_MAP_TYPE_CENTER	= 0;	// ’†SƒGƒŠƒA
 static const int WOLD_MAP_TYPE_SIDE		= 1;	// ƒTƒCƒhƒGƒŠƒA
+// ƒ‹[ƒgŒŸõŠÖ˜A
+static const float	ROUTE_SEARCH_MOVE_DISTANCE		= 64.f;	// ƒ‹[ƒgŒŸõŽž‚Ì1ƒXƒeƒbƒv‚ÌˆÚ“®‹——£
+static const int	ROUTE_SEARCH_MOVE_COST_DEFAULT	= 10;	// ƒ‹[ƒgŒŸõŽž‚Ì•W€‚ÌƒRƒXƒg
+static const int	ROUTE_SEARCH_MOVE_COST_DIAG		= 15;	// ƒ‹[ƒgŒŸõŽž‚ÌŽÎ‚ßˆÚ“®‚ÌƒRƒXƒg
+static const int	ROUTE_SEARCH_MOVE_COST_YCHANGE	= 20;	// ƒ‹[ƒgŒŸõŽž‚Ì‚‚³•ÏX‚ÌƒRƒXƒg
+
 
 /* “–‚½‚è”»’èŒn */
-static float COLLISION_CHECK_DISTANCE			= 40000.f;	// “–‚½‚è”»’è‚ðs‚¤’¼ü‹——£(¦Še’¸“_‚Ì“ñæ‚Ì‹——£‚ª‚±‚ê‚æ‚è‘å‚«‚¢‚È‚ç”ñÚG‚Æ”»’è‚·‚é)
-static float COLLISION_CHECK_CEILING_PREVENTION = 20.f;		// “Vˆä‚·‚è‚Ê‚¯–hŽ~—p‚Ì•â³’l
-static float COLLISION_CHECK_FLOOR_MARGIN		= -20.f;	// ‰¡•ûŒü‚Ö‚ÌˆÚ“®Žž‚É°‚É‘Î‚·‚éŒë”»’è–hŽ~—p‚Ì•â³’l
-static float COLLISION_PUSH_MAX_LOOP			= 10;		// ‰Ÿ‚µo‚µ”»’è‚ÌÅ‘åƒ‹[ƒv‰ñ”(–³ŒÀƒ‹[ƒv‘Îô)
+static float COLLISION_CHECK_DISTANCE			= 50000.f;				// “–‚½‚è”»’è‚ðs‚¤’¼ü‹——£(¦Še’¸“_‚Ì“ñæ‚Ì‹——£‚ª‚±‚ê‚æ‚è‘å‚«‚¢‚È‚ç”ñÚG‚Æ”»’è‚·‚é)
+static float COLLISION_CHECK_CEILING_PREVENTION = MAP_BLOCK_SIZE_Y / 2;	// “Vˆä‚·‚è‚Ê‚¯–hŽ~—p‚Ì•â³’l
+static float COLLISION_CHECK_FLOOR_MARGIN		= -20.f;				// ‰¡•ûŒü‚Ö‚ÌˆÚ“®Žž‚É°‚É‘Î‚·‚éŒë”»’è–hŽ~—p‚Ì•â³’l
+static float COLLISION_PUSH_MAX_LOOP			= 10;					// ‰Ÿ‚µo‚µ”»’è‚ÌÅ‘åƒ‹[ƒv‰ñ”(–³ŒÀƒ‹[ƒv‘Îô)
 
 /* •`ŽÊŒn */
 // ƒVƒƒƒhƒEƒ}ƒbƒvŠÖ˜A
@@ -52,3 +58,10 @@ static const int CHARACTER_PARTS_ANIM_DRAW_SIZE_WIDE	= 256;	// ƒLƒƒƒ‰ƒNƒ^[‚Ìƒp
 static const int CHARACTER_PARTS_ANIM_DRAW_SIZE_HEIGHT	= 256;	// ƒLƒƒƒ‰ƒNƒ^[‚Ìƒp[ƒcƒAƒjƒ[ƒVƒ‡ƒ“—p‰æ‘œ‚Ìc•
 // Œ©‰º‚ë‚µŽ‹“_‚Å‚Ì‚Ì‚¯‚¼‚è—Ê
 static const float TOPVIEW_LEAN_AMOUNT			= 150.f;	// Œ©‰º‚ë‚µŽ‹“_‚Å‚Ì‚Ì‚¯‚¼‚è—Ê
+
+/* ƒIƒuƒWƒFƒNƒgŒn */
+// ƒGƒlƒ~[‚ÌƒXƒ|[ƒ“ƒ|ƒCƒ“ƒg‚ÌŽí—Þ
+static const int ENEMY_SPAWN_POINT_TYPE_PLAIN	= 0;	// •½Œ´
+static const int ENEMY_SPAWN_POINT_TYPE_ROCKY	= 1;	// Šâê
+static const int ENEMY_SPAWN_POINT_TYPE_DESERT	= 2;	// »”™
+

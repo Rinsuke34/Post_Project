@@ -12,6 +12,7 @@
 class Ground_Base;
 class Ground_Marker;
 class Actor_Base;
+class Ground_Model;
 
 // データリスト"オブジェクト管理"クラス
 class DataList_Object : public DataList_Base
@@ -22,44 +23,52 @@ class DataList_Object : public DataList_Base
 
 		/* 関数 */
 		// リスト内オブジェクト初期化
-		void	InitialSetup_All();		// すべてのオブジェクト
-		void	InitialSetup_Ground();	// 地形
-		void	InitialSetup_Actor();	// アクター
+		void	InitialSetup_All();			// すべてのオブジェクト
+		void	InitialSetup_Ground();		// 地形
+		void	InitialSetup_Actor();		// アクター
+		void	InitialSetup_Building();	// 建造物
 
 		// オブジェクト更新
 		void	Update_All();			// すべてのオブジェクト
 		void	Update_Ground();		// 地形
 		void	Update_Actor();			// アクター
+		void	Update_Building();		// 建造物
 
 		// オブジェクト描画
 		void	Draw_All();				// すべてのオブジェクト
 		void	Draw_Ground();			// 地形
 		void	Draw_Actor();			// アクター
+		void	Draw_Building();		// 建造物
 
 		// オブジェクト描写(シャドウマップ用)
 		void	Draw_All_Shadow();		// すべてのオブジェクト
 		void	Draw_Ground_Shadow();	// 地形
 		void	Draw_Actor_Shadow();	// アクター
+		void	Draw_Building_Shadow();	// 建造物
 
 		// オブジェクト描写(当たり判定)
 		void	Draw_All_Collision();		// すべてのオブジェクト
 		void	Draw_Ground_Collision();	// 地形
 		void	Draw_Actor_Collision();		// アクター
+		void	Draw_Building_Collision();	// 建造物
 
 		// 削除フラグが有効なオブジェクト削除
 		void	DeleteFlagged_AllObject();		// すべてのオブジェクト
 		void	DeleteFlagged_AllGround();		// 地形
 		void	DeleteFlagged_AllActor();		// アクター
+		void	DeleteFlagged_AllBuilding();	// 建造物
 
 		/* セッター */
 		void	AddObject_Ground(std::shared_ptr<Ground_Base> pGround, int iAreaNo)		{ this->pGroundList[iAreaNo].push_back(pGround); };	// 指定エリアの地形追加
 		void	AddObject_Marker(std::shared_ptr<Ground_Marker> pMarker, int iAreaNo)	{ this->pMarkerList[iAreaNo].push_back(pMarker); };	// 指定エリアのマーカー追加
 		void	AddObject_Actor(std::shared_ptr<Actor_Base> pActor)						{ this->pActorList.push_back(pActor); };			// アクター追加
+		void	AddObject_Building(std::shared_ptr<Ground_Model> pBuilding)				{ this->pBuildingList.push_back(pBuilding); };		// 建造物追加
 
 		/* ゲッター */
 		std::vector<std::shared_ptr<Ground_Base>>&		GetGroundList(int iAreaNo)	{ return this->pGroundList[iAreaNo]; }	// 指定エリアの地形リスト取得
 		std::vector<std::shared_ptr<Ground_Marker>>&	GetMarkerList(int iAreaNo)	{ return this->pMarkerList[iAreaNo]; }	// 指定エリアのマーカーリスト取得
 		std::vector<std::shared_ptr<Actor_Base>>&		GetActorList()				{ return this->pActorList; }			// アクタリスト取得
+		std::vector<std::shared_ptr<Ground_Model>>&		GetBuildingList()			{ return this->pBuildingList; }			// 建造物リスト取得
 
 	private:
 		/* 変数 */
@@ -67,4 +76,5 @@ class DataList_Object : public DataList_Base
 		std::vector<std::shared_ptr<Ground_Base>>	pGroundList[AREA_NO_MAX];		// 地形リスト[エリア番号]
 		std::vector<std::shared_ptr<Ground_Marker>> pMarkerList[AREA_NO_MAX];		// マーカーリスト
 		std::vector<std::shared_ptr<Actor_Base>>	pActorList;						// アクターリスト
+		std::vector<std::shared_ptr<Ground_Model>>	pBuildingList;					// 建造物リスト
 };

@@ -12,7 +12,7 @@ Ground_Model::Ground_Model() : Ground_Base()
 
 	this->vecPosition		= VGet(0.f, 0.f, 0.f);		// オブジェクトの座標
 	this->vecRotation		= VGet(0.f, 0.f, 0.f);		// オブジェクトの回転量
-	this->vecScale			= VGet(0.f, 0.f, 0.f);		// オブジェクトの拡大率(x,y,z方向それぞれの拡大倍率)
+	this->vecScale			= VGet(1.f, 1.f, 1.f);		// オブジェクトの拡大率(x,y,z方向それぞれの拡大倍率)
 }
 
 // デストラクタ
@@ -34,9 +34,6 @@ void Ground_Model::InitialSetup()
 
 	/* 拡大率設定 */
 	MV1SetScale(this->iModelHandle, this->vecScale);
-
-	/* 更新(コリジョン情報) */
-	SetUpCollision();
 }
 
 // 描画
@@ -51,11 +48,4 @@ void Ground_Model::Draw()
 		/* モデル描写 */
 		MV1DrawModel(this->iModelHandle);
 	}
-}
-
-// コリジョンの設定
-void Ground_Model::SetUpCollision()
-{
-	this->stBox.vecBoxCenter	= this->vecPosition;
-	this->stBox.vecBoxHalfSize	= { 0.f, 0.f, 0.f };
 }

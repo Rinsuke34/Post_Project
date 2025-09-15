@@ -316,3 +316,8 @@ std::string PUBLIC_PROCESS::aInsertNewLine(std::string ShiftJis, int iLength)
 	return ShiftJis;
 }
 
+// 2つのfloat型の値の差が閾値以内であるか確認
+bool PUBLIC_PROCESS::bIsFloatDiffWithinThreshold(float fA, float fB, float fThreshold)
+{
+	return fabsf(fA - fB) <= fThreshold;
+}

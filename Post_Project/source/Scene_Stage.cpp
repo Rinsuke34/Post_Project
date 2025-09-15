@@ -37,19 +37,23 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 
 		/* ワールドマップ(中央)読み込み */
 		JsonLoad_WoldMap(AREA_NO_CENTER, "AreaData_Front");
-//		JsonLoad_WoldMap_Center();
 
-		JsonLoad_WoldMap(0, "AreaData_Plain");
-		JsonLoad_WoldMap(1, "AreaData_Plain");
+		JsonLoad_WoldMap(0, "AreaData_Rocky");
+		JsonLoad_WoldMap(1, "AreaData_Rocky");
 		JsonLoad_WoldMap(2, "AreaData_Plain");
 		JsonLoad_WoldMap(3, "AreaData_Plain");
 		JsonLoad_WoldMap(5, "AreaData_Plain");
 		JsonLoad_WoldMap(6, "AreaData_Plain");
-		JsonLoad_WoldMap(7, "AreaData_Plain");
-		JsonLoad_WoldMap(8, "AreaData_Plain");
+		JsonLoad_WoldMap(7, "AreaData_Desert");
+		JsonLoad_WoldMap(8, "AreaData_Desert");
 
-		/* オブジェクト初期設定 */
-		Setup_PlaceObject();
+		/* マーカー情報読み込み */
+		Setup_LoadMarker_CenterArea();
+		Setup_LoadMarker_SideArea();
+
+		/* オブジェクト配置 */
+		Setup_PlaceObject_CenterArea();
+		Setup_PlaceObject_SideArea();
 	}
 }
 

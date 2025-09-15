@@ -46,4 +46,23 @@ struct WOLD_MAP_DATA
 	int			iMapType;		// マップの種類(0:中央、1:外側)
 };
 
+// エネミースポーンポイント情報
+struct ENEMY_SPAWN_POINT_DATA
+{
+	VECTOR		vecPosition;	// 座標
+	int			iPointType;		// ポイントの種類(0:平地、1:岩場、2:砂漠)
+};
 
+// 評価リスト(A*アルゴリズム用)
+struct ASTAR_EVALUATION_LIST
+{
+	bool bStartNodeFlg;			// このノードがスタート位置であるかのフラグ
+	bool bGoalNodeFlg;			// このノードがゴール位置であるかのフラグ
+	int iCost_G;				// Gコスト(開始地点からの移動コスト)
+	int iCost_H;				// Hコスト(目的地点までの推定コスト)
+	int iCost_F;				// Fコスト(Gコスト + Hコスト)
+	bool bOpenListFlg;			// オープンリストに登録されているかのフラグ
+	bool bCloseListFlg;			// クローズリストに登録されているかのフラグ
+	VECTOR vecPosition;			// ノードの座標
+	VECTOR vecParentPosition;	// 親ノードの座標
+};

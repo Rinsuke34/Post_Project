@@ -119,7 +119,7 @@ void Scene_Stage::DrawSetup_ShadowMap()
 	{
 		/* ライト方向設定 */
 		// ※ ライトの方向は少し奥とする
-		SetShadowMapLightDirection(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND], VNorm(VGet(0.5f, -1.f, 1.f)));
+		SetShadowMapLightDirection(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND], VNorm(VGet(0.1f, -1.f, 0.1f)));
 
 		/* シャドウマップの範囲指定 */
 		// ※ プレイヤー座標を中心に設定
@@ -160,6 +160,7 @@ void Scene_Stage::DrawSetup_Stage()
 	/* オブジェクト描写(半透明部分を除く) */
 	this->pDataList_Object->Draw_Ground();
 	this->pDataList_Object->Draw_Actor();
+	this->pDataList_Object->Draw_Building();
 
 	/* 描写に使用するシャドウマップの設定を解除 */
 	SetUseShadowMap(0, -1);
@@ -171,6 +172,11 @@ void Scene_Stage::DrawSetup_Stage()
 	/* オブジェクト描写(半透明部分のみ) */
 	// ※ 地形を描写してしまうとシャドウマップが適用されなくなるので描写しない
 	this->pDataList_Object->Draw_Actor();
+	this->pDataList_Object->Draw_Building();
+
+	/* デバッグ用コリジョン描写 */
+	this->pDataList_Object->Draw_Actor_Collision();
+	this->pDataList_Object->Draw_Building_Collision();
 
 	/* メイン画面への描写を終了 */
 	SetDrawScreen(DX_SCREEN_BACK);

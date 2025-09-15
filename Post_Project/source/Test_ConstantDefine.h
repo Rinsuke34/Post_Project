@@ -5,5 +5,5 @@
 
 // プレイヤー
 static const float	TEST_GRAVITY_ACCELERATION	= 0.5f;	// 重力加速度
-static const float	TEST_JUMP_GRAVITY_VELOCITY	= 15.f; // ジャンプ時の落下速度加算量
+static const float	TEST_JUMP_GRAVITY_VELOCITY	= 10.f; // ジャンプ時の落下速度加算量
 static const int	TEST_PLAYER_MOVE_SPEED		= 10;	// プレイヤーの移動速度

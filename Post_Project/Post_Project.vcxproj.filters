@@ -82,24 +82,6 @@
     <Filter Include="ソース ファイル\データリスト\ゲーム状態管理">
       <UniqueIdentifier>{c3889014-d78c-4b02-989d-8131378571c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29">
-      <UniqueIdentifier>{0afc8a32-3713-4a81-8e1f-b9c110a71d22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル">
-      <UniqueIdentifier>{97abc575-3fb4-4e03-91c3-adddbcb6344f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック">
-      <UniqueIdentifier>{92fef0a1-4800-43f7-9648-cfeaf446f1ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29">
-      <UniqueIdentifier>{73644b03-f3ca-4805-8483-195194a943d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル">
-      <UniqueIdentifier>{58ad6540-4184-4268-bf0b-39806e88c461}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック">
-      <UniqueIdentifier>{d0104c39-7fd5-4613-b6d0-65708bdd51e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト">
       <UniqueIdentifier>{a4f67a84-3769-4747-aaff-395511db91f4}</UniqueIdentifier>
     </Filter>
@@ -148,11 +130,59 @@
     <Filter Include="ソース ファイル\データリスト\ステージクリエイト情報管理">
       <UniqueIdentifier>{7b1c2231-d255-41b1-a1f6-065730ed759c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー">
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト">
+      <UniqueIdentifier>{73644b03-f3ca-4805-8483-195194a943d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形">
+      <UniqueIdentifier>{6841dcb9-ba81-483d-a18d-70bd5e19fd2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\3Dモデル">
+      <UniqueIdentifier>{58ad6540-4184-4268-bf0b-39806e88c461}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\ブロック">
+      <UniqueIdentifier>{d0104c39-7fd5-4613-b6d0-65708bdd51e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\マーカー">
       <UniqueIdentifier>{630c74da-9b07-4cf1-b94e-06e93eeea0e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー">
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト">
+      <UniqueIdentifier>{0afc8a32-3713-4a81-8e1f-b9c110a71d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形">
+      <UniqueIdentifier>{9e578354-12d0-4f9c-a762-fa3f38924d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\3Dモデル">
+      <UniqueIdentifier>{97abc575-3fb4-4e03-91c3-adddbcb6344f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\ブロック">
+      <UniqueIdentifier>{92fef0a1-4800-43f7-9648-cfeaf446f1ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\マーカー">
       <UniqueIdentifier>{b6ba8a3c-1a42-409f-af4e-5c0a2a2aada4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物">
+      <UniqueIdentifier>{b3df094c-ed5b-42ba-a2a9-11a63a2196e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29">
+      <UniqueIdentifier>{5e0efb7e-34e3-4e78-805c-82188fe6c585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物">
+      <UniqueIdentifier>{369aa876-e15b-41b6-8e5b-4551af19ae99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29">
+      <UniqueIdentifier>{94578ece-b1f2-45b7-ba7f-cf76e9f65872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー">
+      <UniqueIdentifier>{4e55d8cd-77c9-49d8-8088-a3f4562592c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー">
+      <UniqueIdentifier>{4bf2350c-e6b4-486e-b18c-715e56b26365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー\スライム%28青%29">
+      <UniqueIdentifier>{ed0a72a5-cb55-4b57-8763-e85038a14a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー\スライム%28青%29">
+      <UniqueIdentifier>{99e8e9f3-1022-4812-be93-3aa8d0ed1a0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,10 +193,10 @@
       <Filter>ソース ファイル\シーン\タイトル</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Model.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル</Filter>
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\3Dモデル</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Base.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29</Filter>
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト</Filter>
     </ClCompile>
     <ClCompile Include="source\Object_Base.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト</Filter>
@@ -193,7 +223,7 @@
       <Filter>ソース ファイル\シーン\ゲームメイン</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Block.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック</Filter>
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\ブロック</Filter>
     </ClCompile>
     <ClCompile Include="source\DataList_GameStatus.cpp">
       <Filter>ソース ファイル\データリスト\ゲーム状態管理</Filter>
@@ -207,9 +237,6 @@
     <ClCompile Include="source\Character_Player.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
     </ClCompile>
-    <ClCompile Include="source\Character_Player_Move.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
-    </ClCompile>
     <ClCompile Include="source\Character_Player_Draw.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
     </ClCompile>
@@ -217,7 +244,7 @@
       <Filter>ソース ファイル\データリスト\ステージクリエイト情報管理</Filter>
     </ClCompile>
     <ClCompile Include="source\Ground_Marker.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー</Filter>
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\マーカー</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_Stage_JsonLoad.cpp">
       <Filter>ソース ファイル\シーン\ステージ</Filter>
@@ -228,16 +255,25 @@
     <ClCompile Include="source\Scene_Stage_Draw.cpp">
       <Filter>ソース ファイル\シーン\ステージ</Filter>
     </ClCompile>
+    <ClCompile Include="source\Building_CoreTree.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Enemy_Slime_Blue.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー\スライム%28青%29</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Player_Move.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
       <Filter>ヘッダー ファイル\シーン\タイトル</Filter>
     </ClInclude>
     <ClInclude Include="source\Ground_Model.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\3Dモデル</Filter>
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\3Dモデル</Filter>
     </ClInclude>
     <ClInclude Include="source\Ground_Base.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29</Filter>
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト</Filter>
     </ClInclude>
     <ClInclude Include="source\Object_Base.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト</Filter>
@@ -267,7 +303,7 @@
       <Filter>ヘッダー ファイル\定義</Filter>
     </ClInclude>
     <ClInclude Include="source\Ground_Block.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\ブロック</Filter>
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\ブロック</Filter>
     </ClInclude>
     <ClInclude Include="source\DataList_GameStatus.h">
       <Filter>ヘッダー ファイル\データリスト\ゲーム状態管理</Filter>
@@ -291,7 +327,13 @@
       <Filter>ヘッダー ファイル\データリスト\ステージクリエイト情報管理</Filter>
     </ClInclude>
     <ClInclude Include="source\Ground_Marker.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト%28地形%29\マーカー</Filter>
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\地形\マーカー</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Building_CoreTree.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Character_Enemy_Slime_Blue.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー\スライム%28青%29</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

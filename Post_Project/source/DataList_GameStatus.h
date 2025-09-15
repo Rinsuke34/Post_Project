@@ -2,8 +2,11 @@
 
 #pragma once
 /* 使用する要素のインクルード */
+// 標準ライブラリ
+#include <vector>
 // 共通定義
 #include "AppFrame.h"
+#include "StructDefine.h"
 
 // データリスト"ゲーム状態管理"クラス
 class DataList_GameStatus : public DataList_Base
@@ -13,13 +16,36 @@ class DataList_GameStatus : public DataList_Base
 		virtual ~DataList_GameStatus() {};	// デストラクタ
 
 		/* セッター */
-		void SetPlayerPosition_WoldMap(VECTOR vecPosition)	{ this->vecPlayerPosition_WoldMap = vecPosition; }	// プレイヤーのワールドマップ座標の設定
+		// 共通
+		void SetPlayerPosition_WoldMap(VECTOR vecPosition)				{ this->vecPlayerPosition_WoldMap	= vecPosition; }		// プレイヤーのワールドマップ座標の設定
+		void SetHP_CoreTree(int iHP)									{ this->iHP_CoreTree				= iHP; }				// 神木(防衛対象)の体力の設定
+		// 中央エリアマーカー関連
+		void SetPlayerStartPosition(VECTOR vecPosition)					{ this->vecPlayerStartPosition		= vecPosition; }		// プレイヤーのスタート座標の設定
+		void SetBuildAreaPositionList(VECTOR vecPosition)				{ this->vecBuildAreaPositionList.push_back(vecPosition); }	// 建築エリアの座標リストの設定
+		void SetCoreTreePosition(VECTOR vecPosition)					{ this->vecCoreTreePosition			= vecPosition; }		// 神木(防衛対象)の座標の設定
+		// 外側エリアマーカー関連
+		void SetEnemySpawnPoint(ENEMY_SPAWN_POINT_DATA EnemySpawnPoint)	{ this->stEnemySpawnPointList.push_back(EnemySpawnPoint); }	// エネミーのスポーン座標リストの設定
 
 		/* ゲッター */
-		VECTOR GetPlayerPosition_WoldMap()					{ return this->vecPlayerPosition_WoldMap; }			// プレイヤーのワールドマップ座標の取得
+		// 共通
+		VECTOR								GetPlayerPosition_WoldMap()		{ return this->vecPlayerPosition_WoldMap; }		// プレイヤーのワールドマップ座標の取得
+		int									GetHP_CoreTree()				{ return this->iHP_CoreTree; }					// 神木(防衛対象)の体力の取得
+		// 中央エリアマーカー関連
+		VECTOR								GetPlayerStartPosition()		{ return this->vecPlayerStartPosition; }		// プレイヤーのスタート座標の取得
+		std::vector<VECTOR>					GetBuildAreaPositionList()		{ return this->vecBuildAreaPositionList; }		// 建築エリアの座標リストの取得
+		VECTOR								GetCoreTreePosition()			{ return this->vecCoreTreePosition; }			// 神木(防衛対象)の座標の取得
+		// 外側エリアマーカー関連
+		std::vector<ENEMY_SPAWN_POINT_DATA>	GetEnemySpawnPointList()		{ return this->stEnemySpawnPointList; }			// エネミーのスポーン座標リストの取得
 
 	private:
 		/* 変数 */
-		VECTOR	vecPlayerPosition_WoldMap;	// プレイヤーのワールドマップ座標
-		
+		// 共通
+		VECTOR				vecPlayerPosition_WoldMap;	// プレイヤーのワールドマップ座標
+		int					iHP_CoreTree;				// 神木(防衛対象)の体力
+		// 中央エリアマーカー関連
+		VECTOR				vecPlayerStartPosition;		// プレイヤーのスタート座標
+		std::vector<VECTOR>	vecBuildAreaPositionList;	// 建築エリアの座標リスト
+		VECTOR				vecCoreTreePosition;		// 神木(防衛対象)の座標
+		// 外側エリアマーカー関連
+		std::vector<ENEMY_SPAWN_POINT_DATA> stEnemySpawnPointList;	// エネミーのスポーン座標リスト
 };

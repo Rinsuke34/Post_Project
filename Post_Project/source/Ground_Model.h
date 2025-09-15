@@ -31,14 +31,11 @@ class Ground_Model : public Ground_Base
 		VECTOR	GetScale()						{ return this->vecScale; }				// オブジェクトの拡大率を取得
 		std::string	GetModelName()				{ return this->ModelName; }				// モデル名(ファイル名)を取得
 
-	private:
+	protected:
 		/* 変数 */
 		int			iModelHandle;		// モデルハンドル
 		VECTOR		vecPosition;		// オブジェクトの座標
 		VECTOR		vecRotation;		// オブジェクトの回転量
 		VECTOR		vecScale;			// オブジェクトの拡大率(x,y,z方向それぞれの拡大倍率)
 		std::string	ModelName;			// モデル名(ファイル名)
-
-		/* 関数 */
-		void SetUpCollision();			// コリジョンの設定
 };
