@@ -184,6 +184,9 @@
     <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー\スライム%28青%29">
       <UniqueIdentifier>{99e8e9f3-1022-4812-be93-3aa8d0ed1a0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\汎用関数">
+      <UniqueIdentifier>{7d83f03c-cbd0-43d4-adcd-bbdd66012547}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -237,9 +240,6 @@
     <ClCompile Include="source\Character_Player.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
     </ClCompile>
-    <ClCompile Include="source\Character_Player_Draw.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
-    </ClCompile>
     <ClCompile Include="source\DataList_StageCreate.cpp">
       <Filter>ソース ファイル\データリスト\ステージクリエイト情報管理</Filter>
     </ClCompile>
@@ -261,14 +261,17 @@
     <ClCompile Include="source\Character_Enemy_Slime_Blue.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー\スライム%28青%29</Filter>
     </ClCompile>
-    <ClCompile Include="source\Character_Player_Move.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト</Filter>
-    </ClCompile>
     <ClCompile Include="source\Npc_Base.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC</Filter>
     </ClCompile>
     <ClCompile Include="source\Npc_Enemy.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FunctionDefine.cpp">
+      <Filter>ソース ファイル\汎用関数</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Character_Player_Move.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="source\Npc_Enemy.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー</Filter>
+    </ClInclude>
+    <ClInclude Include="source\FunctionDefine.h">
+      <Filter>ヘッダー ファイル\定義</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -39,6 +39,14 @@ static const float	ROUTE_SEARCH_MOVE_DISTANCE		= 64.f;	// ƒ‹[ƒgŒŸõŽž‚Ì1ƒXƒeƒbƒ
 static const int	ROUTE_SEARCH_MOVE_COST_DEFAULT	= 10;	// ƒ‹[ƒgŒŸõŽž‚Ì•W€‚ÌƒRƒXƒg
 static const int	ROUTE_SEARCH_MOVE_COST_DIAG		= 15;	// ƒ‹[ƒgŒŸõŽž‚ÌŽÎ‚ßˆÚ“®‚ÌƒRƒXƒg
 static const int	ROUTE_SEARCH_MOVE_COST_YCHANGE	= 20;	// ƒ‹[ƒgŒŸõŽž‚Ì‚‚³•ÏX‚ÌƒRƒXƒg
+// ƒOƒŠƒbƒhƒTƒCƒY
+// ¦ƒOƒŠƒbƒh‚Í5ƒuƒƒbƒNŽl•û‚Å1ƒOƒŠƒbƒh‚Æ‚µAXZ•½–Ê‚ÅŠÇ—‚·‚é
+static const int	GRID_SIZE_BLOCK_X	= 5;	// XŽ²‚ÌƒOƒŠƒbƒh‚Ì‘å‚«‚³(ƒuƒƒbƒN”’PˆÊ)
+static const int	GRID_SIZE_BLOCK_Z	= 5;	// ZŽ²‚ÌƒOƒŠƒbƒh‚Ì‘å‚«‚³(ƒuƒƒbƒN”’PˆÊ)
+static const int	GRID_SIZE_WORLD_X	= 320;	// XŽ²‚ÌƒOƒŠƒbƒh‚Ì‘å‚«‚³(AREA_SIZE_BLOCK_X * GRID_SIZE_BLOCK_X)
+static const int	GRID_SIZE_WORLD_Z	= 320;	// ZŽ²‚ÌƒOƒŠƒbƒh‚Ì‘å‚«‚³(AREA_SIZE_BLOCK_Z * GRID_SIZE_BLOCK_Z)
+static const int	GRID_NUMBER_X		= 21;	// XŽ²‚ÌƒOƒŠƒbƒh”(AREA_SIZE_BLOCK_X / GRID_SIZE_BLOCK_X * 3)
+static const int	GRID_NUMBER_Z		= 21;	// ZŽ²‚ÌƒOƒŠƒbƒh”(AREA_SIZE_BLOCK_Z / GRID_SIZE_BLOCK_Z * 3)
 
 /* “–‚½‚è”»’èŒn */
 static float COLLISION_CHECK_DISTANCE			= 50000.f;				// “–‚½‚è”»’è‚ðs‚¤’¼ü‹——£(¦Še’¸“_‚Ì“ñæ‚Ì‹——£‚ª‚±‚ê‚æ‚è‘å‚«‚¢‚È‚ç”ñÚG‚Æ”»’è‚·‚é)

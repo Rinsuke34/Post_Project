@@ -131,13 +131,6 @@ bool Ground_Base::HitCheck(Struct_Collision::COLLISION_BOX stBox)
 	// 戻り値
 	// bool		: 接触している(true) / 接触していない(false)
 
-	/* 判定を行う距離内であるか */
-	if (std::abs(VSquareSize(VSub(stBox.vecBoxCenter, this->stBox.vecBoxCenter))) > COLLISION_CHECK_DISTANCE)
-	{
-		// 判定を行う距離外である場合は接触していないとみなす
-//		return false;
-	}
-
 	// 自身のボックスの最小・最大座標を取得
 	float afBox_Min_This[3] =
 	{

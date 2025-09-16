@@ -19,6 +19,7 @@
 // 共通定義
 #include "ConstantDefine.h"
 #include "StructDefine.h"
+#include "FunctionDefine.h"
 
 // ワールドマップリスト読み込み
 void Scene_Stage::JsonLoad_WoldMapList()
@@ -163,8 +164,10 @@ void Scene_Stage::JsonLoad_WoldMap(int iAreaNo, std::string MapName)
 					/* 初期化処理 */
 					pGroundBlock->InitialSetup();
 
-					// オブジェクトリストに登録
-					this->pDataList_Object->AddObject_Ground(pGroundBlock, iAreaNo);
+					/* 対象のグリッドに読み込んだオブジェクトを登録 */
+					int iGridX = iGetGridIndexX(stBox.vecBoxCenter.x);
+					int iGridZ = iGetGridIndexZ(stBox.vecBoxCenter.z);
+					this->pDataList_Object->AddObject_Ground(pGroundBlock, iGridX, iGridZ);
 				}
 			}
 		}
@@ -202,8 +205,10 @@ void Scene_Stage::JsonLoad_WoldMap(int iAreaNo, std::string MapName)
 		pGroundModel->SetScale(data.vecScale);
 		pGroundModel->InitialSetup();
 
-		/* オブジェクトリストに登録 */
-		this->pDataList_Object->AddObject_Ground(pGroundModel, iAreaNo);
+		/* 対象のグリッドに読み込んだオブジェクトを登録 */
+		int iGridX = iGetGridIndexX(vecPosition.x);
+		int iGridZ = iGetGridIndexZ(vecPosition.z);
+		this->pDataList_Object->AddObject_Ground(pGroundModel, iGridX, iGridZ);
 	}
 
 	/* マーカー情報抽出 */

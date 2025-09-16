@@ -13,6 +13,7 @@
 #include "Ground_Model.h"
 // 共通定義
 #include "ConstantDefine.h"
+#include "FunctionDefine.h"
 
 // コンストラクタ
 Character_Base::Character_Base() : Actor_Base()
@@ -262,10 +263,26 @@ void Character_Base::Ground_PushBack_Gravity()
 	{
 		/* 判定対象リストを作成 */
 		std::vector<std::shared_ptr<Ground_Base>> CollisionList;
-		for (auto& Ground : this->pDataList_Object->GetGroundList(iAreaNo)) { CollisionList.push_back(Ground); }	// 足場		
-		for (auto& Building : this->pDataList_Object->GetBuildingList()) { CollisionList.push_back(Building); }	// 建造物
+		// 現在のグリッドとその四方のグリッドの地形
+		int iGridX = iGetGridIndexX(this->vecBasePosition.x);
+		int iGridZ = iGetGridIndexZ(this->vecBasePosition.z);
+		for (int iX = iGridX - 1; iX <= iGridX + 1; ++iX)
+		{
+			for (int iZ = iGridZ - 1; iZ <= iGridZ + 1; ++iZ)
+			{
+				for (auto& Ground : this->pDataList_Object->GetGroundList(iX, iZ))
+				{
+					CollisionList.push_back(Ground);
+				}
+			}
+		}
+		// 全ての建造物
+		for (auto& Building : this->pDataList_Object->GetBuildingList())
+		{
+			CollisionList.push_back(Building);
+		}
 
-
+		/* 接触判定 */
 		for (auto& Collision : CollisionList)
 		{
 			/* 接触しているか確認 */
@@ -368,9 +385,9 @@ void Character_Base::Ground_PushBack_Movement(VECTOR vecMoveDirection)
 	/* 移動後座標のコリジョン作成 */
 	// ※ 縦方向には少し余裕を持たせる(地形の凹凸に引っかからないようにするため)
 	Struct_Collision::COLLISION_BOX stMoveBox;
-	stMoveBox.vecBoxCenter = VAdd(vecMovePosition, VGet(0.f, this->stBox.vecBoxHalfSize.y, 0.f));
-	stMoveBox.vecBoxHalfSize = this->stBox.vecBoxHalfSize;
-	stMoveBox.vecBoxHalfSize.y += COLLISION_CHECK_FLOOR_MARGIN;
+	stMoveBox.vecBoxCenter		= VAdd(vecMovePosition, VGet(0.f, this->stBox.vecBoxHalfSize.y, 0.f));
+	stMoveBox.vecBoxHalfSize	= this->stBox.vecBoxHalfSize;
+	stMoveBox.vecBoxHalfSize.y	+= COLLISION_CHECK_FLOOR_MARGIN;
 
 	/* 地形との接地判定 */
 	// ※ 軽量化のため現在のエリアの足場のみ確認
@@ -380,8 +397,24 @@ void Character_Base::Ground_PushBack_Movement(VECTOR vecMoveDirection)
 	{
 		/* 判定対象リストを作成 */
 		std::vector<std::shared_ptr<Ground_Base>> CollisionList;
-		for (auto& Ground : this->pDataList_Object->GetGroundList(iAreaNo)) { CollisionList.push_back(Ground); }	// 足場		
-		for (auto& Building : this->pDataList_Object->GetBuildingList()) { CollisionList.push_back(Building); }	// 建造物
+		// 現在のグリッドとその四方のグリッドの地形
+		int iGridX = iGetGridIndexX(stMoveBox.vecBoxCenter.x);
+		int iGridZ = iGetGridIndexZ(stMoveBox.vecBoxCenter.z);
+		for (int iX = iGridX - 1; iX <= iGridX + 1; iX++)
+		{
+			for (int iZ = iGridZ - 1; iZ <= iGridZ + 1; iZ++)
+			{
+				for (auto& Ground : this->pDataList_Object->GetGroundList(iX, iZ))
+				{
+					CollisionList.push_back(Ground);
+				}
+			}
+		}
+		// 全ての建造物
+		for (auto& Building : this->pDataList_Object->GetBuildingList())
+		{
+			CollisionList.push_back(Building);
+		}
 
 		/* 接触した全ての地形を記録 */
 		std::vector<Struct_Collision::COLLISION_BOX> hitGroundBoxes;

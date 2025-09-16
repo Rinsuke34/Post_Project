@@ -40,9 +40,6 @@
     <Filter Include="ヘッダー ファイル\シーン\サーバー">
       <UniqueIdentifier>{838fcb2c-c6d8-4b07-a266-aa6aa5db63e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\汎用計算">
-      <UniqueIdentifier>{7ba01d80-664d-4c8d-bbfb-d7203d1adfcd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\データリスト">
       <UniqueIdentifier>{3a70bd4c-7a33-4dc0-9383-b4a93d534240}</UniqueIdentifier>
     </Filter>
@@ -94,6 +91,9 @@
     <Filter Include="ソース ファイル\汎用2Dパーツアニメーション\シーン\データリスト">
       <UniqueIdentifier>{6bff64aa-b588-48fd-a0ad-c300518c1c7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\汎用関数">
+      <UniqueIdentifier>{7ba01d80-664d-4c8d-bbfb-d7203d1adfcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\AppMain.cpp">
@@ -121,10 +121,10 @@
       <Filter>ソース ファイル\データリスト\サーバー</Filter>
     </ClCompile>
     <ClCompile Include="source\PublicProcess.cpp">
-      <Filter>ソース ファイル\汎用計算</Filter>
+      <Filter>ソース ファイル\汎用関数</Filter>
     </ClCompile>
     <ClCompile Include="source\PublicFunction.cpp">
-      <Filter>ソース ファイル\汎用計算</Filter>
+      <Filter>ソース ファイル\汎用関数</Filter>
     </ClCompile>
     <ClCompile Include="source\Scene_2DPartsAnimCreateTool.cpp">
       <Filter>ソース ファイル\汎用2Dパーツアニメーション\シーン</Filter>

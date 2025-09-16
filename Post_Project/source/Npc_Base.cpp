@@ -11,6 +11,7 @@
 #include "Building_CoreTree.h"
 // 共通定義
 #include "ConstantDefine.h"
+#include "FunctionDefine.h"
 
 // コンストラクタ
 Npc_Base::Npc_Base() : Character_Base()
@@ -261,8 +262,24 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 
 	/* 判定対象リストを作成 */
 	std::vector<std::shared_ptr<Ground_Base>> CollisionList;
-	for (auto& Ground : this->pDataList_Object->GetGroundList(iAreaNo)) { CollisionList.push_back(Ground); }	// 足場
-	for (auto& Building : this->pDataList_Object->GetBuildingList()) { CollisionList.push_back(Building); }	// 建造物
+	// 現在のグリッドとその四方のグリッドの地形
+	int iGridX = iGetGridIndexX(vecMovePos.x);
+	int iGridZ = iGetGridIndexZ(vecMovePos.z);
+	for (int iX = iGridX - 1; iX <= iGridX + 1; ++iX)
+	{
+		for (int iZ = iGridZ - 1; iZ <= iGridZ + 1; ++iZ)
+		{
+			for (auto& Ground : this->pDataList_Object->GetGroundList(iX, iZ))
+			{
+				CollisionList.push_back(Ground);
+			}
+		}
+	}
+	// 全ての建造物
+	for (auto& Building : this->pDataList_Object->GetBuildingList())
+	{
+		CollisionList.push_back(Building);
+	}
 
 	/* 接触した全ての地形を記録 */
 	std::vector<Struct_Collision::COLLISION_BOX> hitGroundBoxes;

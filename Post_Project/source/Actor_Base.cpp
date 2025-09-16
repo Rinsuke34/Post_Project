@@ -6,6 +6,8 @@
 // 関連クラス
 #include "DataList_Object.h"
 #include "Ground_Base.h"
+// 共通定義
+#include "FunctionDefine.h"
 
 // コンストラクタ
 Actor_Base::Actor_Base() : Object_Base()
@@ -61,7 +63,6 @@ int Actor_Base::iCheckCurrentAreaNo()
 	}
 }
 
-
 // 重力処理(簡易)
 // ※ 基準座標と重力による落下速度のみを考慮した簡易的な処理
 void Actor_Base::Update_ApplyGravity_Simple()
@@ -79,30 +80,40 @@ void Actor_Base::Update_ApplyGravity_Simple()
 	stMovementLine.vecLineEnd	= vecNextPosition;
 
 	/* 足場との当たり判定処理 */
-	// ※ 軽量化のため現在のエリアの足場のみ確認
 	// ※ エリア外の場合は足場との当たり判定を行わない
 	int iAreaNo = iCheckCurrentAreaNo();
 	if (iAreaNo != -1)
 	{
-		for (auto& Ground : this->pDataList_Object->GetGroundList(iAreaNo))
+		/* 現在のグリッドとその四方のグリッドを対象に接触判定を実施 */
+		// ※下方向への移動のみを考慮する処理であるため、四方のグリッドまでの確認で十分と判断
+		int iGridX = iGetGridIndexX(vecBasePosition.x);
+		int iGridZ = iGetGridIndexZ(vecBasePosition.z);
+		for (int iX = iGridX - 1; iX <= iGridX + 1; ++iX)
 		{
-			// 足場のコリジョンと接触しているか確認
-			if (Ground->HitCheck(stMovementLine))
+			for (int iZ = iGridZ - 1; iZ <= iGridZ + 1; ++iZ)
 			{
-				// 接触している場合
-				/* 衝突点を取得 */
-				VECTOR vecHitPosition = Ground->HitPosition(stMovementLine);
-
-				// 衝突点が移動前座標により近い場合のみ移動後の座標を更新
-				float fDistCurrent = VSize(VSub(vecNextPosition, vecBasePosition));
-				float fDistHit = VSize(VSub(vecHitPosition, vecBasePosition));
-				if (fDistHit < fDistCurrent)
+				/* グリッドに登録された足場を対象に確認 */
+				for (auto& Ground : this->pDataList_Object->GetGroundList(iX, iZ))
 				{
-					vecNextPosition = vecHitPosition;
-				}
+					// 足場のコリジョンと接触しているか確認
+					if (Ground->HitCheck(stMovementLine))
+					{
+						// 接触している場合
+						/* 衝突点を取得 */
+						VECTOR vecHitPosition = Ground->HitPosition(stMovementLine);
 
-				/* 落下速度を更新 */
-				this->fGravityVelocity = 0.f;
+						/* 衝突点が移動前座標により近い場合のみ移動後の座標を更新 */
+						float fDistCurrent	= VSize(VSub(vecNextPosition, vecBasePosition));
+						float fDistHit		= VSize(VSub(vecHitPosition, vecBasePosition));
+						if (fDistHit < fDistCurrent)
+						{
+							vecNextPosition = vecHitPosition;
+						}
+
+						/* 落下速度を更新 */
+						this->fGravityVelocity = 0.f;
+					}
+				}
 			}
 		}
 	}

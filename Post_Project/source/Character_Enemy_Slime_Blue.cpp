@@ -25,7 +25,7 @@ Character_Enemy_Slime_Blue::Character_Enemy_Slime_Blue() : Npc_Base()
 
 	/* ステータス関係 */
 	// ※仮設定
-	this->iSpeed = 10;
+	this->iSpeed = 2;
 }
 
 // デストラクタ

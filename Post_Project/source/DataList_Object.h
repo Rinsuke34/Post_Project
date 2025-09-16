@@ -59,22 +59,22 @@ class DataList_Object : public DataList_Base
 		void	DeleteFlagged_AllBuilding();	// 建造物
 
 		/* セッター */
-		void	AddObject_Ground(std::shared_ptr<Ground_Base> pGround, int iAreaNo)		{ this->pGroundList[iAreaNo].push_back(pGround); };	// 指定エリアの地形追加
-		void	AddObject_Marker(std::shared_ptr<Ground_Marker> pMarker, int iAreaNo)	{ this->pMarkerList[iAreaNo].push_back(pMarker); };	// 指定エリアのマーカー追加
-		void	AddObject_Actor(std::shared_ptr<Actor_Base> pActor)						{ this->pActorList.push_back(pActor); };			// アクター追加
-		void	AddObject_Building(std::shared_ptr<Ground_Model> pBuilding)				{ this->pBuildingList.push_back(pBuilding); };		// 建造物追加
+		void	AddObject_Ground(std::shared_ptr<Ground_Base> pGround, int iGridX, int iGridY)	{ this->pGroundList[iGridX][iGridY].push_back(pGround); };	// 指定エリアの地形追加
+		void	AddObject_Marker(std::shared_ptr<Ground_Marker> pMarker, int iAreaNo)			{ this->pMarkerList[iAreaNo].push_back(pMarker); };			// 指定エリアのマーカー追加
+		void	AddObject_Actor(std::shared_ptr<Actor_Base> pActor)								{ this->pActorList.push_back(pActor); };					// アクター追加
+		void	AddObject_Building(std::shared_ptr<Ground_Model> pBuilding)						{ this->pBuildingList.push_back(pBuilding); };				// 建造物追加
 
 		/* ゲッター */
-		std::vector<std::shared_ptr<Ground_Base>>&		GetGroundList(int iAreaNo)	{ return this->pGroundList[iAreaNo]; }	// 指定エリアの地形リスト取得
-		std::vector<std::shared_ptr<Ground_Marker>>&	GetMarkerList(int iAreaNo)	{ return this->pMarkerList[iAreaNo]; }	// 指定エリアのマーカーリスト取得
-		std::vector<std::shared_ptr<Actor_Base>>&		GetActorList()				{ return this->pActorList; }			// アクタリスト取得
-		std::vector<std::shared_ptr<Ground_Model>>&		GetBuildingList()			{ return this->pBuildingList; }			// 建造物リスト取得
+		std::vector<std::shared_ptr<Ground_Base>>&		GetGroundList(int iGridX, int iGridY);													// 指定エリアの地形リスト取得
+		std::vector<std::shared_ptr<Ground_Marker>>&	GetMarkerList(int iAreaNo)				{ return this->pMarkerList[iAreaNo]; }			// 指定エリアのマーカーリスト取得
+		std::vector<std::shared_ptr<Actor_Base>>&		GetActorList()							{ return this->pActorList; }					// アクタリスト取得
+		std::vector<std::shared_ptr<Ground_Model>>&		GetBuildingList()						{ return this->pBuildingList; }					// 建造物リスト取得
 
 	private:
 		/* 変数 */
 		// リスト
-		std::vector<std::shared_ptr<Ground_Base>>	pGroundList[AREA_NO_MAX];		// 地形リスト[エリア番号]
-		std::vector<std::shared_ptr<Ground_Marker>> pMarkerList[AREA_NO_MAX];		// マーカーリスト
-		std::vector<std::shared_ptr<Actor_Base>>	pActorList;						// アクターリスト
-		std::vector<std::shared_ptr<Ground_Model>>	pBuildingList;					// 建造物リスト
+		std::vector<std::shared_ptr<Ground_Base>>	pGroundList[GRID_NUMBER_X][GRID_NUMBER_X];	// 地形リスト[エリア番号]
+		std::vector<std::shared_ptr<Ground_Marker>> pMarkerList[AREA_NO_MAX];					// マーカーリスト
+		std::vector<std::shared_ptr<Actor_Base>>	pActorList;									// アクターリスト
+		std::vector<std::shared_ptr<Ground_Model>>	pBuildingList;								// 建造物リスト
 };

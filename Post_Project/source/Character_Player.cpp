@@ -8,6 +8,7 @@
 // 共通定義
 #include "Test_ConstantDefine.h"
 #include "ConstantDefine.h"
+#include "FunctionDefine.h"
 
 // コンストラクタ
 Character_Player::Character_Player() : Character_Base()
@@ -52,4 +53,43 @@ void Character_Player::Update()
 
 	/* アニメーションの更新 */
 	Character_Base::Update_Animation();
+}
+
+// 描画
+void Character_Player::Draw()
+{
+	/* アニメーション描写 */
+	Character_Base::Draw_Animation();
+
+	/* 中心点テスト描写 */
+	DrawLine3D(VAdd(this->vecBasePosition, VGet(100.f, 0.f, 0.f)), VAdd(this->vecBasePosition, VGet(-100.f, 0.f, 0.f)), GetColor(255, 0, 0));
+	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 100.f, 0.f)), VAdd(this->vecBasePosition, VGet(0.f, -100.f, 0.f)), GetColor(0, 255, 0));
+	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 0.f, 100.f)), VAdd(this->vecBasePosition, VGet(0.f, 0.f, -100.f)), GetColor(0, 0, 255));
+
+	/* グリッド範囲テスト描写 */
+	int iGridX = iGetGridIndexX(this->vecBasePosition.x);
+	int iGridZ = iGetGridIndexZ(this->vecBasePosition.z);
+	for (int iX = iGridX - 1; iX <= iGridX + 1; ++iX)
+	{
+		for (int iZ = iGridZ - 1; iZ <= iGridZ + 1; ++iZ)
+		{
+			// グリッド左上座標
+			float fGridMinX = static_cast<float>(iX * GRID_SIZE_WORLD_X);
+			float fGridMinZ = static_cast<float>(iZ * GRID_SIZE_WORLD_Z);
+			float fGridMaxX = fGridMinX + GRID_SIZE_WORLD_X;
+			float fGridMaxZ = fGridMinZ + GRID_SIZE_WORLD_Z;
+			float fY = this->vecBasePosition.y; // 高さはプレイヤー基準
+
+			VECTOR v0 = VGet(fGridMinX, fY, fGridMinZ); // 左上
+			VECTOR v1 = VGet(fGridMaxX, fY, fGridMinZ); // 右上
+			VECTOR v2 = VGet(fGridMaxX, fY, fGridMaxZ); // 右下
+			VECTOR v3 = VGet(fGridMinX, fY, fGridMaxZ); // 左下
+
+			// 四辺を線で描画
+			DrawLine3D(v0, v1, GetColor(255, 255, 0));
+			DrawLine3D(v1, v2, GetColor(255, 255, 0));
+			DrawLine3D(v2, v3, GetColor(255, 255, 0));
+			DrawLine3D(v3, v0, GetColor(255, 255, 0));
+		}
+	}
 }

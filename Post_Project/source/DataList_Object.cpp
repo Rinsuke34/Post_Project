@@ -33,11 +33,14 @@ void DataList_Object::InitialSetup_All()
 // 地形
 void DataList_Object::InitialSetup_Ground()
 {
-	for (int iAreaNo = 0; iAreaNo < AREA_NO_MAX; ++iAreaNo)
+	for (int iGridX = 0; iGridX < GRID_NUMBER_X; ++iGridX)
 	{
-		for (auto& GroundList : this->pGroundList[iAreaNo])
+		for (int iGridZ = 0; iGridZ < GRID_NUMBER_Z; ++iGridZ)
 		{
-			GroundList->InitialSetup();
+			for (auto& GroundList : this->pGroundList[iGridX][iGridZ])
+			{
+				GroundList->InitialSetup();
+			}
 		}
 	}
 }
@@ -72,11 +75,14 @@ void DataList_Object::Update_All()
 // 地形
 void DataList_Object::Update_Ground()
 {
-	for (int iAreaNo = 0; iAreaNo < AREA_NO_MAX; ++iAreaNo)
+	for (int iGridX = 0; iGridX < GRID_NUMBER_X; ++iGridX)
 	{
-		for (auto& GroundList : this->pGroundList[iAreaNo])
+		for (int iGridZ = 0; iGridZ < GRID_NUMBER_Z; ++iGridZ)
 		{
-			GroundList->Update();
+			for (auto& GroundList : this->pGroundList[iGridX][iGridZ])
+			{
+				GroundList->Update();
+			}
 		}
 	}
 }
@@ -111,11 +117,14 @@ void DataList_Object::Draw_All()
 // 地形
 void DataList_Object::Draw_Ground()
 {
-	for (int iAreaNo = 0; iAreaNo < AREA_NO_MAX; ++iAreaNo)
+	for (int iGridX = 0; iGridX < GRID_NUMBER_X; ++iGridX)
 	{
-		for (auto& GroundList : this->pGroundList[iAreaNo])
+		for (int iGridZ = 0; iGridZ < GRID_NUMBER_Z; ++iGridZ)
 		{
-			GroundList->Draw();
+			for (auto& GroundList : this->pGroundList[iGridX][iGridZ])
+			{
+				GroundList->Draw();
+			}
 		}
 	}
 }
@@ -150,11 +159,14 @@ void DataList_Object::Draw_All_Shadow()
 // 地形
 void DataList_Object::Draw_Ground_Shadow()
 {
-	for (int iAreaNo = 0; iAreaNo < AREA_NO_MAX; ++iAreaNo)
+	for (int iGridX = 0; iGridX < GRID_NUMBER_X; ++iGridX)
 	{
-		for (auto& GroundList : this->pGroundList[iAreaNo])
+		for (int iGridZ = 0; iGridZ < GRID_NUMBER_Z; ++iGridZ)
 		{
-			GroundList->Draw_Shadow();
+			for (auto& GroundList : this->pGroundList[iGridX][iGridZ])
+			{
+				GroundList->Draw_Shadow();
+			}
 		}
 	}
 }
@@ -189,11 +201,14 @@ void DataList_Object::Draw_All_Collision()
 // 地形
 void DataList_Object::Draw_Ground_Collision()
 {
-	for (int iAreaNo = 0; iAreaNo < AREA_NO_MAX; ++iAreaNo)
+	for (int iGridX = 0; iGridX < GRID_NUMBER_X; ++iGridX)
 	{
-		for (auto& GroundList : this->pGroundList[iAreaNo])
+		for (int iGridZ = 0; iGridZ < GRID_NUMBER_Z; ++iGridZ)
 		{
-			GroundList->Draw_Collision();
+			for (auto& GroundList : this->pGroundList[iGridX][iGridZ])
+			{
+				GroundList->Draw_Collision();
+			}
 		}
 	}
 }
@@ -228,20 +243,23 @@ void DataList_Object::DeleteFlagged_AllObject()
 // 地形
 void DataList_Object::DeleteFlagged_AllGround()
 {
-	for (int iAreaNo = 0; iAreaNo < AREA_NO_MAX; ++iAreaNo)
+	for (int iGridX = 0; iGridX < GRID_NUMBER_X; ++iGridX)
 	{
-		this->pGroundList[iAreaNo].erase(
-			std::remove_if(
-				pGroundList[iAreaNo].begin(),
-				pGroundList[iAreaNo].end(),
-				[](const std::shared_ptr<Ground_Base>& pGround)
-				{
-					// 削除フラグが有効であるか確認
-					return pGround && pGround->bGetDeleteFlg();
-				}
-			),
-			pGroundList[iAreaNo].end()
-		);
+		for (int iGridZ = 0; iGridZ < GRID_NUMBER_Z; ++iGridZ)
+		{
+			this->pGroundList[iGridX][iGridZ].erase(
+				std::remove_if(
+					pGroundList[iGridX][iGridZ].begin(),
+					pGroundList[iGridX][iGridZ].end(),
+					[](const std::shared_ptr<Ground_Base>& pGround)
+					{
+						// 削除フラグが有効であるか確認
+						return pGround && pGround->bGetDeleteFlg();
+					}
+				),
+				pGroundList[iGridX][iGridZ].end()
+			);
+		}
 	}
 }
 
@@ -277,4 +295,25 @@ void DataList_Object::DeleteFlagged_AllBuilding()
 		),
 		pBuildingList.end()
 	);
+}
+
+/* ゲッター */
+std::vector<std::shared_ptr<Ground_Base>>& DataList_Object::GetGroundList(int iGridX, int iGridY)
+{
+	// 引数
+	// iGridX	<- X軸のグリッド番号
+	// iGridZ	<- Z軸のグリッド番号
+	// 戻り値
+	// リスト	<- 対象のグリッドに登録されたオブジェクトのリスト
+
+	/* グリッドが範囲内であるか確認 */
+	if (iGridX < 0 || iGridX >= GRID_NUMBER_X ||
+		iGridY < 0 || iGridY >= GRID_NUMBER_Z)
+	{
+		// 範囲外である場合
+		/* 要素のないダミーリストを作成し、戻り値として返す */
+		static std::vector<std::shared_ptr<Ground_Base>> DummyList;
+		return DummyList;
+	}
+	return pGroundList[iGridX][iGridY];
 }

@@ -11,21 +11,12 @@
 Ground_Block::Ground_Block() : Ground_Base()
 {
 	/* 初期化 */
-	for (int iIndex = 0; iIndex < 3; ++iIndex)
-	{
-		this->apiGrHandle[iIndex] = nullptr;
-	}
+	for (int iIndex = 0; iIndex < 3; ++iIndex)	{ this->apiGrHandle[iIndex] = nullptr; }
 	this->stBox.vecBoxCenter	= VGet(0.0f, 0.0f, 0.0f);
 	this->stBox.vecBoxHalfSize	= VGet(1.0f, 1.0f, 1.0f);
-	for (int iIndex = 0; iIndex < DIRECTION_MAX; ++iIndex)
-	{
-		this->bFaceDrawFlg[iIndex] = false;
-	}
+	for (int iIndex = 0; iIndex < DIRECTION_MAX; ++iIndex) { this->bFaceDrawFlg[iIndex] = false; }
 	this->iBlockId = 0;
-	for (int i = 0; i < 8; ++i)
-	{
-		this->aVertex[i] = VERTEX3D();
-	}
+	for (int i = 0; i < 8; ++i) { this->aVertex[i] = VERTEX3D(); }
 }
 
 // 初期設定
@@ -142,56 +133,6 @@ void Ground_Block::Draw()
 		// 四角形（板ポリゴン）の描画
 		DrawPolygonIndexed3D(aVertex, 8, IndexTop, 2, *this->apiGrHandle[FACE_TYPE_TOP], TRUE);
 	}
-	//// -Y方向
-	//if (bFaceDrawFlg[DIRECTION_Y_MINUS])
-	//{
-	//	// インデックスデータ（底面の2ポリゴン）
-	//	unsigned short IndexBottom[6] = { 6, 3, 2, 7, 3, 6 };
-
-	//	// 法線ベクトルを設定
-	//	for (int i = 0; i < 8; ++i)
-	//	{
-	//		aVertex[i].norm = VGet(0.0f, -1.0f, 0.0f);
-	//	}
-
-	//	// uv座標を設定
-	//	aVertex[2].u = 1.f;
-	//	aVertex[2].v = 0.f;
-	//	aVertex[3].u = 1.f;
-	//	aVertex[3].v = 1.f;
-	//	aVertex[6].u = 0.f;
-	//	aVertex[6].v = 0.f;
-	//	aVertex[7].u = 0.f;
-	//	aVertex[7].v = 1.f;
-
-	//	// 四角形（板ポリゴン）の描画
-	//	DrawPolygonIndexed3D(aVertex, 8, IndexBottom, 2, *this->apiGrHandle[FACE_TYPE_BOTTOM], TRUE);
-	//}
-	// +Z方向
-	//if (bFaceDrawFlg[DIRECTION_Z_PLUS])
-	//{
-	//	// インデックスデータ（手前面の2ポリゴン）
-	//	unsigned short IndexFront[6] = { 2, 0, 6, 6, 0, 4 };
-
-	//	// 法線ベクトルを設定
-	//	for (int i = 0; i < 8; ++i)
-	//	{
-	//		aVertex[i].norm = VGet(0.0f, 0.0f, +1.0f);
-	//	}
-
-	//	// uv座標を設定
-	//	aVertex[0].u = 1.f;
-	//	aVertex[0].v = 0.f;
-	//	aVertex[2].u = 1.f;
-	//	aVertex[2].v = 1.f;
-	//	aVertex[4].u = 0.f;
-	//	aVertex[4].v = 0.f;
-	//	aVertex[6].u = 0.f;
-	//	aVertex[6].v = 1.f;
-
-	//	// 四角形（板ポリゴン）の描画
-	//	DrawPolygonIndexed3D(aVertex, 8, IndexFront, 2, *this->apiGrHandle[FACE_TYPE_SIDE], TRUE);
-	//}
 	// -Z方向
 	if (bFaceDrawFlg[DIRECTION_Z_MINUS])
 	{
