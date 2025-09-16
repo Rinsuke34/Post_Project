@@ -186,6 +186,8 @@
     <ClCompile Include="source\Ground_Marker.cpp" />
     <ClCompile Include="source\Ground_Model.cpp" />
     <ClCompile Include="source\Main.cpp" />
+    <ClCompile Include="source\Npc_Base.cpp" />
+    <ClCompile Include="source\Npc_Enemy.cpp" />
     <ClCompile Include="source\Object_Base.cpp" />
     <ClCompile Include="source\Scene_GameMain.cpp" />
     <ClCompile Include="source\Scene_Load.cpp" />
@@ -217,6 +219,8 @@
     <ClInclude Include="source\Ground_Block.h" />
     <ClInclude Include="source\Ground_Marker.h" />
     <ClInclude Include="source\Ground_Model.h" />
+    <ClInclude Include="source\Npc_Base.h" />
+    <ClInclude Include="source\Npc_Enemy.h" />
     <ClInclude Include="source\Object_Base.h" />
     <ClInclude Include="source\Scene_GameMain.h" />
     <ClInclude Include="source\Scene_Load.h" />

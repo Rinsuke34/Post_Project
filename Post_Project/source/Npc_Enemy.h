@@ -1,4 +1,4 @@
-/* 青スライム(エネミー)クラスの宣言 */
+/* NPC(エネミー)クラスの宣言 */
 
 #pragma once
 
@@ -6,18 +6,21 @@
 // 基底クラス
 #include "Npc_Base.h"
 
-// 青スライム(エネミー)クラス
-class Character_Enemy_Slime_Blue : public Npc_Base
+// NPC(エネミー)のベースクラスの宣言
+class Npc_Enemy : public Npc_Base
 {
 	public:
-		Character_Enemy_Slime_Blue();			// コンストラクタ
-		virtual ~Character_Enemy_Slime_Blue();	// デストラクタ
+		Npc_Enemy();			// コンストラクタ
+		virtual ~Npc_Enemy();	// デストラクタ
 
 		/* 関数 */
 		virtual void	InitialSetup()	override;	// 初期設定
 		virtual void	Update()		override;	// 更新
 
-	protected:
+	private:
+		/* 変数 */
+
+
 		/* 関数 */
 		void	Update_Move();						// 移動処理
 };

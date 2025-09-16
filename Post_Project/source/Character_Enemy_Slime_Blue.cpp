@@ -7,7 +7,7 @@
 #include "DataList_GameStatus.h"
 
 // コンストラクタ
-Character_Enemy_Slime_Blue::Character_Enemy_Slime_Blue() : Character_Base()
+Character_Enemy_Slime_Blue::Character_Enemy_Slime_Blue() : Npc_Base()
 {
 	/* 初期化 */
 	this->iMotionCount		= 0;

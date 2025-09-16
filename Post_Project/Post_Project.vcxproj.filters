@@ -264,6 +264,12 @@
     <ClCompile Include="source\Character_Player_Move.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト</Filter>
     </ClCompile>
+    <ClCompile Include="source\Npc_Base.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Npc_Enemy.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
@@ -334,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="source\Character_Enemy_Slime_Blue.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー\スライム%28青%29</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Npc_Base.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Npc_Enemy.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

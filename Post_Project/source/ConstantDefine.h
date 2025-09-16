@@ -40,7 +40,6 @@ static const int	ROUTE_SEARCH_MOVE_COST_DEFAULT	= 10;	// ƒ‹[ƒgŒŸõŽž‚Ì•W€‚ÌƒRƒ
 static const int	ROUTE_SEARCH_MOVE_COST_DIAG		= 15;	// ƒ‹[ƒgŒŸõŽž‚ÌŽÎ‚ßˆÚ“®‚ÌƒRƒXƒg
 static const int	ROUTE_SEARCH_MOVE_COST_YCHANGE	= 20;	// ƒ‹[ƒgŒŸõŽž‚Ì‚‚³•ÏX‚ÌƒRƒXƒg
 
-
 /* “–‚½‚è”»’èŒn */
 static float COLLISION_CHECK_DISTANCE			= 50000.f;				// “–‚½‚è”»’è‚ðs‚¤’¼ü‹——£(¦Še’¸“_‚Ì“ñæ‚Ì‹——£‚ª‚±‚ê‚æ‚è‘å‚«‚¢‚È‚ç”ñÚG‚Æ”»’è‚·‚é)
 static float COLLISION_CHECK_CEILING_PREVENTION = MAP_BLOCK_SIZE_Y / 2;	// “Vˆä‚·‚è‚Ê‚¯–hŽ~—p‚Ì•â³’l
@@ -65,3 +64,18 @@ static const int ENEMY_SPAWN_POINT_TYPE_PLAIN	= 0;	// •½Œ´
 static const int ENEMY_SPAWN_POINT_TYPE_ROCKY	= 1;	// Šâê
 static const int ENEMY_SPAWN_POINT_TYPE_DESERT	= 2;	// »”™
 
+/* s“®ƒpƒ^[ƒ“ŠÖŒW */
+// NPC‚Ìs“®ƒpƒ^[ƒ“Œn
+static const int NPC_ENEMY_ACTION_PATTERN_INVASION_CORETREE	= 0;	// _–Ø(–h‰q‘ÎÛ)‚Ö‚ÌNU
+static const int NPC_ENEMY_ACTION_PATTARN_PLAYER_ATTACK		= 1;	// ƒvƒŒƒCƒ„[‚Ö‚ÌUŒ‚
+static const int NPC_ENEMY_ACTION_PATTERN_PLAYER_TRACKING	= 2;	// ƒvƒŒƒCƒ„[‚Ì’ÇÕ
+static const int NPC_ENEMY_ACTION_PATTERN_PLAYER_ESCAPE		= 3;	// ƒvƒŒƒCƒ„[‚©‚ç‚Ì“¦‘–
+static const int NPC_ENEMY_ACTION_PATTERN_MAX				= 4;	// s“®ƒpƒ^[ƒ“‚ÌÅ‘å”
+
+// ‰“‹——£UŒ‚‚Ì•ûŒüƒpƒ^[ƒ“
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_AIM			= 0;	// –Ú“I‚ÖŒü‚¯‚Ä‘_‚¢Œ‚‚¿
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_3WAY			= 1;	// –Ú•W‚Æ‚»‚Ì¶‰E‚ÉŒ‚‚Â
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_DIAGONAL_WAY	= 2;	// \Žš•ûŒü‚ÉŒ‚‚Â
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_CARDINAL_WAY	= 3;	// ŽÎ‚ß•ûŒü‚ÉŒ‚‚Â
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_EIGHT_WAY	= 4;	// ”ª•ûŒü‚ÉŒ‚‚Â
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_MAX			= 5;	// ‰“‹——£UŒ‚‚Ì•ûŒüƒpƒ^[ƒ“‚ÌÅ‘å”

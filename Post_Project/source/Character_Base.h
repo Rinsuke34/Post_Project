@@ -18,12 +18,6 @@ class Character_Base : public Actor_Base
 		Character_Base();				// コンストラクタ
 		virtual ~Character_Base();		// デストラクタ
 
-		/* 定数 */
-		static const int MOVE_NOT		= -1;	// 移動不可
-		static const int MOVE_OK		= 0;	// そのまま移動可能
-		static const int MOVE_UP		= 1;	// 上方向へ移動すれば移動可能
-		static const int MOVE_GOALHIT	= 2;	// 目標へ到達
-
 		/* 関数 */
 		virtual void	InitialSetup()		override;	// 初期設定
 		virtual void	Update()			override;	// 更新
@@ -32,20 +26,24 @@ class Character_Base : public Actor_Base
 		virtual void	Draw_Collision()	override;	// 描画(当たり判定)
 
 		/* セッター */
-		// ステータス系
+		// パラメーター系
 		void SetHealth(int iHealth)					{ this->iHealth			=	std::clamp(iHealth, 0, this->iMaxHealth); }	// 体力の設定
 		void HelthChange(int iHelthChange)			{ this->iMaxHealth		+=	iHelthChange; }								// 引数の値分体力を変動
 		void SetMaxHelth(int iMaxHelth)				{ this->iMaxHealth		= iMaxHelth; }									// 最大体力の設定
-		void SetSpeed(int iSpeed)					{ this->iSpeed			= iSpeed; }										// 速度の設定
+		void SetSpeed(int iSpeed)					{ this->iSpeed			= iSpeed; }										// すばやさの設定
+		void SetAutoHealDelay(int iAutoHealDelay)	{ this->iAutoHealDelay	= iAutoHealDelay; }								// 自動回復待機時間の設定
+		void SetAutoHealAmount(int iAutoHealAmount)	{ this->iAutoHealAmount	= iAutoHealAmount; }							// 自動回復量の設定
 		// 状態系
 		void SetDeadFlg(bool bDeadFlg)				{ this->bDeadFlg		= bDeadFlg; }									// 死亡フラグの設定
 		void SetInvicibleTime(int iInvicibleTime)	{ this->iInvincibleTime = iInvicibleTime; }								// 無敵時間の設定
 
 		/* ゲッター */
-		// ステータス系
-		int		iGetHealth()		{ return this->iHealth; }			// 体力の取得
-		int		iGetMaxHealth()		{ return this->iMaxHealth; }		// 最大体力の取得
-		int		iGetSpeed()			{ return this->iSpeed; }			// 速度の取得
+		// パラメーター系
+		int		iGetHealth()			{ return this->iHealth; }			// 体力の取得
+		int		iGetMaxHealth()			{ return this->iMaxHealth; }		// 最大体力の取得
+		int		iGetSpeed()				{ return this->iSpeed; }			// すばやさの取得
+		int		iGetAutoHealDelay()		{ return this->iAutoHealDelay; }	// 自動回復待機時間の取得
+		int		iGetAutoHealAmount()	{ return this->iAutoHealAmount; }	// 自動回復量の取得
 		// 状態系
 		bool	bGetDeadFlg()		{ return this->bDeadFlg; }			// 死亡フラグの取得
 		int		GetInvincibleTime() { return this->iInvincibleTime; }	// 無敵時間の取得
@@ -62,17 +60,17 @@ class Character_Base : public Actor_Base
 		int				iMotionCount;				// モーションカウント
 		bool			bMotionEndFlg;				// モーション終了フラグ
 		bool			bMotionLoopFlg;				// モーションループフラグ
-		// ステータス系
+		// パラメーター系(プレイヤー、NPC共通)
 		int	iHealth;			// 体力
 		int	iMaxHealth;			// 最大体力
-		int iSpeed;				// スピード
+		int iSpeed;				// すばやさ
+		int iAutoHealDelay;		// 自動回復待機時間
+		int iAutoHealAmount;	// 自動回復量
 		// 状態系
 		bool bDeadFlg;			// 死亡フラグ
 		int iInvincibleTime;	// 残り無敵時間(フレーム数)
 		// コリジョン
 		Struct_Collision::COLLISION_BOX	stBox;
-		// 移動系
-		std::vector<VECTOR>	avecMovePath;			// ゴールまでの移動ルート
 
 		/* 関数 */
 		void	Update_Collision();									// コリジョン更新
@@ -80,6 +78,4 @@ class Character_Base : public Actor_Base
 		void	Draw_Animation();									// アニメーション描写
 		void	Ground_PushBack_Gravity();							// 地形からの押し出し処理(重力処理用)
 		void	Ground_PushBack_Movement(VECTOR vecMoveDirection);	// 地形からの押し出し処理(移動処理用)
-		void	Route_Search();										// 移動経路検索
-		int		iCheck_Moveble(VECTOR vecMovePos);					// 移動可能か確認
 };
