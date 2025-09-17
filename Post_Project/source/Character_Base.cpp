@@ -31,18 +31,27 @@ Character_Base::Character_Base() : Actor_Base()
 	this->NowMotionName		= "";
 	this->iMotionCount		= 0;
 	this->bMotionEndFlg		= false;
-	this->bMotionLoopFlg	= false;
+	this->bMotionLoopFlg	= true;
 	// パラメーター系(プレイヤー、NPC共通)
 	this->iHealth			= 0;	// 体力
 	this->iMaxHealth		= 0;	// 最大体力
+	this->iAttack			= 0;	// 攻撃力
 	this->iSpeed			= 0;	// 速度
 	this->iAutoHealDelay	= 0;	// 自動回復待機時間
 	this->iAutoHealAmount	= 0;	// 自動回復量
+	// パラメーター系(NPC用)
+	this->fSearchRange		= 0.f;		// 探索範囲
+	this->fAttackRange		= 0.f;		// 攻撃範囲
+	this->bContactDamageFlg	= false;	// 接触によりダメージ発生するかのフラグ
+	this->bAttackMeleeFlg	= false;	// 近接攻撃を行うかのフラグ
+	// 行動パターンフラグ(NPC用)
+	for (int i = 0; i < NPC_ENEMY_ACTION_PATTERN_MAX; ++i)		{ abEnemyActionPatternFlg[i]		= false; }
+	for (int i = 0; i < LONG_RANGE_ATTACK_DIR_PATTERN_MAX; ++i)	{ abLongRangeAttackPatternFlg[i]	= false; }
 	// 状態系
 	this->bDeadFlg			= false;	// 死亡フラグ
 	this->iInvincibleTime	= 0;		// 残り無敵時間(フレーム数)
 	// コリジョン
-	// ※デフォルトではブロックと同じサイズに設定
+	// ※ ブロックと同じサイズに設定
 	this->stBox.vecBoxCenter	= VGet(0.0f, 0.0f, 0.0f);
 	this->stBox.vecBoxHalfSize	= VGet(MAP_BLOCK_SIZE_X / 2.f, MAP_BLOCK_SIZE_Y / 2.f, MAP_BLOCK_SIZE_Z / 2.f);	
 }
@@ -56,13 +65,11 @@ Character_Base::~Character_Base()
 }
 
 // 初期設定
+// ※ アニメーションファイル名やステータスは子クラスのほうで読み込むこと
 void Character_Base::InitialSetup()
 {
-	/* ステータス設定 */
-	// ※未実装だがJsonから読み込む予定
-	//this->iHealth		= 0;	// 体力
-	//this->iMaxHealth	= 0;	// 最大体力
-	//this->iSpeed		= 0;	// 速度	
+	// パーツアニメーションセットアップ
+	this->pDataList_2DPartsAnimCreateTool->LoadPartsAnimData(this->AnimFileName);
 }
 
 // 更新
@@ -84,6 +91,9 @@ void Character_Base::Update()
 
 	/* コリジョンの更新 */
 	Update_Collision();
+
+	/* アニメーションの更新 */
+	Update_Animation();
 }
 
 // 描写
@@ -220,8 +230,13 @@ void Character_Base::Draw_Animation()
 }
 
 // 地形からの押し出し処理(重力処理用)
-void Character_Base::Ground_PushBack_Gravity()
+bool Character_Base::bGround_PushBack_Gravity()
 {
+	// 戻り値
+	// bool					: 押し出しが発生したかどうか(false:未発生 / true:発生)
+
+	bool bPushBackFlg = false;	// 押し出し発生フラグ
+
 	/* 重力加速度を加算 */
 	this->fGravityVelocity -= this->fGravityAcceleration;
 
@@ -309,6 +324,9 @@ void Character_Base::Ground_PushBack_Gravity()
 					// 下降中(上方向へ押し出し)
 					vecMovePosition.y = stGroundBoxCollision.vecBoxCenter.y + stGroundBoxCollision.vecBoxHalfSize.y;
 				}
+
+				/* 押し出し発生フラグを有効化 */
+				bPushBackFlg = true;
 				break;
 			}
 		}
@@ -342,6 +360,9 @@ void Character_Base::Ground_PushBack_Gravity()
 					// 下降中(上方向へ押し出し)
 					vecMovePosition.y = stBuildingBoxCollision.vecBoxCenter.y + stBuildingBoxCollision.vecBoxHalfSize.y;
 				}
+
+				/* 押し出し発生フラグを有効化 */
+				bPushBackFlg = true;
 				break;
 			}
 		}
@@ -364,13 +385,19 @@ void Character_Base::Ground_PushBack_Gravity()
 		/* 基準座標を移動後の座標に設定 */
 		this->vecBasePosition = vecMovePosition;
 	}
+
+	return  bPushBackFlg;
 }
 
 // 地形からの押し出し処理(移動処理用)
-void Character_Base::Ground_PushBack_Movement(VECTOR vecMoveDirection)
+bool Character_Base::bGround_PushBack_Movement(VECTOR vecMoveDirection)
 {
 	// 引数
 	// vecMoveDirectiron	: 移動方向(速度未反映、正規化不要)
+	// 戻り値
+	// bool					: 押し出しが発生したかどうか(false:未発生 / true:発生)
+
+	bool bPushBackFlg = false;	// 押し出し発生フラグ
 
 	/* 移動前の座標を保存 */
 	VECTOR vecPrevPosition = this->vecBasePosition;
@@ -426,6 +453,9 @@ void Character_Base::Ground_PushBack_Movement(VECTOR vecMoveDirection)
 				// 接触している場合
 				/* 接触した地形のコリジョン情報を保存 */
 				hitGroundBoxes.push_back(Collision->GetBoxCollision());
+
+				/* 押し出し発生フラグを有効化 */
+				bPushBackFlg = true;
 			}
 		}
 
@@ -500,4 +530,6 @@ void Character_Base::Ground_PushBack_Movement(VECTOR vecMoveDirection)
 
 	// 押し出し後の座標を基準座標に反映
 	this->vecBasePosition = vecMovePosition;
+
+	return  bPushBackFlg;
 }

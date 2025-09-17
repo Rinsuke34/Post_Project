@@ -24,7 +24,7 @@ void Character_Player::Update_ApplyGravity()
 	}
 
 	/* ‰Ÿ‚µo‚µˆ— */
-	Character_Base::Ground_PushBack_Gravity();
+	Character_Base::bGround_PushBack_Gravity();
 }
 
 // ˆÚ“®ˆ—
@@ -62,5 +62,5 @@ void Character_Player::Update_ApplyMovement()
 	}
 
 	/* ‰Ÿ‚µo‚µˆ— */
-	Character_Base::Ground_PushBack_Movement(vecMoveDirection);
+	Character_Base::bGround_PushBack_Movement(vecMoveDirection);
 }

@@ -1,6 +1,11 @@
 /* キャラクター(NPC)のベースクラスの定義 */
 
 /* 使用する要素のインクルード */
+// 標準ライブラリ
+// 標準ライブラリ
+#define NOMINMAX
+#include <algorithm>
+#include <fstream>
 // ヘッダファイル
 #include "Npc_Base.h"
 // 関連クラス
@@ -17,20 +22,127 @@
 Npc_Base::Npc_Base() : Character_Base()
 {
 	/* 初期化 */
-	// パラメーター系(NPC独自)
-	this->fSearchRange		= 0.f;		// 探索範囲
-	this->fAttackRange		= 0.f;		// 攻撃範囲
-	this->bContactDamageFlg	= false;	// 接触によりダメージ発生するかのフラグ
-	this->bAttackMeleeFlg	= false;	// 近接攻撃を行うかのフラグ
-	// 行動パターンフラグ
-	for (int i = 0; i < NPC_ENEMY_ACTION_PATTERN_MAX; ++i)		{ abEnemyActionPatternFlg[i]		= false; }
-	for (int i = 0; i < LONG_RANGE_ATTACK_DIR_PATTERN_MAX; ++i) { abLongRangeAttackPatternFlg[i]	= false; }
+	
 }
 
 // デストラクタ
 Npc_Base::~Npc_Base()
 {
 
+}
+
+// 初期設定
+// ※ 名前を設定してから呼び出すこと
+void Npc_Base::InitialSetup()
+{
+
+	this->NowMotionName = "Move";
+
+	/* アニメーションファイル名をこのNPC名に設定 */
+	this->AnimFileName = this->Name;
+
+	/* キャラクター情報の読み込み */
+	JsonLoad_CharacterStatus();
+
+	/* ベースクラスの初期設定処理 */
+	Character_Base::InitialSetup();
+
+	/* ルート設定を別スレッドで実行 */
+	thred_RouteSearch = std::async(std::launch::async, [this]() { this->Route_Search(); });
+}
+
+// 更新
+void Npc_Base::Update()
+{
+	/* ルート検索中であるなら処理を行わない */
+	if (!bCheck_FutureReady(this->thred_RouteSearch)) { return; }
+
+	/* 仮重力処理 */
+	this->fGravityAcceleration = 0.5f;
+	Character_Base::bGround_PushBack_Gravity();
+
+	/* 移動ルートに沿った移動処理 */
+	Update_RouteMove();
+
+	/* ベースクラスの計算処理 */
+	Character_Base::Update();
+}
+
+// 描写
+void Npc_Base::Draw()
+{
+	/* ベースクラスの描写処理 */
+	Character_Base::Draw();
+
+	/* 中心点テスト描写 */
+	DrawLine3D(VAdd(this->vecBasePosition, VGet(100.f, 0.f, 0.f)), VAdd(this->vecBasePosition, VGet(-100.f, 0.f, 0.f)), GetColor(255, 0, 0));
+	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 100.f, 0.f)), VAdd(this->vecBasePosition, VGet(0.f, -100.f, 0.f)), GetColor(0, 255, 0));
+	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 0.f, 100.f)), VAdd(this->vecBasePosition, VGet(0.f, 0.f, -100.f)), GetColor(0, 0, 255));
+
+	/* 移動ルートの描写 */
+	Draw_Route();
+}
+
+// キャラクター情報の読み込み
+void Npc_Base::JsonLoad_CharacterStatus()
+{
+	/* キャラクターの情報を読み込む */
+	// ※ 名前から判断してステータスや行動パターンを読み込む
+
+	/* JSONファイル読み込み */
+	std::string FilePath = "resource/CharacterData/CharacterData_NPC.json";
+
+	std::ifstream ifs(FilePath);
+	if (!ifs) return;
+
+	using json = nlohmann::json;
+	json j;
+	ifs >> j;
+
+	/* キャラクター情報を取得 */
+	for (const auto& status : j)
+	{
+		/* 名前が一致するキャラクター情報を探す */
+		if (status.value("Name", "") == this->Name)
+		{
+			// 名前が一致しているなら
+			/* キャラクター情報を読み込み */
+			// ステータス系
+			this->iMaxHealth			= status.value("MaxHealth", 0);				// 最大体力
+			this->iHealth				= this->iMaxHealth;							// 体力(最大体力で初期化)
+			this->iAttack				= status.value("Attack", 0);				// 攻撃力
+			this->iSpeed				= status.value("Speed", 0);					// すばやさ
+			this->iAutoHealDelay		= status.value("AutoHealDelay", 0);			// 自動回復待機時間
+			this->iAutoHealAmount		= status.value("AutoHealAmount", 0);		// 自動回復量
+			this->fSearchRange			= status.value("SearchRange", 0.f);			// 探索範囲
+			this->fAttackRange			= status.value("AttackRange", 0.f);			// 攻撃範囲
+			this->bContactDamageFlg		= status.value("ContactDamageFlg", false);	// 接触によりダメージ発生するかのフラグ
+			this->bAttackMeleeFlg		= status.value("AttackMeleeFlg", false);	// 近接攻撃を行うかのフラグ
+			// 行動パターンフラグ
+			auto& actionPattern = status["EnemyActionPattern"];
+			for (int i = 0; i < actionPattern.size(); ++i)
+			{
+				this->abEnemyActionPatternFlg[i] = actionPattern[i].get<bool>();
+			}
+			// 長距離攻撃パターンフラグ
+			auto& longRangePattern = status["LongRangeAttackPattern"];
+			for (int i = 0; i < longRangePattern.size(); ++i)
+			{
+				this->abLongRangeAttackPatternFlg[i] = longRangePattern[i].get<bool>();
+			}
+			// チームタグ
+			if (status.contains("TeamTag") && status["TeamTag"].is_array())
+			{
+				for (const auto& tag : status["TeamTag"])
+				{
+					SetTeamTag(tag.get<std::string>());
+				}
+			}
+
+			/* 読み込み完了したのでループを抜ける */
+			break;
+		}
+	}
 }
 
 // 移動経路検索
@@ -52,7 +164,7 @@ void Npc_Base::Route_Search()
 	stStartNode.bStartNodeFlg		= true;														// スタート地点フラグを有効
 	stStartNode.bGoalNodeFlg		= false;													// ゴール地点フラグを無効
 	stStartNode.iCost_G				= 0;														// Gコスト(累計のコスト)を0に設定
-	stStartNode.iCost_H				= static_cast<int>(VSquareSize(VSub(vecGoal, vecStart)));	// Hコスト(ゴールまでの予測コスト)を設定
+	stStartNode.iCost_H				= iCost_H_CalcHeuristicCost(vecStart, vecGoal);				// Hコスト(ゴールまでの予測コスト)を設定
 	stStartNode.iCost_F				= stStartNode.iCost_G + stStartNode.iCost_H;				// Fコスト(Gコスト + Hコスト)を設定
 	stStartNode.bOpenListFlg		= true;														// オープンリストフラグを有効に設定
 	stStartNode.bCloseListFlg		= false;													// クローズリストフラグを無効に設定
@@ -67,18 +179,18 @@ void Npc_Base::Route_Search()
 	while (true)
 	{
 		/* 評価値リスト内のオープンリストからFコストが最少のノードを検索 */
-		int		iMinF_Cost		= INT_MAX;	// Fコストの最小値
+		int		iMinF_Cost_F	= INT_MAX;	// Fコストの最小値
 		bool	bFoundFlg		= false;	// Fコストが最小のノードを発見したかのフラグ
 		int		iMinF_Cost_G	= 0;		// Fコストが最小のノードのGコスト
 
 		for (auto& node : astEvaluationList)
 		{
 			/* オープンリストに登録されていて、F値が最小値であるか */
-			if (node.bOpenListFlg && node.iCost_F < iMinF_Cost)
+			if (node.bOpenListFlg && node.iCost_F < iMinF_Cost_F)
 			{
 				// 条件を満たす場合
 				/* Fコストの最小値を更新 */
-				iMinF_Cost		= node.iCost_F;
+				iMinF_Cost_F	= node.iCost_F;
 				iMinF_Cost_G	= node.iCost_G;
 				vecCurrentNode	= node.vecPosition;
 				bFoundFlg		= true;
@@ -129,7 +241,10 @@ void Npc_Base::Route_Search()
 			{
 				// 移動可能である場合
 				/* 斜め方向への移動であるならコストを変更 */
-				if (i % 2 == 1) { iMoveCost = ROUTE_SEARCH_MOVE_COST_DIAG; }
+				if (i % 2 == 1)
+				{
+					iMoveCost = ROUTE_SEARCH_MOVE_COST_DIAG;
+				}
 				/* 上方向への移動であるならコストを加算 + 座標を変更 */
 				if (iCheckResult == MOVE_UP)
 				{
@@ -147,9 +262,9 @@ void Npc_Base::Route_Search()
 			ASTAR_EVALUATION_LIST stAddNode;
 			stAddNode.bGoalNodeFlg		= false;													// ゴール地点フラグを無効
 			stAddNode.bStartNodeFlg		= false;													// スタート地点フラグを無効
-			stAddNode.iCost_G			= iMinF_Cost_G + iMoveCost;									// Gコスト(累計のコスト)を現在の値 + 移動コストに設定
-			stAddNode.iCost_H			= static_cast<int>(VSquareSize(VSub(vecGoal, vecStart)));	// Hコスト(ゴールまでの予測コスト)を設定
-			stAddNode.iCost_F			= stStartNode.iCost_G + stStartNode.iCost_H;				// Fコスト(Gコスト + Hコスト)を設定
+			stAddNode.iCost_G			= iMinF_Cost_G + iMoveCost;									// Gコスト(累計のコスト)を現在のGコスト + 移動コストに設定
+			stAddNode.iCost_H			= iCost_H_CalcHeuristicCost(vecNextPosition, vecGoal);		// Hコスト(ゴールまでの予測コスト)を設定
+			stAddNode.iCost_F			= stAddNode.iCost_G + stAddNode.iCost_H;					// Fコスト(Gコスト + Hコスト)を設定
 			stAddNode.bOpenListFlg		= true;														// オープンリストフラグを有効に設定
 			stAddNode.bCloseListFlg		= false;													// クローズリストフラグを無効に設定
 			stAddNode.vecParentPosition	= vecCurrentNode;											// 親ノードの座標を現在のノードの座標に設定
@@ -243,7 +358,7 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 	// 引数
 	// vecMovePos	: 移動先の座標
 	// 戻り値
-	// int			: (MOVE_NOT:移動不可 / MOVE_OK:そのまま移動可能 / MOVE_UP:上方向へ移動すれば移動可能) / MOVE_GOALHIT:目標へ到達
+	// int			: (MOVE_NOT:移動不可 / MOVE_OK:そのまま移動可能 / MOVE_UP:上方向へ移動すれば移動可能 / MOVE_GOALHIT:目標へ到達
 
 	int iReturnValue = MOVE_OK;	// 戻り値
 
@@ -282,7 +397,6 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 	}
 
 	/* 接触した全ての地形を記録 */
-	std::vector<Struct_Collision::COLLISION_BOX> hitGroundBoxes;
 	for (auto& Collision : CollisionList)
 	{
 		/* 接触しているか確認 */
@@ -318,4 +432,81 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 	}
 
 	return iReturnValue;
+}
+
+// 移動ルートに沿った移動
+void Npc_Base::Update_RouteMove()
+{
+	/* ルートが登録されていないのであれば何もしない */
+	if (avecMovePath.empty()) { return; }
+
+	/* 現在の移動目的座標を取得 */
+	VECTOR vecTargetPos = avecMovePath.back();
+
+	/* 移動処理 */
+	// 移動方向と移動量を算出
+	VECTOR vecMoveDirection = VSub(vecTargetPos, this->vecBasePosition);
+	vecMoveDirection.y = 0.f;
+	// 移動処理を実行
+	if (Character_Base::bGround_PushBack_Movement(vecMoveDirection))
+	{
+		// 接触が発生下のであれば、ジャンプ処理を実行する
+		this->fGravityVelocity = 10.f;
+	}
+	
+	/* 目的地到達確認処理 */
+	// ※ Y座標は無視
+	// 移動目的地までの距離の二乗を算出
+	VECTOR vecTempTargetPos = vecTargetPos;
+	vecTempTargetPos.y = this->vecBasePosition.y;
+
+	float fDistSq = VSquareSize(VSub(vecTempTargetPos, this->vecBasePosition));
+	// 目的地に到達しているか判定
+	// ※ 移動速度の二条よりも近い場合は到達しているとみなす
+	if (fDistSq < this->iSpeed * this->iSpeed)
+	{
+		// 到達しているのであればリストから削除
+		this->avecMovePath.pop_back();
+	}
+}
+
+// 移動ルートの描写
+void Npc_Base::Draw_Route()
+{
+	/* ルート検索中であるなら処理を行わない */
+	if (!bCheck_FutureReady(this->thred_RouteSearch)) { return; }
+
+	/* 移動ルートに沿って線を描写する */
+	if (this->avecMovePath.size() >= 2)
+	{
+		for (size_t i = 1; i < this->avecMovePath.size(); ++i)
+		{
+			DrawLine3D(
+				this->avecMovePath[i - 1],
+				this->avecMovePath[i],
+				GetColor(0, 255, 0)
+			);
+		}
+	}
+}
+
+// 現在ノードからゴールノードまでの推定コスト（ヒューリスティック値）を算出
+int Npc_Base::iCost_H_CalcHeuristicCost(const VECTOR& vecCurrentPosition, const VECTOR& vecGoalPosition)
+{
+	// 引数
+	// vecCurrentPosition	<- 現在のノードの座標
+	// vecGoalPosition		<- ゴールノードの座標
+	// 戻り値
+	// int					<- 現在ノードからゴールノードまでの推定コスト
+
+	/* オクタイル距離を用いて推定コストを計算 */
+	int differenceX = static_cast<int>(std::abs(vecGoalPosition.x - vecCurrentPosition.x) / ROUTE_SEARCH_MOVE_DISTANCE);
+	int differenceZ = static_cast<int>(std::abs(vecGoalPosition.z - vecCurrentPosition.z) / ROUTE_SEARCH_MOVE_DISTANCE);
+
+	/* 斜め移動できる回数と直線移動が必要な回数を計算 */
+	int diagonalMoveCount = std::min(differenceX, differenceZ);
+	int straightMoveCount = std::abs(differenceX - differenceZ);
+
+	// 斜め移動と直線移動のコストを合計して返す
+	return ROUTE_SEARCH_MOVE_COST_DIAG * diagonalMoveCount + ROUTE_SEARCH_MOVE_COST_DEFAULT * straightMoveCount;
 }

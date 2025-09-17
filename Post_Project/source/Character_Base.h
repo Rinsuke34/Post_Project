@@ -7,6 +7,7 @@
 #include "Actor_Base.h"
 // 共通定義
 #include "AppFrame.h"
+#include "ConstantDefine.h"
 
 /* 前方宣言 */
 class DataList_GameStatus;
@@ -30,6 +31,7 @@ class Character_Base : public Actor_Base
 		void SetHealth(int iHealth)					{ this->iHealth			=	std::clamp(iHealth, 0, this->iMaxHealth); }	// 体力の設定
 		void HelthChange(int iHelthChange)			{ this->iMaxHealth		+=	iHelthChange; }								// 引数の値分体力を変動
 		void SetMaxHelth(int iMaxHelth)				{ this->iMaxHealth		= iMaxHelth; }									// 最大体力の設定
+		void SetAttack(int iAttack)					{ this->iAttack			= iAttack; }									// 攻撃力の設定
 		void SetSpeed(int iSpeed)					{ this->iSpeed			= iSpeed; }										// すばやさの設定
 		void SetAutoHealDelay(int iAutoHealDelay)	{ this->iAutoHealDelay	= iAutoHealDelay; }								// 自動回復待機時間の設定
 		void SetAutoHealAmount(int iAutoHealAmount)	{ this->iAutoHealAmount	= iAutoHealAmount; }							// 自動回復量の設定
@@ -41,6 +43,7 @@ class Character_Base : public Actor_Base
 		// パラメーター系
 		int		iGetHealth()			{ return this->iHealth; }			// 体力の取得
 		int		iGetMaxHealth()			{ return this->iMaxHealth; }		// 最大体力の取得
+		int		iGetAttack()			{ return this->iAttack; }			// 攻撃力の取得
 		int		iGetSpeed()				{ return this->iSpeed; }			// すばやさの取得
 		int		iGetAutoHealDelay()		{ return this->iAutoHealDelay; }	// 自動回復待機時間の取得
 		int		iGetAutoHealAmount()	{ return this->iAutoHealAmount; }	// 自動回復量の取得
@@ -63,9 +66,18 @@ class Character_Base : public Actor_Base
 		// パラメーター系(プレイヤー、NPC共通)
 		int	iHealth;			// 体力
 		int	iMaxHealth;			// 最大体力
+		int iAttack;			// 攻撃力
 		int iSpeed;				// すばやさ
 		int iAutoHealDelay;		// 自動回復待機時間
 		int iAutoHealAmount;	// 自動回復量
+		// パラメーター系(NPC用)
+		float	fSearchRange;		// 探索範囲
+		float	fAttackRange;		// 攻撃範囲
+		bool	bContactDamageFlg;	// 接触によりダメージ発生するかのフラグ
+		bool	bAttackMeleeFlg;	// 近接攻撃を行うかのフラグ
+		// 行動パターンフラグ(NPC用)
+		bool	abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTERN_MAX];			// エネミー行動パターンフラグ
+		bool	abLongRangeAttackPatternFlg[LONG_RANGE_ATTACK_DIR_PATTERN_MAX];	// エネミー遠距離攻撃パターンフラグ
 		// 状態系
 		bool bDeadFlg;			// 死亡フラグ
 		int iInvincibleTime;	// 残り無敵時間(フレーム数)
@@ -76,6 +88,6 @@ class Character_Base : public Actor_Base
 		void	Update_Collision();									// コリジョン更新
 		void	Update_Animation();									// アニメーション更新
 		void	Draw_Animation();									// アニメーション描写
-		void	Ground_PushBack_Gravity();							// 地形からの押し出し処理(重力処理用)
-		void	Ground_PushBack_Movement(VECTOR vecMoveDirection);	// 地形からの押し出し処理(移動処理用)
+		bool	bGround_PushBack_Gravity();							// 地形からの押し出し処理(重力処理用)
+		bool	bGround_PushBack_Movement(VECTOR vecMoveDirection);	// 地形からの押し出し処理(移動処理用)
 };

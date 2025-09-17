@@ -52,3 +52,29 @@ int iGetGridIndexZ(float fZ)
 
     return iGridZ;
 }
+
+/* 非同期読み込み系 */
+// 非同期処理が完了しているか確認
+bool bCheck_FutureReady(std::future<void>& future)
+{
+    // 引数
+	// future	<- 非同期処理の結果を受け取るfutureオブジェクト
+	// 戻り値
+	// bool		<- true:完了 / false:未完了
+
+    /* 対象の非同期処理が完了しているか確認 */
+    if (future.valid())
+    {
+        // 待機時間が0であれば完了していると判定
+        if (future.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+        {
+            // 完了していない場合
+            return false;
+        }
+        
+		// 完了している場合
+        future.get();
+    }
+
+    return true;
+}

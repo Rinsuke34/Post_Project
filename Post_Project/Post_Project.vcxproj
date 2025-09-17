@@ -172,7 +172,6 @@
     <ClCompile Include="source\Actor_Base.cpp" />
     <ClCompile Include="source\Building_CoreTree.cpp" />
     <ClCompile Include="source\Character_Base.cpp" />
-    <ClCompile Include="source\Character_Enemy_Slime_Blue.cpp" />
     <ClCompile Include="source\Character_Player.cpp" />
     <ClCompile Include="source\Character_Player_Move.cpp" />
     <ClCompile Include="source\DataList_GameStatus.cpp" />
@@ -187,7 +186,6 @@
     <ClCompile Include="source\Ground_Model.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\Npc_Base.cpp" />
-    <ClCompile Include="source\Npc_Enemy.cpp" />
     <ClCompile Include="source\Object_Base.cpp" />
     <ClCompile Include="source\Scene_GameMain.cpp" />
     <ClCompile Include="source\Scene_Load.cpp" />
@@ -207,7 +205,6 @@
     <ClInclude Include="source\Actor_Base.h" />
     <ClInclude Include="source\Building_CoreTree.h" />
     <ClInclude Include="source\Character_Base.h" />
-    <ClInclude Include="source\Character_Enemy_Slime_Blue.h" />
     <ClInclude Include="source\Character_Player.h" />
     <ClInclude Include="source\ConstantDefine.h" />
     <ClInclude Include="source\DataList_GameStatus.h" />
@@ -221,7 +218,6 @@
     <ClInclude Include="source\Ground_Marker.h" />
     <ClInclude Include="source\Ground_Model.h" />
     <ClInclude Include="source\Npc_Base.h" />
-    <ClInclude Include="source\Npc_Enemy.h" />
     <ClInclude Include="source\Object_Base.h" />
     <ClInclude Include="source\Scene_GameMain.h" />
     <ClInclude Include="source\Scene_Load.h" />

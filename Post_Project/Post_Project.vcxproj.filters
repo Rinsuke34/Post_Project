@@ -172,18 +172,6 @@
     <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29">
       <UniqueIdentifier>{94578ece-b1f2-45b7-ba7f-cf76e9f65872}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー">
-      <UniqueIdentifier>{4e55d8cd-77c9-49d8-8088-a3f4562592c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー">
-      <UniqueIdentifier>{4bf2350c-e6b4-486e-b18c-715e56b26365}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー\スライム%28青%29">
-      <UniqueIdentifier>{ed0a72a5-cb55-4b57-8763-e85038a14a88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー\スライム%28青%29">
-      <UniqueIdentifier>{99e8e9f3-1022-4812-be93-3aa8d0ed1a0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\汎用関数">
       <UniqueIdentifier>{7d83f03c-cbd0-43d4-adcd-bbdd66012547}</UniqueIdentifier>
     </Filter>
@@ -258,14 +246,8 @@
     <ClCompile Include="source\Building_CoreTree.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29</Filter>
     </ClCompile>
-    <ClCompile Include="source\Character_Enemy_Slime_Blue.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー\スライム%28青%29</Filter>
-    </ClCompile>
     <ClCompile Include="source\Npc_Base.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Npc_Enemy.cpp">
-      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC\エネミー</Filter>
     </ClCompile>
     <ClCompile Include="source\FunctionDefine.cpp">
       <Filter>ソース ファイル\汎用関数</Filter>
@@ -341,14 +323,8 @@
     <ClInclude Include="source\Building_CoreTree.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\神木%28防衛対象%29</Filter>
     </ClInclude>
-    <ClInclude Include="source\Character_Enemy_Slime_Blue.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー\スライム%28青%29</Filter>
-    </ClInclude>
     <ClInclude Include="source\Npc_Base.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Npc_Enemy.h">
-      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\NPC\エネミー</Filter>
     </ClInclude>
     <ClInclude Include="source\FunctionDefine.h">
       <Filter>ヘッダー ファイル\定義</Filter>
