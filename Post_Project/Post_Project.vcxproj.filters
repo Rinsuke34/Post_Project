@@ -175,6 +175,12 @@
     <Filter Include="ソース ファイル\汎用関数">
       <UniqueIdentifier>{7d83f03c-cbd0-43d4-adcd-bbdd66012547}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームメイン\UI">
+      <UniqueIdentifier>{0497ae5f-0732-4338-90cb-3fae2938450a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ゲームメイン\UI">
+      <UniqueIdentifier>{cbad85a7-7766-45b1-9dcc-83e8ec849e82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -252,8 +258,17 @@
     <ClCompile Include="source\FunctionDefine.cpp">
       <Filter>ソース ファイル\汎用関数</Filter>
     </ClCompile>
-    <ClCompile Include="source\Character_Player_Move.cpp">
+    <ClCompile Include="source\Character_Player_Action.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\プレイヤー</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Npc_Base_Action.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\キャラクター\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_GameMain_UI_Status_CoreTree.cpp">
+      <Filter>ソース ファイル\シーン\ゲームメイン\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_GameMain_UI_Status_Player.cpp">
+      <Filter>ソース ファイル\シーン\ゲームメイン\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,9 +326,6 @@
     <ClInclude Include="source\Character_Player.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\キャラクター\プレイヤー</Filter>
     </ClInclude>
-    <ClInclude Include="source\Test_ConstantDefine.h">
-      <Filter>ヘッダー ファイル\定義</Filter>
-    </ClInclude>
     <ClInclude Include="source\DataList_StageCreate.h">
       <Filter>ヘッダー ファイル\データリスト\ステージクリエイト情報管理</Filter>
     </ClInclude>
@@ -328,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="source\FunctionDefine.h">
       <Filter>ヘッダー ファイル\定義</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_GameMain_UI_Status_CoreTree.h">
+      <Filter>ヘッダー ファイル\シーン\ゲームメイン\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_GameMain_UI_Status_Player.h">
+      <Filter>ヘッダー ファイル\シーン\ゲームメイン\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

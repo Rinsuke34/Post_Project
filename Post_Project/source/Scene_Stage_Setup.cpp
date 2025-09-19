@@ -100,11 +100,11 @@ void Scene_Stage::Setup_PlaceObject_CenterArea()
 	// 3Dモデルデータ管理
 	std::shared_ptr<DataList_Model>	pDataList_Model = std::dynamic_pointer_cast<DataList_Model>(gpDataListServer->GetDataList("DataList_Model"));
 
-	///* プレイヤー追加 */
-	//std::shared_ptr<Character_Player> pPlayer = std::make_shared<Character_Player>();
-	//pPlayer->SetPosition(this->pDataList_GameStatus->GetPlayerStartPosition());
-	//pPlayer->InitialSetup();
-	//this->pDataList_Object->AddObject_Actor(pPlayer);
+	/* プレイヤー追加 */
+	std::shared_ptr<Character_Player> pPlayer = std::make_shared<Character_Player>();
+	pPlayer->SetPosition(this->pDataList_GameStatus->GetPlayerStartPosition());
+	pPlayer->InitialSetup();
+	this->pDataList_Object->AddObject_Actor(pPlayer);
 
 	/* 防衛対象追加 */
 	std::shared_ptr<Building_CoreTree> pCoreTree = std::make_shared<Building_CoreTree>();
@@ -128,16 +128,10 @@ void Scene_Stage::Setup_PlaceObject_SideArea()
 			// スライムを生成
 			std::shared_ptr<Npc_Base> pSlime = std::make_shared<Npc_Base>();
 			pSlime->SetPosition(SpawnPoint.vecPosition);
+			pSlime->SetTeamTag("Enemy");
 			pSlime->SetName("Slime_Blue");
 			pSlime->InitialSetup();
 			this->pDataList_Object->AddObject_Actor(pSlime);
-
-			///* プレイヤー追加 */
-			std::shared_ptr<Character_Player> pPlayer = std::make_shared<Character_Player>();
-			pPlayer->SetPosition(SpawnPoint.vecPosition);
-			pPlayer->InitialSetup();
-			this->pDataList_Object->AddObject_Actor(pPlayer);
-
 			break;	// テストのため1体のみ生成
 		}
 	}

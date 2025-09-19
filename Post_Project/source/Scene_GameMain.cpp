@@ -5,6 +5,8 @@
 #include "Scene_GameMain.h"
 // 関連クラス
 #include "Scene_Stage.h"
+#include "Scene_GameMain_UI_Status_CoreTree.h"
+#include "Scene_GameMain_UI_Status_Player.h"
 #include "DataList_Object.h"
 #include "DataList_GameStatus.h"
 
@@ -16,7 +18,9 @@ Scene_GameMain::Scene_GameMain() : Scene_Base("Scene_GameMain", 0, false, false)
 	gpDataListServer->AddDataList(std::make_shared<DataList_Object>());			// オブジェクト管理
 
 	/* シーン作成 */
-	gpSceneServer->AddSceneReservation(std::make_shared<Scene_Stage>());		// ステージシーン
+	gpSceneServer->AddSceneReservation(std::make_shared<Scene_Stage>());						// ステージシーン
+	gpSceneServer->AddSceneReservation(std::make_shared<Scene_GameMain_UI_Status_CoreTree>());	// UI:神木(防衛対象)の状態
+	gpSceneServer->AddSceneReservation(std::make_shared<Scene_GameMain_UI_Status_Player>());	// UI:プレイヤーの状態
 
 	/* データリスト取得 */
 	this->pDataList_Object		= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));			// オブジェクト管理

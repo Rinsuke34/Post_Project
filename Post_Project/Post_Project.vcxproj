@@ -173,7 +173,7 @@
     <ClCompile Include="source\Building_CoreTree.cpp" />
     <ClCompile Include="source\Character_Base.cpp" />
     <ClCompile Include="source\Character_Player.cpp" />
-    <ClCompile Include="source\Character_Player_Move.cpp" />
+    <ClCompile Include="source\Character_Player_Action.cpp" />
     <ClCompile Include="source\DataList_GameStatus.cpp" />
     <ClCompile Include="source\DataList_Image.cpp" />
     <ClCompile Include="source\DataList_Model.cpp" />
@@ -186,8 +186,11 @@
     <ClCompile Include="source\Ground_Model.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\Npc_Base.cpp" />
+    <ClCompile Include="source\Npc_Base_Action.cpp" />
     <ClCompile Include="source\Object_Base.cpp" />
     <ClCompile Include="source\Scene_GameMain.cpp" />
+    <ClCompile Include="source\Scene_GameMain_UI_Status_CoreTree.cpp" />
+    <ClCompile Include="source\Scene_GameMain_UI_Status_Player.cpp" />
     <ClCompile Include="source\Scene_Load.cpp" />
     <ClCompile Include="source\Scene_Stage.cpp" />
     <ClCompile Include="source\Scene_StageCreate.cpp" />
@@ -220,12 +223,13 @@
     <ClInclude Include="source\Npc_Base.h" />
     <ClInclude Include="source\Object_Base.h" />
     <ClInclude Include="source\Scene_GameMain.h" />
+    <ClInclude Include="source\Scene_GameMain_UI_Status_CoreTree.h" />
+    <ClInclude Include="source\Scene_GameMain_UI_Status_Player.h" />
     <ClInclude Include="source\Scene_Load.h" />
     <ClInclude Include="source\Scene_Stage.h" />
     <ClInclude Include="source\Scene_StageCreate.h" />
     <ClInclude Include="source\Scene_Title.h" />
     <ClInclude Include="source\StructDefine.h" />
-    <ClInclude Include="source\Test_ConstantDefine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

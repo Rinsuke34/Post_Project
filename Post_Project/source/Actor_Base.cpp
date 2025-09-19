@@ -17,9 +17,8 @@ Actor_Base::Actor_Base() : Object_Base()
 
 	/* 初期化 */
 	this->vecBasePosition		= VGet(0.0f, 0.0f, 0.0f);
-	this->bEnableGravityFlg		= false;	// 重力有効フラグ
+	this->bEnableGravityFlg		= true;		// 重力有効フラグ
 	this->fGravityVelocity		= 0.f;		// 重力による落下速度
-	this->fGravityAcceleration	= 0.f;		// 重力加速度
 }
 
 // 更新
@@ -71,7 +70,7 @@ void Actor_Base::Update_ApplyGravity_Simple()
 	VECTOR vecBasePosition = this->vecBasePosition;
 
 	/* 重力による落下速度と移動後の座標を算出 */
-	this->fGravityVelocity	+=	this->fGravityAcceleration;
+	this->fGravityVelocity	+= GRAVITY_ACCELERATION;
 	VECTOR vecNextPosition	=	VAdd(this->vecBasePosition, VGet(0.f, this->fGravityVelocity, 0.f));
 
 	/* 移動前と移動後の座標からコリジョンを作成 */

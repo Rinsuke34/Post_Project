@@ -28,10 +28,11 @@ Character_Base::Character_Base() : Actor_Base()
 	/* 初期化 */
 	// アニメーション関係
 	this->AnimFileName		= "";
-	this->NowMotionName		= "";
+	this->NowMotionName		= "Delay";
 	this->iMotionCount		= 0;
 	this->bMotionEndFlg		= false;
 	this->bMotionLoopFlg	= true;
+	this->bDrawReversalFlg	= false;
 	// パラメーター系(プレイヤー、NPC共通)
 	this->iHealth			= 0;	// 体力
 	this->iMaxHealth		= 0;	// 最大体力
@@ -50,6 +51,8 @@ Character_Base::Character_Base() : Actor_Base()
 	// 状態系
 	this->bDeadFlg			= false;	// 死亡フラグ
 	this->iInvincibleTime	= 0;		// 残り無敵時間(フレーム数)
+	this->bJumpUseFlg		= false;	// ジャンプ使用可能フラグ
+	this->bTrackingFlg		= false;	// 追跡中であるかのフラグ
 	// コリジョン
 	// ※ ブロックと同じサイズに設定
 	this->stBox.vecBoxCenter	= VGet(0.0f, 0.0f, 0.0f);
@@ -65,7 +68,7 @@ Character_Base::~Character_Base()
 }
 
 // 初期設定
-// ※ アニメーションファイル名やステータスは子クラスのほうで読み込むこと
+// ※ アニメーションファイル名やステータスは子クラスで読み込み処理を行うこと
 void Character_Base::InitialSetup()
 {
 	// パーツアニメーションセットアップ
@@ -101,6 +104,12 @@ void Character_Base::Draw()
 {
 	/* アニメーション描写 */
 	Draw_Animation();
+
+	/* 探索範囲の描写 */
+	Draw_SearchRange();
+
+	/* 攻撃範囲の描写 */
+	Draw_AttackRange();
 }
 
 // 描画(シャドウマップ用)
@@ -192,7 +201,7 @@ void Character_Base::Draw_Animation()
 	aVertex[2].pos = VGet(this->vecBasePosition.x - fHalfWide, this->vecBasePosition.y + fYLean, this->vecBasePosition.z - 32.f + TOPVIEW_LEAN_AMOUNT);
 	aVertex[3].pos = VGet(this->vecBasePosition.x - fHalfWide, this->vecBasePosition.y, this->vecBasePosition.z - 32.f);
 
-	// 頂点の初期化
+	/* 頂点の初期化 */
 	for (int i = 0; i < 4; ++i)
 	{
 		aVertex[i].dif = GetColorU8(255, 255, 255, 255);
@@ -211,19 +220,40 @@ void Character_Base::Draw_Animation()
 		aVertex[i].norm = VGet(0.0f, 0.0f, -1.0f);
 	}
 
-	// uv座標を設定
-	// 右上
-	aVertex[0].u = 1.f;
-	aVertex[0].v = 0.f;
-	// 右下
-	aVertex[1].u = 1.f;
-	aVertex[1].v = 1.f;
-	// 左上
-	aVertex[2].u = 0.f;
-	aVertex[2].v = 0.f;
-	// 左下
-	aVertex[3].u = 0.f;
-	aVertex[3].v = 1.f;
+	/* uv座標を設定 */
+	// 反転フラグの状態に応じてuv座標を変更
+	if (!this->bDrawReversalFlg)
+	{
+		// 反転しない場合
+		// 右上
+		aVertex[0].u = 1.f;
+		aVertex[0].v = 0.f;
+		// 右下
+		aVertex[1].u = 1.f;
+		aVertex[1].v = 1.f;
+		// 左上
+		aVertex[2].u = 0.f;
+		aVertex[2].v = 0.f;
+		// 左下
+		aVertex[3].u = 0.f;
+		aVertex[3].v = 1.f;
+	}
+	else
+	{
+		// 反転する場合
+		// 右上
+		aVertex[0].u = 0.f;
+		aVertex[0].v = 0.f;
+		// 右下
+		aVertex[1].u = 0.f;
+		aVertex[1].v = 1.f;
+		// 左上
+		aVertex[2].u = 1.f;
+		aVertex[2].v = 0.f;
+		// 左下
+		aVertex[3].u = 1.f;
+		aVertex[3].v = 1.f;
+	}
 
 	// 四角形（板ポリゴン）の描画
 	DrawPolygonIndexed3D(aVertex, 8, IndexBack, 2, this->iScreenHandle_Animation, TRUE);
@@ -237,8 +267,11 @@ bool Character_Base::bGround_PushBack_Gravity()
 
 	bool bPushBackFlg = false;	// 押し出し発生フラグ
 
+	/* 重力処理を行わないのであれば終了する */
+	if (!this->bEnableGravityFlg) { return bPushBackFlg; }
+
 	/* 重力加速度を加算 */
-	this->fGravityVelocity -= this->fGravityAcceleration;
+	this->fGravityVelocity -= GRAVITY_ACCELERATION;
 
 	/* 移動前の基準座標を保存 */
 	VECTOR vecPrevPosition = this->vecBasePosition;
@@ -378,6 +411,9 @@ bool Character_Base::bGround_PushBack_Gravity()
 
 		/* 落下速度をリセット */
 		this->fGravityVelocity = 0.f;
+
+		/* ジャンプ使用可能フラグを有効化 */
+		this->bJumpUseFlg = true;
 	}
 	else
 	{
@@ -483,9 +519,10 @@ bool Character_Base::bGround_PushBack_Movement(VECTOR vecMoveDirection)
 				// Z軸の重なり量
 				float overlapZ = std::min(playerMaxZ, groundMaxZ) - std::max(playerMinZ, groundMinZ);
 
-				// 接触していなければスキップ
+				/* 接触していないのであればスキップする */
 				if (overlapX <= 0.f || overlapZ <= 0.f) continue;
 
+				/* 押し出し処理 */
 				// 最小の重なり方向に押し出し
 				if (overlapX < overlapZ)
 				{
@@ -511,7 +548,8 @@ bool Character_Base::bGround_PushBack_Movement(VECTOR vecMoveDirection)
 						vecMovePosition.z = groundMaxZ + stMoveBox.vecBoxHalfSize.z;
 					}
 				}
-				// 押し出しが発生したので再判定
+
+				/* 押し出しが発生したので再判定 */
 				stMoveBox.vecBoxCenter = VAdd(vecMovePosition, VGet(0.f, this->stBox.vecBoxHalfSize.y, 0.f));
 				bPushed = true;
 			}
@@ -528,8 +566,81 @@ bool Character_Base::bGround_PushBack_Movement(VECTOR vecMoveDirection)
 		} while (bPushed);
 	}
 
-	// 押し出し後の座標を基準座標に反映
+	/* 押し出し後の座標を基準座標に反映 */
 	this->vecBasePosition = vecMovePosition;
 
+	/* 移動前と移動後の座標から、描写の左右反転を行うか判断 */
+	// ※ X座標の変化が無い場合は反転の判断は行わない
+	if (vecMovePosition.x != vecPrevPosition.x)
+	{
+		if (vecMovePosition.x - vecPrevPosition.x > 0.f)
+		{
+			// 右方向に移動している場合
+			/* 反転フラグを無効化 */
+			this->bDrawReversalFlg = false;
+		}
+		else
+		{
+			// 左方向に移動している場合
+			/* 反転フラグを有効化 */
+			this->bDrawReversalFlg = true;
+		}
+	}
+
 	return  bPushBackFlg;
+}
+
+// ジャンプ処理
+void Character_Base::Update_Jump()
+{
+	/* ジャンプ使用可能フラグが無効なら処理を終了する */
+	if (!this->bJumpUseFlg) { return; }
+	
+	/* ジャンプ処理を実施 */
+	this->fGravityVelocity = GRAVITY_JUMP_POWER;
+
+	/* ジャンプ使用可能フラグを無効化 */
+	this->bJumpUseFlg = false;
+}
+
+// 探索範囲の描写
+void Character_Base::Draw_SearchRange()
+{
+	/* 索敵範囲が設定されていないなら処理を終了*/
+	if (this->fSearchRange <= 0.f) { return; }
+
+	/* 追跡状態であるか確認 */
+	if (this->bTrackingFlg)
+	{
+		// 追跡状態である場合
+		/* 赤色で探索範囲を描写 */
+		PUBLIC_FUNCTION::DrawCircleXZ3D(this->vecBasePosition, this->fSearchRange, 32, GetColor(255, 0, 0));
+	}
+	else
+	{
+		// 追跡状態でない場合
+		/* 緑色で探索範囲を描写 */
+		PUBLIC_FUNCTION::DrawCircleXZ3D(this->vecBasePosition, this->fSearchRange, 32, GetColor(0, 255, 0));
+	}	
+}
+
+// 攻撃範囲の描写
+void Character_Base::Draw_AttackRange()
+{
+	/* 攻撃範囲が設定されていないなら処理を終了*/
+	if (this->fAttackRange <= 0.f) { return; }
+
+	/* モーションが攻撃"Attack"であるか確認 */
+	if (this->NowMotionName == "Attack")
+	{
+		// "Attack"である場合
+		/* 赤色で攻撃範囲を描写 */
+		PUBLIC_FUNCTION::DrawCircleXZ3D(this->vecBasePosition, this->fAttackRange, 32, GetColor(255, 0, 0));
+	}
+	else
+	{
+		// "Attack"でない場合
+		/* 灰色で攻撃範囲を描写 */
+		PUBLIC_FUNCTION::DrawCircleXZ3D(this->vecBasePosition, this->fAttackRange, 32, GetColor(0, 255, 0));
+	}
 }

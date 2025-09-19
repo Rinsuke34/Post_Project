@@ -87,3 +87,7 @@ static const int LONG_RANGE_ATTACK_DIR_PATTERN_DIAGONAL_WAY	= 2;	// 十字方向に撃
 static const int LONG_RANGE_ATTACK_DIR_PATTERN_CARDINAL_WAY	= 3;	// 斜め方向に撃つ
 static const int LONG_RANGE_ATTACK_DIR_PATTERN_EIGHT_WAY	= 4;	// 八方向に撃つ
 static const int LONG_RANGE_ATTACK_DIR_PATTERN_MAX			= 5;	// 遠距離攻撃の方向パターンの最大数
+
+// ゲーム用ステータス
+static const float GRAVITY_ACCELERATION						= 0.5f;	// 重力加速度
+static const float GRAVITY_JUMP_POWER						= 10.f;	// ジャンプ時の初速

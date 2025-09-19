@@ -29,14 +29,12 @@ class Actor_Base : public Object_Base
 		void SetTeamTag(std::string TeamTag)				{ this->TeamTag.push_back(TeamTag); }				// チームタグの設定
 		void SetEnableGravityFlg(bool bEnable)				{ this->bEnableGravityFlg		= bEnable; }		// 重力有効フラグの設定
 		void SetGravityVelocity(float fVelocity)			{ this->fGravityVelocity		= fVelocity; }		// 重力による落下速度の設定
-		void SetGravityAcceleration(float fAcceleration)	{ this->fGravityAcceleration	= fAcceleration; }	// 重力加速度の設定
 
 		/* ゲッター */
 		VECTOR						GetPosition()				{ return this->vecBasePosition; }		// 基準座標の取得
 		std::vector<std::string>&	GetTeamTag()				{ return this->TeamTag; }				// チームタグの取得
 		bool						GetEnableGravityFlg()		{ return this->bEnableGravityFlg; }		// 重力有効フラグの取得
 		float						GetGravityVelocity()		{ return this->fGravityVelocity; }		// 重力による落下速度の取得
-		float						GetGravityAcceleration()	{ return this->fGravityAcceleration; }	// 重力加速度の取得
 
 	protected:
 		/* 変数 */
@@ -47,7 +45,6 @@ class Actor_Base : public Object_Base
 		std::vector<std::string>	TeamTag;				// チームタグ
 		bool						bEnableGravityFlg;		// 重力有効フラグ
 		float						fGravityVelocity;		// 重力による落下速度
-		float						fGravityAcceleration;	// 重力加速度
 
 		/* 関数 */
 		void Update_ApplyGravity_Simple();	// 重力処理(簡易)

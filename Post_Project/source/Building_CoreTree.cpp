@@ -31,6 +31,8 @@ void Building_CoreTree::InitialSetup()
 	/* ‘Ì—ÍÝ’è */
 	this->iMaxHp	= 100;
 	this->iHp		= this->iMaxHp;
+	this->pDataList_GameStatus->SetMaxHp_CoreTree(this->iMaxHp);
+	this->pDataList_GameStatus->SetHp_CoreTree(this->iHp);
 
 	/* ƒRƒŠƒWƒ‡ƒ“Ý’è */
 	this->stBox.vecBoxCenter	= VAdd(VGet(0.f, (CORETREE_SIZE_Y / 2.f) - 16.f, 0.f), this->GetPosition());
@@ -69,5 +71,5 @@ void Building_CoreTree::Draw_Collision()
 void Building_CoreTree::SetHP(int iHP)
 {
 	this->iHp = iHP;
-	this->pDataList_GameStatus->SetHP_CoreTree(this->iHp);
+	this->pDataList_GameStatus->SetHp_CoreTree(this->iHp);
 }

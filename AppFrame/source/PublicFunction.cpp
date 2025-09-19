@@ -118,3 +118,26 @@ void PUBLIC_FUNCTION::DrawCubeLine3D(VECTOR aVertex[8], unsigned int iColor)
 	DrawLine3D(aVertex[4], aVertex[6], iColor);
 	DrawLine3D(aVertex[5], aVertex[7], iColor);
 }
+
+// XZïΩñ è„Ç…â~Çï`âÊ
+void PUBLIC_FUNCTION::DrawCircleXZ3D(VECTOR vecCenter, float fRadius, int iDiv, int iColor)
+{
+	// à¯êî
+	// vecCenter	<- â~ÇÃíÜêSç¿ïW
+	// fRadius		<- â~ÇÃîºåa
+	// iDiv			<- â~ÇÃï™äÑêî(ëΩÇ¢ÇŸÇ«ääÇÁÇ©Ç…Ç»ÇÈ)
+	// iColor		<- â~ÇÃêF
+
+	float fAngleStep = 2.0f * DX_PI_F / iDiv;
+
+	for (int i = 0; i < iDiv; i++)
+	{
+		float fAngle1 = i * fAngleStep;
+		float fAngle2 = (i + 1) * fAngleStep;
+
+		VECTOR vecP1 = VGet(vecCenter.x + cosf(fAngle1) * fRadius, vecCenter.y, vecCenter.z + sinf(fAngle1) * fRadius);
+		VECTOR vecP2 = VGet(vecCenter.x + cosf(fAngle2) * fRadius, vecCenter.y, vecCenter.z + sinf(fAngle2) * fRadius);
+
+		DrawLine3D(vecP1, vecP2, iColor);
+	}
+}

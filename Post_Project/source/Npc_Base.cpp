@@ -2,7 +2,6 @@
 
 /* 使用する要素のインクルード */
 // 標準ライブラリ
-// 標準ライブラリ
 #define NOMINMAX
 #include <algorithm>
 #include <fstream>
@@ -21,23 +20,23 @@
 // コンストラクタ
 Npc_Base::Npc_Base() : Character_Base()
 {
-	/* 初期化 */
-	
+
 }
 
 // デストラクタ
 Npc_Base::~Npc_Base()
 {
-
+	/* ルート探索スレッドが動作中であるなら終了を待機 */
+	if (thred_RouteSearch.valid())
+	{
+		thred_RouteSearch.wait();
+	}
 }
 
 // 初期設定
 // ※ 名前を設定してから呼び出すこと
 void Npc_Base::InitialSetup()
 {
-
-	this->NowMotionName = "Move";
-
 	/* アニメーションファイル名をこのNPC名に設定 */
 	this->AnimFileName = this->Name;
 
@@ -48,21 +47,17 @@ void Npc_Base::InitialSetup()
 	Character_Base::InitialSetup();
 
 	/* ルート設定を別スレッドで実行 */
-	thred_RouteSearch = std::async(std::launch::async, [this]() { this->Route_Search(); });
+	this->thred_RouteSearch = std::async(std::launch::async, [this]() { this->Route_Search(); });
 }
 
 // 更新
 void Npc_Base::Update()
 {
-	/* ルート検索中であるなら処理を行わない */
-	if (!bCheck_FutureReady(this->thred_RouteSearch)) { return; }
+	/* 重力落下処理 */
+	bGround_PushBack_Gravity();
 
-	/* 仮重力処理 */
-	this->fGravityAcceleration = 0.5f;
-	Character_Base::bGround_PushBack_Gravity();
-
-	/* 移動ルートに沿った移動処理 */
-	Update_RouteMove();
+	/* 行動パターン管理 */
+	Update_Action();
 
 	/* ベースクラスの計算処理 */
 	Character_Base::Update();
@@ -73,11 +68,6 @@ void Npc_Base::Draw()
 {
 	/* ベースクラスの描写処理 */
 	Character_Base::Draw();
-
-	/* 中心点テスト描写 */
-	DrawLine3D(VAdd(this->vecBasePosition, VGet(100.f, 0.f, 0.f)), VAdd(this->vecBasePosition, VGet(-100.f, 0.f, 0.f)), GetColor(255, 0, 0));
-	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 100.f, 0.f)), VAdd(this->vecBasePosition, VGet(0.f, -100.f, 0.f)), GetColor(0, 255, 0));
-	DrawLine3D(VAdd(this->vecBasePosition, VGet(0.f, 0.f, 100.f)), VAdd(this->vecBasePosition, VGet(0.f, 0.f, -100.f)), GetColor(0, 0, 255));
 
 	/* 移動ルートの描写 */
 	Draw_Route();
@@ -236,7 +226,7 @@ void Npc_Base::Route_Search()
 			VECTOR vecNextPosition = VAdd(vecCurrentNode, avecNextPosition[i]);
 
 			/* 移動可能であるか確認 */
-			int iCheckResult = iCheck_Moveble(vecNextPosition);
+			int iCheckResult = iCheck_Moveble(vecNextPosition, vecGoal);
 			if (iCheckResult != MOVE_NOT)
 			{
 				// 移動可能である場合
@@ -353,7 +343,7 @@ void Npc_Base::Route_Search()
 }
 
 // 移動可能か確認
-int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
+int Npc_Base::iCheck_Moveble(VECTOR vecMovePos, VECTOR vecGoalPos)
 {
 	// 引数
 	// vecMovePos	: 移動先の座標
@@ -361,6 +351,15 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 	// int			: (MOVE_NOT:移動不可 / MOVE_OK:そのまま移動可能 / MOVE_UP:上方向へ移動すれば移動可能 / MOVE_GOALHIT:目標へ到達
 
 	int iReturnValue = MOVE_OK;	// 戻り値
+
+	/* 目標地点へ到達しているか */
+	if (PUBLIC_PROCESS::bIsFloatDiffWithinThreshold(vecMovePos.x, vecGoalPos.x, MAP_BLOCK_SIZE_X / 2.f) &&
+		PUBLIC_PROCESS::bIsFloatDiffWithinThreshold(vecMovePos.z, vecGoalPos.z, MAP_BLOCK_SIZE_Z / 2.f))
+	{
+		// 目標地点へ到達している場合
+		/* 目標へ到達とする */
+		return MOVE_GOALHIT;
+	}
 
 	/* 確認するコリジョンを作成 */
 	// ※ 縦方向には少し余裕を持たせる(地形の凹凸に引っかからないようにするため)
@@ -409,8 +408,9 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 			if (pCoreTree != nullptr)
 			{
 				// 神木である場合
-				/* 目標へ到達とする */
-				return MOVE_GOALHIT;
+				/* 移動可能とする */
+				// ※ 神木へのルート検索時にゴールまで到達できなくなってしまうため
+				return MOVE_OK;
 			}
 
 			/* ブロック1マス分上昇させた場合、接触しているか確認 */
@@ -438,20 +438,21 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos)
 void Npc_Base::Update_RouteMove()
 {
 	/* ルートが登録されていないのであれば何もしない */
-	if (avecMovePath.empty()) { return; }
+	if (this->avecMovePath.empty()) { return; }
 
 	/* 現在の移動目的座標を取得 */
-	VECTOR vecTargetPos = avecMovePath.back();
+	VECTOR vecTargetPos = this->avecMovePath.back();
 
 	/* 移動処理 */
 	// 移動方向と移動量を算出
 	VECTOR vecMoveDirection = VSub(vecTargetPos, this->vecBasePosition);
 	vecMoveDirection.y = 0.f;
 	// 移動処理を実行
-	if (Character_Base::bGround_PushBack_Movement(vecMoveDirection))
+	if (bGround_PushBack_Movement(vecMoveDirection))
 	{
-		// 接触が発生下のであれば、ジャンプ処理を実行する
-		this->fGravityVelocity = 10.f;
+		// 接触が発生した場合
+		/* ジャンプ処理を実行 */
+		Update_Jump();
 	}
 	
 	/* 目的地到達確認処理 */
@@ -509,4 +510,13 @@ int Npc_Base::iCost_H_CalcHeuristicCost(const VECTOR& vecCurrentPosition, const 
 
 	// 斜め移動と直線移動のコストを合計して返す
 	return ROUTE_SEARCH_MOVE_COST_DIAG * diagonalMoveCount + ROUTE_SEARCH_MOVE_COST_DEFAULT * straightMoveCount;
+}
+
+// 指定座標との距離の2乗を取得
+float Npc_Base::fDistanceToTargetSquare(VECTOR vecTargetPos)
+{
+	// 戻り値
+	// float	<- 対象との距離の二乗
+
+	return VSquareSize(VSub(vecTargetPos, this->vecBasePosition));
 }

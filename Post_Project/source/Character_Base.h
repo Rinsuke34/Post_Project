@@ -38,6 +38,7 @@ class Character_Base : public Actor_Base
 		// 状態系
 		void SetDeadFlg(bool bDeadFlg)				{ this->bDeadFlg		= bDeadFlg; }									// 死亡フラグの設定
 		void SetInvicibleTime(int iInvicibleTime)	{ this->iInvincibleTime = iInvicibleTime; }								// 無敵時間の設定
+		void SetJumpUseFlg(bool bJumpUseFlg) { this->bJumpUseFlg = bJumpUseFlg; }											// ジャンプ使用可能フラグの設定
 
 		/* ゲッター */
 		// パラメーター系
@@ -50,6 +51,7 @@ class Character_Base : public Actor_Base
 		// 状態系
 		bool	bGetDeadFlg()		{ return this->bDeadFlg; }			// 死亡フラグの取得
 		int		GetInvincibleTime() { return this->iInvincibleTime; }	// 無敵時間の取得
+		bool	bSetJumpUseFlg()	{ return this->bJumpUseFlg; }		// ジャンプ使用可能フラグの取得
 
 	protected:
 		/* 変数 */
@@ -63,6 +65,7 @@ class Character_Base : public Actor_Base
 		int				iMotionCount;				// モーションカウント
 		bool			bMotionEndFlg;				// モーション終了フラグ
 		bool			bMotionLoopFlg;				// モーションループフラグ
+		bool			bDrawReversalFlg;			// 左右反転フラグ
 		// パラメーター系(プレイヤー、NPC共通)
 		int	iHealth;			// 体力
 		int	iMaxHealth;			// 最大体力
@@ -77,10 +80,12 @@ class Character_Base : public Actor_Base
 		bool	bAttackMeleeFlg;	// 近接攻撃を行うかのフラグ
 		// 行動パターンフラグ(NPC用)
 		bool	abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTERN_MAX];			// エネミー行動パターンフラグ
-		bool	abLongRangeAttackPatternFlg[LONG_RANGE_ATTACK_DIR_PATTERN_MAX];	// エネミー遠距離攻撃パターンフラグ
+		bool	abLongRangeAttackPatternFlg[LONG_RANGE_ATTACK_DIR_PATTERN_MAX];	// 遠距離攻撃パターンフラグ
 		// 状態系
 		bool bDeadFlg;			// 死亡フラグ
 		int iInvincibleTime;	// 残り無敵時間(フレーム数)
+		bool bJumpUseFlg;		// ジャンプ使用可能フラグ
+		bool bTrackingFlg;		// 追跡中であるかのフラグ
 		// コリジョン
 		Struct_Collision::COLLISION_BOX	stBox;
 
@@ -90,4 +95,7 @@ class Character_Base : public Actor_Base
 		void	Draw_Animation();									// アニメーション描写
 		bool	bGround_PushBack_Gravity();							// 地形からの押し出し処理(重力処理用)
 		bool	bGround_PushBack_Movement(VECTOR vecMoveDirection);	// 地形からの押し出し処理(移動処理用)
+		void	Update_Jump();										// ジャンプ処理
+		void	Draw_SearchRange();									// 探索範囲の描写
+		void	Draw_AttackRange();									// 攻撃範囲の描写
 };
