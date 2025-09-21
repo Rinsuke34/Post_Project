@@ -23,10 +23,6 @@ void Scene_Stage::Draw()
 
 		/* ステージ描写 */
 		DrawSetup_Stage();
-
-		/* シャドウマップ描写 */
-		//TestDrawShadowMap(this->iScreenHandle_ShadowMap[0], 0, 0, 256, 256);
-		//TestDrawShadowMap(this->iScreenHandle_ShadowMap[1], 0, 256, 256, 512);
 	}
 	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
 	else if (this->pDataList_StageCreate != nullptr)
@@ -62,12 +58,26 @@ void Scene_Stage::DrawSetup_CameraPosition()
 	if (this->pDataList_GameStatus != nullptr)
 	{
 		// 読み込まれている場合
-		/* プレイヤー座標からカメラ設定を実施 */
-		VECTOR vecPlayerPos = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
+		/* カメラの注視点を設定 */
+		VECTOR vecTargetPosition = VGet(0.f, 0.f, 0.f);	// カメラのターゲットの位置
+
+		// 建築モードであるか
+		if (this->pDataList_GameStatus->GetBuildModeFlg())
+		{
+			// 建築モードである場合
+			/* 選択中の建設エリアを中心に設定 */
+			vecTargetPosition = this->pDataList_GameStatus->GetBuildAreaPositionList()[this->pDataList_GameStatus->GetSelectedBuildingIndex()].vecPosition;
+		}
+		else
+		{
+			// 建築モードでない場合
+			/* プレイヤー座標を中心に設定 */
+			vecTargetPosition = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
+		}
 
 		/* カメラ設定 */
-		vecCameraTarget		= VAdd(vecPlayerPos,	VGet(0.f, 10.f, 0.f));
-		vecCameraPosition	= VAdd(vecCameraTarget, VGet(0.f, 500.f, -250.f));
+		vecCameraTarget		= VAdd(vecTargetPosition,	VGet(0.f, 10.f, 0.f));
+		vecCameraPosition	= VAdd(vecCameraTarget,		VGet(0.f, 500.f, -250.f));
 	}
 	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
 	else if (this->pDataList_StageCreate != nullptr)
@@ -87,8 +97,22 @@ void Scene_Stage::DrawSetup_CameraPosition()
 // シャドウマップ作成
 void Scene_Stage::DrawSetup_ShadowMap()
 {
-	/* プレイヤー座標を取得 */
-	VECTOR vecPlayerPos = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
+	/* シャドウマップの中心座標を設定 */
+	VECTOR vecShadowCenter = VGet(0.f, 0.f, 0.f);
+
+	// 建築モードであるか
+	if (this->pDataList_GameStatus->GetBuildModeFlg())
+	{
+		// 建築モードである場合
+		/* 選択中の建設エリアを中心に設定 */
+		vecShadowCenter = this->pDataList_GameStatus->GetBuildAreaPositionList()[this->pDataList_GameStatus->GetSelectedBuildingIndex()].vecPosition;
+	}
+	else
+	{
+		// 建築モードでない場合
+		/* プレイヤー座標を中心に設定 */
+		vecShadowCenter = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
+	}
 
 	/* 透明度に関係なく描写するよう設定　*/
 	MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_ALWAYS);
@@ -102,14 +126,14 @@ void Scene_Stage::DrawSetup_ShadowMap()
 		/* シャドウマップの範囲指定 */
 		// ※ プレイヤー座標を中心に設定
 		SetShadowMapDrawArea(this->iScreenHandle_ShadowMap[SHADOWMAP_ACTOR],
-			VAdd(vecPlayerPos, VGet(-SHADOW_ACTOR_MAP_SIZE_WIDE, -SHADOW_ACTOR_MAP_SIZE_HEIGHT, -SHADOW_ACTOR_MAP_SIZE_WIDE)),
-			VAdd(vecPlayerPos, VGet(+SHADOW_ACTOR_MAP_SIZE_WIDE, +SHADOW_ACTOR_MAP_SIZE_HEIGHT, +SHADOW_ACTOR_MAP_SIZE_WIDE)));
+			VAdd(vecShadowCenter, VGet(-SHADOW_ACTOR_MAP_SIZE_WIDE, -SHADOW_ACTOR_MAP_SIZE_HEIGHT, -SHADOW_ACTOR_MAP_SIZE_WIDE)),
+			VAdd(vecShadowCenter, VGet(+SHADOW_ACTOR_MAP_SIZE_WIDE, +SHADOW_ACTOR_MAP_SIZE_HEIGHT, +SHADOW_ACTOR_MAP_SIZE_WIDE)));
 
 		/* シャドウマップ描写開始 */
 		ShadowMap_DrawSetup(this->iScreenHandle_ShadowMap[SHADOWMAP_ACTOR]);
 
 		/* 全ての動的オブジェクトの描写 */
-		this->pDataList_Object->Draw_Actor_Shadow();
+		this->pDataList_Object->Draw_Character_Shadow();
 
 		/* シャドウマップ描写終了 */
 		ShadowMap_DrawEnd();
@@ -124,8 +148,8 @@ void Scene_Stage::DrawSetup_ShadowMap()
 		/* シャドウマップの範囲指定 */
 		// ※ プレイヤー座標を中心に設定
 		SetShadowMapDrawArea(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND],
-			VAdd(vecPlayerPos, VGet(-SHADOW_GROUND_MAP_SIZE_WIDE, -SHADOW_GROUND_MAP_SIZE_HEIGHT, -SHADOW_GROUND_MAP_SIZE_WIDE)),
-			VAdd(vecPlayerPos, VGet(+SHADOW_GROUND_MAP_SIZE_WIDE, +SHADOW_GROUND_MAP_SIZE_HEIGHT, +SHADOW_GROUND_MAP_SIZE_WIDE)));
+			VAdd(vecShadowCenter, VGet(-SHADOW_GROUND_MAP_SIZE_WIDE, -SHADOW_GROUND_MAP_SIZE_HEIGHT, -SHADOW_GROUND_MAP_SIZE_WIDE)),
+			VAdd(vecShadowCenter, VGet(+SHADOW_GROUND_MAP_SIZE_WIDE, +SHADOW_GROUND_MAP_SIZE_HEIGHT, +SHADOW_GROUND_MAP_SIZE_WIDE)));
 
 		/* シャドウマップ描写開始 */
 		ShadowMap_DrawSetup(this->iScreenHandle_ShadowMap[SHADOWMAP_GROUND]);
@@ -158,9 +182,7 @@ void Scene_Stage::DrawSetup_Stage()
 	MV1SetSemiTransDrawMode(DX_SEMITRANSDRAWMODE_NOT_SEMITRANS_ONLY);
 
 	/* オブジェクト描写(半透明部分を除く) */
-	this->pDataList_Object->Draw_Ground();
-	this->pDataList_Object->Draw_Actor();
-	this->pDataList_Object->Draw_Building();
+	this->pDataList_Object->Draw_All();
 
 	/* 描写に使用するシャドウマップの設定を解除 */
 	SetUseShadowMap(0, -1);
@@ -171,12 +193,13 @@ void Scene_Stage::DrawSetup_Stage()
 
 	/* オブジェクト描写(半透明部分のみ) */
 	// ※ 地形を描写してしまうとシャドウマップが適用されなくなるので描写しない
-	this->pDataList_Object->Draw_Actor();
+	this->pDataList_Object->Draw_Character();
 	this->pDataList_Object->Draw_Building();
 
 	/* デバッグ用コリジョン描写 */
-	this->pDataList_Object->Draw_Actor_Collision();
+	this->pDataList_Object->Draw_Character_Collision();
 	this->pDataList_Object->Draw_Building_Collision();
+	this->pDataList_Object->Draw_Item_Collision();
 
 	/* メイン画面への描写を終了 */
 	SetDrawScreen(DX_SCREEN_BACK);

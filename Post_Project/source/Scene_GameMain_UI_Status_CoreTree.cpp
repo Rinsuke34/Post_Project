@@ -13,12 +13,6 @@ Scene_GameMain_UI_Status_CoreTree::Scene_GameMain_UI_Status_CoreTree() : Scene_B
 	this->pDataList_GameStatus = std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));	// ƒQ[ƒ€ó‘ÔŠÇ—
 }
 
-// XV
-void Scene_GameMain_UI_Status_CoreTree::Update()
-{
-
-}
-
 // •`‰æ
 void Scene_GameMain_UI_Status_CoreTree::Draw()
 {

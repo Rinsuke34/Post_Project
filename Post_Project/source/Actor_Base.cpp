@@ -31,6 +31,24 @@ void Actor_Base::Update()
 	}
 }
 
+// 描画(当たり判定)
+void Actor_Base::Draw_Collision()
+{
+	/* 頂点を設定 */
+	VECTOR aVertex[8];
+	aVertex[0] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	aVertex[1] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	aVertex[2] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	aVertex[3] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	aVertex[4] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	aVertex[5] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+	aVertex[6] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
+	aVertex[7] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
+
+	/* 線分を描画 */
+	PUBLIC_FUNCTION::DrawCubeLine3D(aVertex, GetColor(255, 255, 255));
+}
+
 // チームタグの確認
 bool Actor_Base::bCheckTeamTag(std::string TeamTag)
 {
@@ -119,4 +137,13 @@ void Actor_Base::Update_ApplyGravity_Simple()
 
 	/* 基準座標を更新 */
 	this->vecBasePosition = vecNextPosition;
+}
+
+// 指定座標との距離の2乗を取得
+float Actor_Base::fDistanceToTargetSquare(VECTOR vecTargetPos)
+{
+	// 戻り値
+	// float	<- 対象との距離の二乗
+
+	return VSquareSize(VSub(vecTargetPos, this->vecBasePosition));
 }

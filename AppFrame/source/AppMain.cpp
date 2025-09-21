@@ -1,6 +1,8 @@
 /* プログラムのメインループ */
 
 /* 使用する要素のインクルード */
+// 標準ライブラリ
+#include <chrono>
 // ヘッダファイル
 #include "AppMain.h"
 // 関連クラス
@@ -121,6 +123,9 @@ void Main::MainInit()
 
 	/* Z深度設定 */
 	SetZBufferBitDepth(SCREEN_Z_BUFFER_BIT_DEPTH);
+
+	/* 乱数の初期値を現在の時間をベースに設定 */
+	SRand(static_cast<int>(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())));
 }
 
 // 終了処理

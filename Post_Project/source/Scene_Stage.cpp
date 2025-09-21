@@ -32,8 +32,11 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 	if (this->pDataList_GameStatus != nullptr)
 	{
 		// 読み込まれている場合
-		// ワールドマップリスト読み込み
+		/* ワールドマップリスト読み込み */
 		JsonLoad_WoldMapList();
+
+		/* エネミーのスポーンテーブル読み込み */
+		JsonLoad_EnemySpawnTable();
 
 		/* ワールドマップ(中央)読み込み */
 		JsonLoad_WoldMap(AREA_NO_CENTER, "AreaData_Front");
@@ -53,6 +56,8 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 
 		/* オブジェクト配置 */
 		Setup_PlaceObject_CenterArea();
+		Setup_PlaceObject_SideArea();
+		Setup_PlaceObject_SideArea();
 		Setup_PlaceObject_SideArea();
 	}
 }

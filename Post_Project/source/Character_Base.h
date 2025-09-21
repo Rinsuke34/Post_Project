@@ -24,7 +24,6 @@ class Character_Base : public Actor_Base
 		virtual void	Update()			override;	// 更新
 		virtual void	Draw()				override;	// 描写
 		virtual void	Draw_Shadow()		override;	// 描画(シャドウマップ用)
-		virtual void	Draw_Collision()	override;	// 描画(当たり判定)
 
 		/* セッター */
 		// パラメーター系
@@ -38,7 +37,7 @@ class Character_Base : public Actor_Base
 		// 状態系
 		void SetDeadFlg(bool bDeadFlg)				{ this->bDeadFlg		= bDeadFlg; }									// 死亡フラグの設定
 		void SetInvicibleTime(int iInvicibleTime)	{ this->iInvincibleTime = iInvicibleTime; }								// 無敵時間の設定
-		void SetJumpUseFlg(bool bJumpUseFlg) { this->bJumpUseFlg = bJumpUseFlg; }											// ジャンプ使用可能フラグの設定
+		void SetJumpUseFlg(bool bJumpUseFlg)		{ this->bJumpUseFlg = bJumpUseFlg; }									// ジャンプ使用可能フラグの設定
 
 		/* ゲッター */
 		// パラメーター系
@@ -48,10 +47,11 @@ class Character_Base : public Actor_Base
 		int		iGetSpeed()				{ return this->iSpeed; }			// すばやさの取得
 		int		iGetAutoHealDelay()		{ return this->iAutoHealDelay; }	// 自動回復待機時間の取得
 		int		iGetAutoHealAmount()	{ return this->iAutoHealAmount; }	// 自動回復量の取得
+		bool	bGetContactDamageFlg()	{ return this->bContactDamageFlg; }	// 接触によりダメージ発生するかのフラグの取得
 		// 状態系
 		bool	bGetDeadFlg()		{ return this->bDeadFlg; }			// 死亡フラグの取得
 		int		GetInvincibleTime() { return this->iInvincibleTime; }	// 無敵時間の取得
-		bool	bSetJumpUseFlg()	{ return this->bJumpUseFlg; }		// ジャンプ使用可能フラグの取得
+		bool	bGetJumpUseFlg()	{ return this->bJumpUseFlg; }		// ジャンプ使用可能フラグの取得
 
 	protected:
 		/* 変数 */
@@ -80,14 +80,13 @@ class Character_Base : public Actor_Base
 		bool	bAttackMeleeFlg;	// 近接攻撃を行うかのフラグ
 		// 行動パターンフラグ(NPC用)
 		bool	abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTERN_MAX];			// エネミー行動パターンフラグ
+		bool	abFriendActionPatternFlg[NPC_FRIEND_ACTION_PATTERN_MAX];		// 友好NPC行動パターンフラグ
 		bool	abLongRangeAttackPatternFlg[LONG_RANGE_ATTACK_DIR_PATTERN_MAX];	// 遠距離攻撃パターンフラグ
 		// 状態系
 		bool bDeadFlg;			// 死亡フラグ
 		int iInvincibleTime;	// 残り無敵時間(フレーム数)
 		bool bJumpUseFlg;		// ジャンプ使用可能フラグ
 		bool bTrackingFlg;		// 追跡中であるかのフラグ
-		// コリジョン
-		Struct_Collision::COLLISION_BOX	stBox;
 
 		/* 関数 */
 		void	Update_Collision();									// コリジョン更新
@@ -98,4 +97,5 @@ class Character_Base : public Actor_Base
 		void	Update_Jump();										// ジャンプ処理
 		void	Draw_SearchRange();									// 探索範囲の描写
 		void	Draw_AttackRange();									// 攻撃範囲の描写
+		void	Update_Damage();									// ダメージ処理
 };

@@ -17,7 +17,6 @@ class Scene_GameMain_UI_Status_Player : public Scene_Base
 		virtual ~Scene_GameMain_UI_Status_Player() {};	// デストラクタ
 
 		/* 関数 */
-		virtual void	Update()			override;	// 更新
 		virtual void	Draw()				override;	// 描画
 
 	private:

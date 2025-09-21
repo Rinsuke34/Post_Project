@@ -23,6 +23,7 @@ class Npc_Base : public Character_Base
 		static const int MOVE_OK		= 0;	// そのまま移動可能
 		static const int MOVE_UP		= 1;	// 上方向へ移動すれば移動可能
 		static const int MOVE_GOALHIT	= 2;	// 目標へ到達
+		static const int MOVE_DOWN		= 3;	// 移動可能だが、足場がないので落下する
 
 		/* 関数 */
 		virtual void	InitialSetup()		override;	// 初期設定
@@ -48,14 +49,14 @@ class Npc_Base : public Character_Base
 		/* 関数 */
 		// 基本機能用関数
 		void	JsonLoad_CharacterStatus();								// キャラクター情報の読み込み
-		void	Route_Search();											// 移動経路検索
+		void	Route_Search(VECTOR vecGoalPos);						// 移動経路検索
 		int		iCheck_Moveble(VECTOR vecMovePos, VECTOR vecGoalPos);	// 移動可能か確認
 		void	Update_RouteMove();										// 移動ルートに沿った移動
 		void	Draw_Route();											// 移動ルートの描写
 		int		iCost_H_CalcHeuristicCost(const VECTOR& vecCurrentPosition, const VECTOR& vecGoalPosition);	// 現在ノードからゴールノードまでの推定コスト（ヒューリスティック値）を算出
 		// 行動パターンなど
-		void	Update_Action();								// 行動パターン管理
-		void	Update_Action_Enemy();							// 行動パターン管理(エネミー用)
-		void	Update_Action_Friend();							// 行動パターン管理(味方NPC用)
-		float	fDistanceToTargetSquare(VECTOR vecTargetPos);	// 指定座標との距離の2乗を取得
+		void	Update_Action();											// 行動パターン管理
+		void	Update_Action_Enemy();										// 行動パターン管理(エネミー用)
+		void	Update_Action_Friend();										// 行動パターン管理(味方NPC用)
+		void	Update_MakeBullet(VECTOR vecTarget, std::string TeamTag);	// 弾の生成
 };

@@ -6,17 +6,13 @@
 // 関連クラス
 #include "Object_Base.h"
 #include "Ground_Base.h"
-#include "Actor_Base.h"
-#include "Ground_Model.h"
+#include "Character_Base.h"
+#include "Building_Base.h"
+#include "Item_Base.h"
+#include "Bullet_Base.h"
 
 // コンストラクタ
 DataList_Object::DataList_Object() : DataList_Base("DataList_Object")
-{
-
-}
-
-// デストラクタ
-DataList_Object::~DataList_Object()
 {
 
 }
@@ -26,8 +22,10 @@ DataList_Object::~DataList_Object()
 void DataList_Object::InitialSetup_All()
 {
 	InitialSetup_Ground();
-	InitialSetup_Actor();
+	InitialSetup_Character();
 	InitialSetup_Building();
+	InitialSetup_Item();
+	InitialSetup_Bullet();
 }
 
 // 地形
@@ -45,10 +43,10 @@ void DataList_Object::InitialSetup_Ground()
 	}
 }
 
-// アクタ
-void DataList_Object::InitialSetup_Actor()
+// キャラクター
+void DataList_Object::InitialSetup_Character()
 {
-	for (auto& ActorList : this->pActorList)
+	for (auto& ActorList : this->pCharacterList)
 	{
 		ActorList->InitialSetup();
 	}
@@ -63,13 +61,33 @@ void DataList_Object::InitialSetup_Building()
 	}
 }
 
+// アイテム
+void DataList_Object::InitialSetup_Item()
+{
+	for (auto& ItemList : this->pItemList)
+	{
+		ItemList->InitialSetup();
+	}
+}
+
+// バレット
+void DataList_Object::InitialSetup_Bullet()
+{
+	for (auto& BulletList : this->pBulletList)
+	{
+		BulletList->InitialSetup();
+	}
+}
+
 /* オブジェクト更新 */
 // すべてのオブジェクト
 void DataList_Object::Update_All()
 {
 	Update_Ground();
-	Update_Actor();
+	Update_Character();
 	Update_Building();
+	Update_Item();
+	Update_Bullet();
 }
 
 // 地形
@@ -87,10 +105,10 @@ void DataList_Object::Update_Ground()
 	}
 }
 
-// アクター
-void DataList_Object::Update_Actor()
+// キャラクター
+void DataList_Object::Update_Character()
 {
-	for (auto& ActorList : this->pActorList)
+	for (auto& ActorList : this->pCharacterList)
 	{
 		ActorList->Update();
 	}
@@ -105,13 +123,33 @@ void DataList_Object::Update_Building()
 	}
 }
 
+// アイテム
+void DataList_Object::Update_Item()
+{
+	for (auto& ItemList : this->pItemList)
+	{
+		ItemList->Update();
+	}
+}
+
+// バレット
+void DataList_Object::Update_Bullet()
+{
+	for (auto& BulletList : this->pBulletList)
+	{
+		BulletList->Update();
+	}
+}
+
 /* オブジェクト描画 */
 // すべてのオブジェクト
 void DataList_Object::Draw_All()
 {
 	Draw_Ground();
-	Draw_Actor();
+	Draw_Character();
 	Draw_Building();
+	Draw_Item();
+	Draw_Bullet();
 }
 
 // 地形
@@ -129,10 +167,10 @@ void DataList_Object::Draw_Ground()
 	}
 }
 
-// アクター
-void DataList_Object::Draw_Actor()
+// キャラクター
+void DataList_Object::Draw_Character()
 {
-	for (auto& ActorList : this->pActorList)
+	for (auto& ActorList : this->pCharacterList)
 	{
 		ActorList->Draw();
 	}
@@ -147,13 +185,33 @@ void DataList_Object::Draw_Building()
 	}
 }
 
+// アイテム
+void DataList_Object::Draw_Item()
+{
+	for (auto& ItemList : this->pItemList)
+	{
+		ItemList->Draw();
+	}
+}
+
+// バレット
+void DataList_Object::Draw_Bullet()
+{
+	for (auto& BulletList : this->pBulletList)
+	{
+		BulletList->Draw();
+	}
+}
+
 // オブジェクト描写(シャドウマップ用)
 // すべてのオブジェクト
 void DataList_Object::Draw_All_Shadow()
 {
 	Draw_Ground_Shadow();
-	Draw_Actor_Shadow();
+	Draw_Character_Shadow();
 	Draw_Building_Shadow();
+	Draw_Item_Shadow();
+	Draw_Bullet_Shadow();
 }
 
 // 地形
@@ -171,10 +229,10 @@ void DataList_Object::Draw_Ground_Shadow()
 	}
 }
 
-// アクター
-void DataList_Object::Draw_Actor_Shadow()
+// キャラクター
+void DataList_Object::Draw_Character_Shadow()
 {
-	for (auto& ActorList : this->pActorList)
+	for (auto& ActorList : this->pCharacterList)
 	{
 		ActorList->Draw_Shadow();
 	}
@@ -189,13 +247,34 @@ void DataList_Object::Draw_Building_Shadow()
 	}
 }
 
+// アイテム
+void DataList_Object::Draw_Item_Shadow()
+{
+	for (auto& ItemList : this->pItemList)
+	{
+		ItemList->Draw_Shadow();
+	}
+}
+
+// バレット
+void DataList_Object::Draw_Bullet_Shadow()
+{
+	for (auto& BulletList : this->pBulletList)
+	{
+		BulletList->Draw_Shadow();
+	}
+}
+
+
 // オブジェクト描写(当たり判定)
 // すべてのオブジェクト
 void DataList_Object::Draw_All_Collision()
 {
 	Draw_Ground_Collision();
-	Draw_Actor_Collision();
+	Draw_Character_Collision();
 	Draw_Building_Collision();
+	Draw_Item_Collision();
+	Draw_Bullet_Collision();
 }
 
 // 地形
@@ -213,10 +292,10 @@ void DataList_Object::Draw_Ground_Collision()
 	}
 }
 
-// アクター
-void DataList_Object::Draw_Actor_Collision()
+// キャラクター
+void DataList_Object::Draw_Character_Collision()
 {
-	for (auto& ActorList : this->pActorList)
+	for (auto& ActorList : this->pCharacterList)
 	{
 		ActorList->Draw_Collision();
 	}
@@ -231,13 +310,33 @@ void DataList_Object::Draw_Building_Collision()
 	}
 }
 
+// アイテム
+void DataList_Object::Draw_Item_Collision()
+{
+	for (auto& ItemList : this->pItemList)
+	{
+		ItemList->Draw_Collision();
+	}
+}
+
+// バレット
+void DataList_Object::Draw_Bullet_Collision()
+{
+	for (auto& BulletList : this->pBulletList)
+	{
+		BulletList->Draw_Collision();
+	}
+}
+
 /* 削除フラグが有効なオブジェクト削除 */
 // すべてのオブジェクト
 void DataList_Object::DeleteFlagged_AllObject()
 {
 	DeleteFlagged_AllGround();
-	DeleteFlagged_AllActor();
+	DeleteFlagged_AllCharacter();
 	DeleteFlagged_AllBuilding();
+	DeleteFlagged_AllItem();
+	DeleteFlagged_AllBullet();
 }
 
 // 地形
@@ -263,20 +362,20 @@ void DataList_Object::DeleteFlagged_AllGround()
 	}
 }
 
-// アクター
-void DataList_Object::DeleteFlagged_AllActor()
+// キャラクター
+void DataList_Object::DeleteFlagged_AllCharacter()
 {
-	this->pActorList.erase(
+	this->pCharacterList.erase(
 		std::remove_if(
-			pActorList.begin(),
-			pActorList.end(),
+			pCharacterList.begin(),
+			pCharacterList.end(),
 			[](const std::shared_ptr<Actor_Base>& pActor)
 			{
 				// 削除フラグが有効であるか確認
 				return pActor && pActor->bGetDeleteFlg();
 			}
 		),
-		pActorList.end()
+		pCharacterList.end()
 	);
 }
 
@@ -294,6 +393,40 @@ void DataList_Object::DeleteFlagged_AllBuilding()
 			}
 		),
 		pBuildingList.end()
+	);
+}
+
+// アイテム
+void DataList_Object::DeleteFlagged_AllItem()
+{
+	this->pItemList.erase(
+		std::remove_if(
+			pItemList.begin(),
+			pItemList.end(),
+			[](const std::shared_ptr<Item_Base>& pItem)
+			{
+				// 削除フラグが有効であるか確認
+				return pItem && pItem->bGetDeleteFlg();
+			}
+		),
+		pItemList.end()
+	);
+}
+
+// バレット
+void DataList_Object::DeleteFlagged_AllBullet()
+{
+	this->pBulletList.erase(
+		std::remove_if(
+			pBulletList.begin(),
+			pBulletList.end(),
+			[](const std::shared_ptr<Bullet_Base>& pBullet)
+			{
+				// 削除フラグが有効であるか確認
+				return pBullet && pBullet->bGetDeleteFlg();
+			}
+		),
+		pBulletList.end()
 	);
 }
 

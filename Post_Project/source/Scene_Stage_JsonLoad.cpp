@@ -12,6 +12,7 @@
 #include "DataList_Model.h"
 #include "DataList_Image.h"
 #include "DataList_Object.h"
+#include "DataList_GameStatus.h"
 #include "Ground_Block.h"
 #include "Ground_Model.h"
 #include "Ground_Marker.h"
@@ -239,5 +240,42 @@ void Scene_Stage::JsonLoad_WoldMap(int iAreaNo, std::string MapName)
 
 		/* マーカー情報を保存 */
 		this->pDataList_Object->AddObject_Marker(pMarker, iAreaNo);
+	}
+}
+
+// エネミーのスポーンテーブル読み込み
+void Scene_Stage::JsonLoad_EnemySpawnTable()
+{
+	/* エネミーのスポーンテーブルを読み込む */
+	// ※ スポーン処理で使用する
+
+	/* JSONファイル読み込み */
+	std::string FilePath = "resource/CharacterData/Enemy_Spawn_Table.json";
+
+	std::ifstream ifs(FilePath);
+	if (!ifs) return;
+
+	using json = nlohmann::json;
+	json j;
+	ifs >> j;
+
+	/* スポーンテーブルの情報を取得 */
+	for (const auto& elem : j)
+	{
+		/* スポーンテーブルの情報を抽出 */
+		ENEMY_SPAWN_TABLE AddData;
+		// スポーンポイントのタイプ
+		AddData.iPointType = elem.value("PointType", 0);
+		// エネミーの名前
+		if (elem.contains("EnemyName") && elem["EnemyName"].is_array())
+		{
+			for (const auto& name : elem["EnemyName"])
+			{
+				AddData.EnemyNameList.push_back(name.get<std::string>());
+			}
+		}
+
+		/* 読み込んだ情報を保存 */
+		this->pDataList_GameStatus->SetEnemySpawnTable(AddData);
 	}
 }

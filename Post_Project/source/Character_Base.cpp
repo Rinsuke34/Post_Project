@@ -10,7 +10,8 @@
 #include "DataList_Object.h"
 #include "DataList_GameStatus.h"
 #include "Ground_Base.h"
-#include "Ground_Model.h"
+#include "Building_Base.h"
+#include "Bullet_Base.h"
 // 共通定義
 #include "ConstantDefine.h"
 #include "FunctionDefine.h"
@@ -47,6 +48,7 @@ Character_Base::Character_Base() : Actor_Base()
 	this->bAttackMeleeFlg	= false;	// 近接攻撃を行うかのフラグ
 	// 行動パターンフラグ(NPC用)
 	for (int i = 0; i < NPC_ENEMY_ACTION_PATTERN_MAX; ++i)		{ abEnemyActionPatternFlg[i]		= false; }
+	for (int i = 0; i < NPC_FRIEND_ACTION_PATTERN_MAX; ++i)		{ abFriendActionPatternFlg[i]		= false; }
 	for (int i = 0; i < LONG_RANGE_ATTACK_DIR_PATTERN_MAX; ++i)	{ abLongRangeAttackPatternFlg[i]	= false; }
 	// 状態系
 	this->bDeadFlg			= false;	// 死亡フラグ
@@ -97,6 +99,9 @@ void Character_Base::Update()
 
 	/* アニメーションの更新 */
 	Update_Animation();
+
+	/* 被ダメージ処理 */
+	Update_Damage();
 }
 
 // 描写
@@ -117,24 +122,6 @@ void Character_Base::Draw_Shadow()
 {
 	/* コリジョンの中心座標と半径から球体を作成し、影とする */
 	DrawSphere3D(this->stBox.vecBoxCenter, this->stBox.vecBoxHalfSize.x, 32, GetColor(255, 255, 255), GetColor(255, 255, 255), TRUE);
-}
-
-// コリジョン描画(デバッグ用)
-void Character_Base::Draw_Collision()
-{
-	/* 頂点を設定 */
-	VECTOR aVertex[8];
-	aVertex[0] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[1] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	aVertex[2] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[3] = VGet(this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	aVertex[4] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[5] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-	aVertex[6] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z);
-	aVertex[7] = VGet(this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x, this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y, this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z);
-
-	/* 線分を描画 */
-	PUBLIC_FUNCTION::DrawCubeLine3D(aVertex, GetColor(255, 255, 255));
 }
 
 // コリジョン更新
@@ -453,7 +440,6 @@ bool Character_Base::bGround_PushBack_Movement(VECTOR vecMoveDirection)
 	stMoveBox.vecBoxHalfSize.y	+= COLLISION_CHECK_FLOOR_MARGIN;
 
 	/* 地形との接地判定 */
-	// ※ 軽量化のため現在のエリアの足場のみ確認
 	// ※ エリア外の場合は足場との当たり判定を行わない
 	int iAreaNo = iCheckCurrentAreaNo();
 	if (iAreaNo != -1)
@@ -642,5 +628,100 @@ void Character_Base::Draw_AttackRange()
 		// "Attack"でない場合
 		/* 灰色で攻撃範囲を描写 */
 		PUBLIC_FUNCTION::DrawCircleXZ3D(this->vecBasePosition, this->fAttackRange, 32, GetColor(0, 255, 0));
+	}
+}
+
+// ダメージ処理
+void Character_Base::Update_Damage()
+{
+	/* 無敵時間中であるなら判定を行わない */
+	if (this->iInvincibleTime > 0) { return; }
+
+	/* キャラクターの接触確認 */
+	for (auto& Character : this->pDataList_Object->GetCharacterList())
+	{
+		/* 自分自身であるならスルーする */
+		if (Character.get() == this) { continue; }
+
+		/* 自身と同じチームタグを所持しているのであればスルーする */
+		bool bSameTeamFlg = false;
+		for (const auto& MyTag : this->TeamTag)
+		{
+			for (const auto& ActorTag : TeamTag)
+			{
+				if (MyTag == ActorTag)
+				{
+					bSameTeamFlg = true;
+					break;
+				}
+			}
+			if (bSameTeamFlg) break;
+		}
+		if (bSameTeamFlg) { continue; }
+
+		/* 接触時のダメージが有効であるか確認 */
+		if (Character->bGetContactDamageFlg())
+		{
+			// 接触時のダメージが有効である場合
+			/* 自身と接触しているかを確認 */
+			if(PUBLIC_PROCESS::bBoxHitCheck(this->stBox, Character->stBox))
+			{
+				// 接触している場合
+				/* ダメージ量、無敵時間を設定する */
+				int iDamage = Character->iGetAttack();
+				int iSetInvincibleTime = INVINCIBLE_TIME_CHARACTER_CONTACT;
+				/* ダメージ量が0より大きい場合はダメージを受ける */
+				if (iDamage > 0)
+				{
+					// ダメージ量が0より大きい場合
+					/* ダメージ量分HPを減少させる */
+					this->iHealth -= iDamage;
+					/* 無敵時間を設定 */
+					this->iInvincibleTime = iSetInvincibleTime;
+					return;
+				}
+			}
+		}
+	}
+
+	/* バレットの接触確認 */
+	for (auto& Bullet : this->pDataList_Object->GetBulletList())
+	{
+		/* 自身と同じチームタグを所持しているのであればスルーする */
+		bool bSameTeamFlg = false;
+		for (const auto& MyTag : this->TeamTag)
+		{
+			for (const auto& BulletTag : Bullet->GetTeamTag())
+			{
+				if (MyTag == BulletTag)
+				{
+					bSameTeamFlg = true;
+					break;
+				}
+			}
+			if (bSameTeamFlg) break;
+		}
+		if (bSameTeamFlg) { continue; }
+
+		/* 自身と接触しているかを確認 */
+		if(PUBLIC_PROCESS::bBoxHitCheck(this->stBox, Bullet->GetBoxCollision()))
+		{
+			// 接触している場合
+			/* ダメージ量、無敵時間を設定する */
+			int iDamage = Bullet->iGetAttack();
+			int iSetInvincibleTime = INVINCIBLE_TIME_BULLET_HIT;
+			/* ダメージ量が0より大きい場合はダメージを受ける */
+			if (iDamage > 0)
+			{
+				// ダメージ量が0より大きい場合
+				/* ダメージ量分HPを減少させる */
+				this->iHealth -= iDamage;
+				/* 無敵時間を設定 */
+				this->iInvincibleTime = iSetInvincibleTime;
+				/* 削除フラグを有効化する */
+				Bullet->SetDeleteFlg(true);
+				return;
+			}
+		}
 	}
 }

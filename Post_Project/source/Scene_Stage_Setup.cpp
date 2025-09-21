@@ -31,7 +31,11 @@ void Scene_Stage::Setup_LoadMarker_CenterArea()
 		else if (MarkerName == "Building")
 		{
 			/* 建築エリアマーカーの場合 */
-			this->pDataList_GameStatus->SetBuildAreaPositionList(Marker->vecGetBoxCenter());
+			BUILDING_AREA_DATA AreaData;
+			AreaData.pBuilding		= nullptr;
+			AreaData.vecPosition	= Marker->vecGetBoxCenter();
+			this->pDataList_GameStatus->SetBuildAreaPositionList(AreaData);
+
 		}
 		else if (MarkerName == "CoreTree")
 		{
@@ -108,31 +112,37 @@ void Scene_Stage::Setup_PlaceObject_CenterArea()
 
 	/* 防衛対象追加 */
 	std::shared_ptr<Building_CoreTree> pCoreTree = std::make_shared<Building_CoreTree>();
-	pCoreTree->SetModelHandle(pDataList_Model->iGetModel("CoreTree/CoreTree"));
 	pCoreTree->SetPosition(this->pDataList_GameStatus->GetCoreTreePosition());
 	pCoreTree->InitialSetup();
 	this->pDataList_Object->AddObject_Building(pCoreTree);
-
-	/* 建築エリア追加 */
-	// 未実装
 }
 
 // オブジェクト配置(外側エリア)
+// ※ この関数が呼ばれるたびにランダムな敵がスポーンする
 void Scene_Stage::Setup_PlaceObject_SideArea()
 {
-	/* 平原エリアのスポーンポイントにスライムをセット(テスト処理) */
-	for (const auto& SpawnPoint : this->pDataList_GameStatus->GetEnemySpawnPointList())
+	/* ランダムなスポーンポイントを決める */
+	int iRandomIndex = GetRand(this->pDataList_GameStatus->GetEnemySpawnPointList().size());
+	ENEMY_SPAWN_POINT_DATA SpawnPoint = this->pDataList_GameStatus->GetEnemySpawnPointList()[iRandomIndex];
+
+	/* エネミーのスポーン処理 */
+	std::shared_ptr<Npc_Base> pEnemyNpc = std::make_shared<Npc_Base>();
+	pEnemyNpc->SetPosition(SpawnPoint.vecPosition);
+	pEnemyNpc->SetTeamTag("Enemy");
+
+	/* 現在のスポーンポイントの種類に合致する敵の名前を設定 */
+	for (auto& Table : this->pDataList_GameStatus->GetEnemySpawnTableList())
 	{
-		if (SpawnPoint.iPointType == ENEMY_SPAWN_POINT_TYPE_PLAIN)
+		if (Table.iPointType == SpawnPoint.iPointType && !Table.EnemyNameList.empty())
 		{
-			// スライムを生成
-			std::shared_ptr<Npc_Base> pSlime = std::make_shared<Npc_Base>();
-			pSlime->SetPosition(SpawnPoint.vecPosition);
-			pSlime->SetTeamTag("Enemy");
-			pSlime->SetName("Slime_Blue");
-			pSlime->InitialSetup();
-			this->pDataList_Object->AddObject_Actor(pSlime);
-			break;	// テストのため1体のみ生成
+			// スポーンポイントの種類が一致し、敵の名前リストが空でない場合
+			/* 登録されているエネミーの名前をランダムに取得 */
+			int iRandomEnemyIndex = GetRand(static_cast<int>(Table.EnemyNameList.size()) - 1);
+			pEnemyNpc->SetName(Table.EnemyNameList[iRandomEnemyIndex]);
+			break;
 		}
 	}
+
+	pEnemyNpc->InitialSetup();
+	this->pDataList_Object->AddObject_Actor(pEnemyNpc);
 }

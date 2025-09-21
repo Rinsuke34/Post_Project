@@ -8,5 +8,12 @@
 DataList_GameStatus::DataList_GameStatus() : DataList_Base("DataList_GameStatus")
 {
 	/* ‰Šú‰» */
-	this->vecPlayerPosition_WoldMap = VGet(0.0f, 0.0f, 0.0f);
+	this->vecPlayerPosition_WoldMap	= VGet(0.0f, 0.0f, 0.0f);
+	this->iHaveCoin					= 0;
+	this->iHp_CoreTree				= 0;
+	this->iMaxHp_CoreTree			= 0;
+	this->iHp_Player				= 0;
+	this->iMaxHp_Player				= 0;
+	this->bBuildModeFlg				= false;
+	this->iSelectedBuildingIndex	= 0;
 }

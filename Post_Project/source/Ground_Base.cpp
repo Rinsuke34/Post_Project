@@ -131,47 +131,7 @@ bool Ground_Base::HitCheck(Struct_Collision::COLLISION_BOX stBox)
 	// 戻り値
 	// bool		: 接触している(true) / 接触していない(false)
 
-	// 自身のボックスの最小・最大座標を取得
-	float afBox_Min_This[3] =
-	{
-		this->stBox.vecBoxCenter.x - this->stBox.vecBoxHalfSize.x,
-		this->stBox.vecBoxCenter.y - this->stBox.vecBoxHalfSize.y,
-		this->stBox.vecBoxCenter.z - this->stBox.vecBoxHalfSize.z
-	};
-
-	float afBox_Max_This[3] =
-	{
-		this->stBox.vecBoxCenter.x + this->stBox.vecBoxHalfSize.x,
-		this->stBox.vecBoxCenter.y + this->stBox.vecBoxHalfSize.y,
-		this->stBox.vecBoxCenter.z + this->stBox.vecBoxHalfSize.z
-	};
-
-	// 判定するボックスの最小・最大を取得
-	float afBox_Min[3] =
-	{
-		stBox.vecBoxCenter.x - stBox.vecBoxHalfSize.x,
-		stBox.vecBoxCenter.y - stBox.vecBoxHalfSize.y,
-		stBox.vecBoxCenter.z - stBox.vecBoxHalfSize.z
-	};
-
-	float afBox_Max[3] =
-	{
-		stBox.vecBoxCenter.x + stBox.vecBoxHalfSize.x,
-		stBox.vecBoxCenter.y + stBox.vecBoxHalfSize.y,
-		stBox.vecBoxCenter.z + stBox.vecBoxHalfSize.z
-	};
-
-	// 各軸で重なっている個所がないならfalseを返す
-	for (int i = 0; i < 3; ++i)
-	{
-		if (afBox_Max_This[i] < afBox_Min[i] || afBox_Min_This[i] > afBox_Max[i])
-		{
-			return false;
-		}
-	}
-
-	// すべての軸で重なりがあればtrue
-	return true;
+	return PUBLIC_PROCESS::bBoxHitCheck(this->stBox, stBox);
 }
 
 // 衝突点取得

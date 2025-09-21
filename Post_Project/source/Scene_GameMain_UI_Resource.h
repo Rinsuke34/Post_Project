@@ -1,4 +1,4 @@
-/* シーン"UI:神木(防衛対象)の状態"の宣言 */
+/* シーン"UI:ゲーム内リソース"の宣言 */
 
 #pragma once
 
@@ -9,12 +9,12 @@
 /* 前方宣言 */
 class DataList_GameStatus;
 
-// シーン"UI:神木(防衛対象)の状態"
-class Scene_GameMain_UI_Status_CoreTree : public Scene_Base
+// シーン"UI:プレイヤーの状態"
+class Scene_GameMain_UI_Resource : public Scene_Base
 {
 	public:
-		Scene_GameMain_UI_Status_CoreTree();				// コンストラクタ
-		virtual ~Scene_GameMain_UI_Status_CoreTree() {};	// デストラクタ
+		Scene_GameMain_UI_Resource();				// コンストラクタ
+		virtual ~Scene_GameMain_UI_Resource() {};	// デストラクタ
 
 		/* 関数 */
 		virtual void	Draw()				override;	// 描画

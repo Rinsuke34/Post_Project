@@ -9,6 +9,7 @@
 #include <DxLib.h>
 // 共通定義
 #include "AppConstantDefine.h"
+#include "AppStructDefine.h"
 
 // シーンの設定
 namespace SCENE_SET
@@ -37,6 +38,7 @@ namespace PUBLIC_PROCESS
 	std::string	aCutShitfJisString(std::string ShiftJis, int iLength);																	// Shift-JIS文字列を指定文字数でカット
 	std::string aInsertNewLine(std::string ShiftJis, int iLength);																		// Shift-JIS文字列を指定文字数で改行
 	bool		bIsFloatDiffWithinThreshold(float fA, float fB, float fThreshold);														// 2つのfloat型の値の差が閾値以内であるか確認
+	bool		bBoxHitCheck(Struct_Collision::COLLISION_BOX BoxA, Struct_Collision::COLLISION_BOX BoxB);								// AABB同士の当たり判定
 }
 
 // 汎用機能系

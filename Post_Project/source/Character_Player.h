@@ -25,4 +25,8 @@ class Character_Player : public Character_Base
 		void	Update_ApplyMovement();		// 移動処理
 		void	Draw_Grid();				// グリッド範囲の描写
 		void	Update_Action();			// 行動処理
+
+		/* 変数 */
+		bool bMeleeFlg;	// 近接攻撃状態であるかのフラグ
+		bool bMoveFlg;	// 移動を行ったかのフラグ
 };

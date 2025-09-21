@@ -170,7 +170,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Actor_Base.cpp" />
+    <ClCompile Include="source\Building_Base.cpp" />
     <ClCompile Include="source\Building_CoreTree.cpp" />
+    <ClCompile Include="source\Building_Monument_Sowrd.cpp" />
+    <ClCompile Include="source\Bullet_Base.cpp" />
+    <ClCompile Include="source\Bullet_Npc.cpp" />
+    <ClCompile Include="source\Bullet_Player.cpp" />
     <ClCompile Include="source\Character_Base.cpp" />
     <ClCompile Include="source\Character_Player.cpp" />
     <ClCompile Include="source\Character_Player_Action.cpp" />
@@ -184,11 +189,15 @@
     <ClCompile Include="source\Ground_Block.cpp" />
     <ClCompile Include="source\Ground_Marker.cpp" />
     <ClCompile Include="source\Ground_Model.cpp" />
+    <ClCompile Include="source\Item_Base.cpp" />
+    <ClCompile Include="source\Item_Coin.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\Npc_Base.cpp" />
     <ClCompile Include="source\Npc_Base_Action.cpp" />
     <ClCompile Include="source\Object_Base.cpp" />
     <ClCompile Include="source\Scene_GameMain.cpp" />
+    <ClCompile Include="source\Scene_GameMain_Building.cpp" />
+    <ClCompile Include="source\Scene_GameMain_UI_Resource.cpp" />
     <ClCompile Include="source\Scene_GameMain_UI_Status_CoreTree.cpp" />
     <ClCompile Include="source\Scene_GameMain_UI_Status_Player.cpp" />
     <ClCompile Include="source\Scene_Load.cpp" />
@@ -206,7 +215,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Actor_Base.h" />
+    <ClInclude Include="source\Building_Base.h" />
     <ClInclude Include="source\Building_CoreTree.h" />
+    <ClInclude Include="source\Building_Monument_Sowrd.h" />
+    <ClInclude Include="source\Bullet_Base.h" />
+    <ClInclude Include="source\Bullet_Npc.h" />
+    <ClInclude Include="source\Bullet_Player.h" />
     <ClInclude Include="source\Character_Base.h" />
     <ClInclude Include="source\Character_Player.h" />
     <ClInclude Include="source\ConstantDefine.h" />
@@ -220,9 +234,13 @@
     <ClInclude Include="source\Ground_Block.h" />
     <ClInclude Include="source\Ground_Marker.h" />
     <ClInclude Include="source\Ground_Model.h" />
+    <ClInclude Include="source\Item_Base.h" />
+    <ClInclude Include="source\Item_Coin.h" />
     <ClInclude Include="source\Npc_Base.h" />
     <ClInclude Include="source\Object_Base.h" />
     <ClInclude Include="source\Scene_GameMain.h" />
+    <ClInclude Include="source\Scene_GameMain_Building.h" />
+    <ClInclude Include="source\Scene_GameMain_UI_Resource.h" />
     <ClInclude Include="source\Scene_GameMain_UI_Status_CoreTree.h" />
     <ClInclude Include="source\Scene_GameMain_UI_Status_Player.h" />
     <ClInclude Include="source\Scene_Load.h" />

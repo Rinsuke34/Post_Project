@@ -74,20 +74,27 @@ static const int ENEMY_SPAWN_POINT_TYPE_DESERT	= 2;	// 砂漠
 
 /* 行動パターン関係 */
 // NPCの行動パターン系
-static const int NPC_ENEMY_ACTION_PATTERN_INVASION_CORETREE	= 0;	// 神木(防衛対象)への侵攻
+// 敵陣営
+static const int NPC_ENEMY_ACTION_PATTERN_PLAYER_ESCAPE		= 0;	// プレイヤーからの逃走
 static const int NPC_ENEMY_ACTION_PATTARN_PLAYER_ATTACK		= 1;	// プレイヤーへの攻撃
 static const int NPC_ENEMY_ACTION_PATTERN_PLAYER_TRACKING	= 2;	// プレイヤーの追跡
-static const int NPC_ENEMY_ACTION_PATTERN_PLAYER_ESCAPE		= 3;	// プレイヤーからの逃走
+static const int NPC_ENEMY_ACTION_PATTERN_INVASION_CORETREE	= 3;	// 神木(防衛対象)への侵攻
 static const int NPC_ENEMY_ACTION_PATTERN_MAX				= 4;	// 行動パターンの最大数
+// 味方陣営
+static const int NPC_FRIEND_ACTION_PATTERN_ENEMY_ESCAPE		= 0;	// 敵からの逃走
+static const int NPC_FRIEND_ACTION_PATTERN_ENEMY_ATTACK		= 1;	// 敵への攻撃
+static const int NPC_FRIEND_ACTION_PATTERN_ENEMY_TRACKING	= 2;	// 敵の追跡
+static const int NPC_FRIEND_ACTION_PATTERN_PLAYER_TRACKING	= 3;	// プレイヤーの追跡
+static const int NPC_FRIEND_ACTION_PATTERN_MAX				= 4;	// 行動パターンの最大数
 
 // 遠距離攻撃の方向パターン
 static const int LONG_RANGE_ATTACK_DIR_PATTERN_AIM			= 0;	// 目的へ向けて狙い撃ち
-static const int LONG_RANGE_ATTACK_DIR_PATTERN_3WAY			= 1;	// 目標とその左右に撃つ
-static const int LONG_RANGE_ATTACK_DIR_PATTERN_DIAGONAL_WAY	= 2;	// 十字方向に撃つ
-static const int LONG_RANGE_ATTACK_DIR_PATTERN_CARDINAL_WAY	= 3;	// 斜め方向に撃つ
-static const int LONG_RANGE_ATTACK_DIR_PATTERN_EIGHT_WAY	= 4;	// 八方向に撃つ
-static const int LONG_RANGE_ATTACK_DIR_PATTERN_MAX			= 5;	// 遠距離攻撃の方向パターンの最大数
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_DIAGONAL_WAY	= 1;	// 十字方向に撃つ
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_CARDINAL_WAY	= 2;	// 斜め方向に撃つ
+static const int LONG_RANGE_ATTACK_DIR_PATTERN_MAX			= 3;	// 遠距離攻撃の方向パターンの最大数
 
-// ゲーム用ステータス
+/* ゲーム用ステータス */
 static const float GRAVITY_ACCELERATION						= 0.5f;	// 重力加速度
 static const float GRAVITY_JUMP_POWER						= 10.f;	// ジャンプ時の初速
+static const int   INVINCIBLE_TIME_BULLET_HIT				= 60;	// 弾丸にヒットした際の無敵時間(フレーム数)
+static const int   INVINCIBLE_TIME_CHARACTER_CONTACT		= 30;	// キャラクターに接触した際の無敵時間(フレーム数)

@@ -17,11 +17,13 @@ Character_Player::Character_Player() : Character_Base()
 	/* 初期化 */
 	this->iMotionCount		= 0;
 	this->bMotionLoopFlg	= true;
+	this->bMeleeFlg			= true;
+	this->bMoveFlg			= false;
 
 	/* アニメーション初期設定 */
 	// アニメーション設定
-	this->AnimFileName		= "Test_Player";
-	this->NowMotionName		= "Delay";
+	this->AnimFileName		= "Player";
+	this->NowMotionName		= "Delay_Sowrd";
 	// パーツアニメーションセットアップ
 	this->pDataList_2DPartsAnimCreateTool->LoadPartsAnimData(this->AnimFileName);
 
@@ -65,7 +67,7 @@ void Character_Player::JsonLoad_PlayerStatus()
 	this->iSpeed			= j.value("Speed", 0);             // すばやさ
 	this->iAutoHealDelay	= j.value("AutoHealDelay", 0);     // 自動回復待機時間
 	this->iAutoHealAmount	= j.value("AutoHealAmount", 0);    // 自動回復量
-	this->fSearchRange		= j.value("SearchRange", 0.f);     // 探索範囲
+	this->fSearchRange		= j.value("SearchRange", 0.f);     // 探索範囲(プレイヤーの場合は遠距離攻撃範囲として扱う)
 	this->fAttackRange		= j.value("AttackRange", 0.f);     // 攻撃範囲
 	this->bContactDamageFlg	= j.value("ContactDamage", false); // 接触ダメージフラグ
 	this->bAttackMeleeFlg	= j.value("AttackMelee", false);   // 近接攻撃フラグ
@@ -104,6 +106,9 @@ void Character_Player::Draw()
 // 移動処理
 void Character_Player::Update_ApplyMovement()
 {
+	/* 移動フラグをリセット */
+	this->bMoveFlg = false;
+
 	/* 移動方向を取得 */
 	VECTOR vecMoveDirection = VGet(0.f, 0.f, 0.f);
 	// 入力から移動方向を取得
@@ -134,6 +139,9 @@ void Character_Player::Update_ApplyMovement()
 
 	/* 移動＆押し出し処理 */
 	bGround_PushBack_Movement(vecMoveDirection);
+
+	/* 移動フラグを有効化 */
+	this->bMoveFlg = true;
 }
 
 // 重力処理

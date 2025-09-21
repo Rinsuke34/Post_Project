@@ -321,3 +321,55 @@ bool PUBLIC_PROCESS::bIsFloatDiffWithinThreshold(float fA, float fB, float fThre
 {
 	return fabsf(fA - fB) <= fThreshold;
 }
+
+// AABB同士の当たり判定
+bool PUBLIC_PROCESS::bBoxHitCheck(Struct_Collision::COLLISION_BOX BoxA, Struct_Collision::COLLISION_BOX BoxB)
+{
+	// 引数
+	// BoxA		<- 判定するボックスA
+	// BoxB		<- 判定するボックスB
+	// 戻り値
+	// bool		<- 接触している(true) / 接触していない(false)
+
+	// 自身のボックスの最小・最大座標を取得
+	float afBox_Min_This[3] =
+	{
+		BoxA.vecBoxCenter.x - BoxA.vecBoxHalfSize.x,
+		BoxA.vecBoxCenter.y - BoxA.vecBoxHalfSize.y,
+		BoxA.vecBoxCenter.z - BoxA.vecBoxHalfSize.z
+	};
+
+	float afBox_Max_This[3] =
+	{
+		BoxA.vecBoxCenter.x + BoxA.vecBoxHalfSize.x,
+		BoxA.vecBoxCenter.y + BoxA.vecBoxHalfSize.y,
+		BoxA.vecBoxCenter.z + BoxA.vecBoxHalfSize.z
+	};
+
+	// 判定するボックスの最小・最大を取得
+	float afBox_Min[3] =
+	{
+		BoxB.vecBoxCenter.x - BoxB.vecBoxHalfSize.x,
+		BoxB.vecBoxCenter.y - BoxB.vecBoxHalfSize.y,
+		BoxB.vecBoxCenter.z - BoxB.vecBoxHalfSize.z
+	};
+
+	float afBox_Max[3] =
+	{
+		BoxB.vecBoxCenter.x + BoxB.vecBoxHalfSize.x,
+		BoxB.vecBoxCenter.y + BoxB.vecBoxHalfSize.y,
+		BoxB.vecBoxCenter.z + BoxB.vecBoxHalfSize.z
+	};
+
+	// 各軸で重なっている個所がないならfalseを返す
+	for (int i = 0; i < 3; ++i)
+	{
+		if (afBox_Max_This[i] < afBox_Min[i] || afBox_Min_This[i] > afBox_Max[i])
+		{
+			return false;
+		}
+	}
+
+	// すべての軸で重なりがあればtrue
+	return true;
+}

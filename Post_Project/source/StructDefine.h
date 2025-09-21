@@ -5,6 +5,8 @@
 /* 使用する要素のインクルード */
 // 標準ライブラリ
 #include <string>
+// 関連クラス
+#include "Building_Base.h"
 
 // ベクトル(INT型)
 struct VECTOR_INT
@@ -53,6 +55,13 @@ struct ENEMY_SPAWN_POINT_DATA
 	int			iPointType;		// ポイントの種類(0:平地、1:岩場、2:砂漠)
 };
 
+// 建築エリア情報
+struct BUILDING_AREA_DATA
+{
+	VECTOR							vecPosition;	// 座標
+	std::shared_ptr<Building_Base>	pBuilding;		// 建造物のポインタ
+};
+
 // 評価リスト(A*アルゴリズム用)
 struct ASTAR_EVALUATION_LIST
 {
@@ -65,4 +74,11 @@ struct ASTAR_EVALUATION_LIST
 	bool bCloseListFlg;			// クローズリストに登録されているかのフラグ
 	VECTOR vecPosition;			// ノードの座標
 	VECTOR vecParentPosition;	// 親ノードの座標
+};
+
+// エネミーのスポーンテーブル
+struct ENEMY_SPAWN_TABLE
+{
+	int							iPointType;		// ポイントの種類(0:平地、1:岩場、2:砂漠)
+	std::vector<std::string>	EnemyNameList;	// スポーンするエネミーの名前リスト
 };

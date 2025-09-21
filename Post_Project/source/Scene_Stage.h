@@ -34,6 +34,7 @@ class Scene_Stage : public Scene_Base
 		// 読み込み関係
 		void	JsonLoad_WoldMapList();								// ワールドマップリスト読み込み
 		void	JsonLoad_WoldMap(int iAreaNo, std::string MapName);	// ワールドマップを読み込む
+		void	JsonLoad_EnemySpawnTable();							// エネミーのスポーンテーブル読み込み
 		// 描写関係
 		void	DrawSetup_CameraPosition();		// カメラ設定
 		void	DrawSetup_ShadowMap();			// シャドウマップ作成

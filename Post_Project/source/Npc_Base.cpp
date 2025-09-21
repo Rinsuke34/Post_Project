@@ -13,6 +13,7 @@
 #include "Ground_Base.h"
 #include "Ground_Model.h"
 #include "Building_CoreTree.h"
+#include "Item_Coin.h"
 // 共通定義
 #include "ConstantDefine.h"
 #include "FunctionDefine.h"
@@ -45,9 +46,6 @@ void Npc_Base::InitialSetup()
 
 	/* ベースクラスの初期設定処理 */
 	Character_Base::InitialSetup();
-
-	/* ルート設定を別スレッドで実行 */
-	this->thred_RouteSearch = std::async(std::launch::async, [this]() { this->Route_Search(); });
 }
 
 // 更新
@@ -61,6 +59,21 @@ void Npc_Base::Update()
 
 	/* ベースクラスの計算処理 */
 	Character_Base::Update();
+
+	/* 死亡フラグの確認 */
+	if (this->bDeadFlg)
+	{
+		// 死亡フラグが有効であるなら
+		/* 削除フラグを有効化 */
+		this->bDeleteFlg = true;
+
+		/* 現在の座標にアイテム"コイン"を生成する */
+		// ※ めり込ませないため、少し上にずらして生成
+		std::shared_ptr<Item_Coin> pItem_Coin = std::make_shared<Item_Coin>();
+		pItem_Coin->SetPosition(VAdd(this->vecBasePosition, VGet(0.f, MAP_BLOCK_SIZE_Y / 2.f, 0.f)));
+		pItem_Coin->InitialSetup();
+		this->pDataList_Object->AddObject_Item(pItem_Coin);
+	}
 }
 
 // 描写
@@ -108,11 +121,18 @@ void Npc_Base::JsonLoad_CharacterStatus()
 			this->fAttackRange			= status.value("AttackRange", 0.f);			// 攻撃範囲
 			this->bContactDamageFlg		= status.value("ContactDamageFlg", false);	// 接触によりダメージ発生するかのフラグ
 			this->bAttackMeleeFlg		= status.value("AttackMeleeFlg", false);	// 近接攻撃を行うかのフラグ
-			// 行動パターンフラグ
+			this->bEnableGravityFlg		= status.value("EnableGravityFlg", true);	// 重力影響を受けるかのフラグ
+			// 行動パターンフラグ(エネミー)
 			auto& actionPattern = status["EnemyActionPattern"];
 			for (int i = 0; i < actionPattern.size(); ++i)
 			{
 				this->abEnemyActionPatternFlg[i] = actionPattern[i].get<bool>();
+			}
+			// 行動パターンフラグ(味方NPC)
+			auto& friendActionPattern = status["FriendActionPattern"];
+			for (int i = 0; i < friendActionPattern.size(); ++i)
+			{
+				this->abFriendActionPatternFlg[i] = friendActionPattern[i].get<bool>();
 			}
 			// 長距離攻撃パターンフラグ
 			auto& longRangePattern = status["LongRangeAttackPattern"];
@@ -136,15 +156,15 @@ void Npc_Base::JsonLoad_CharacterStatus()
 }
 
 // 移動経路検索
-void Npc_Base::Route_Search()
+void Npc_Base::Route_Search(VECTOR vecGoalPos)
 {
+	// 引数
+	// vecGoalPos	<- 目的地の座標
+
 	/* 移動ルートをA*アルゴリズムで算出 */
 
 	/* 現在の座標を設定 */
 	VECTOR vecStart = this->vecBasePosition;
-
-	/* 目的地の座標を設定 */
-	VECTOR vecGoal = this->pDataList_GameStatus->GetCoreTreePosition();
 
 	/* 評価値リストを作成 */
 	std::vector<ASTAR_EVALUATION_LIST> astEvaluationList;
@@ -154,7 +174,7 @@ void Npc_Base::Route_Search()
 	stStartNode.bStartNodeFlg		= true;														// スタート地点フラグを有効
 	stStartNode.bGoalNodeFlg		= false;													// ゴール地点フラグを無効
 	stStartNode.iCost_G				= 0;														// Gコスト(累計のコスト)を0に設定
-	stStartNode.iCost_H				= iCost_H_CalcHeuristicCost(vecStart, vecGoal);				// Hコスト(ゴールまでの予測コスト)を設定
+	stStartNode.iCost_H				= iCost_H_CalcHeuristicCost(vecStart, vecGoalPos);				// Hコスト(ゴールまでの予測コスト)を設定
 	stStartNode.iCost_F				= stStartNode.iCost_G + stStartNode.iCost_H;				// Fコスト(Gコスト + Hコスト)を設定
 	stStartNode.bOpenListFlg		= true;														// オープンリストフラグを有効に設定
 	stStartNode.bCloseListFlg		= false;													// クローズリストフラグを無効に設定
@@ -226,7 +246,7 @@ void Npc_Base::Route_Search()
 			VECTOR vecNextPosition = VAdd(vecCurrentNode, avecNextPosition[i]);
 
 			/* 移動可能であるか確認 */
-			int iCheckResult = iCheck_Moveble(vecNextPosition, vecGoal);
+			int iCheckResult = iCheck_Moveble(vecNextPosition, vecGoalPos);
 			if (iCheckResult != MOVE_NOT)
 			{
 				// 移動可能である場合
@@ -241,6 +261,23 @@ void Npc_Base::Route_Search()
 					vecNextPosition.y	+= MAP_BLOCK_SIZE_Y;
 					iMoveCost			+= ROUTE_SEARCH_MOVE_COST_YCHANGE;
 				}
+				/* 足場がなく、重力の影響を受ける場合は、足場に接触する高さまで座標を変更 */
+				else if (iCheckResult == MOVE_DOWN && this->bEnableGravityFlg)
+				{
+					/* 下方向へ移動させる */
+					// ※ 一マス分ずつ下げていき、足場があるか確認する(最大8マス分)
+					for(int i = 0; i < 8; i++)
+					{
+						vecNextPosition.y -= MAP_BLOCK_SIZE_Y;
+						int iCheckResult_Down = iCheck_Moveble(vecNextPosition, vecGoalPos);
+						if (iCheckResult_Down == MOVE_NOT || iCheckResult_Down == MOVE_UP)
+						{
+							// 移動不可能であるか、上方向への移動であるなら
+							vecNextPosition.y += MAP_BLOCK_SIZE_Y;
+							break;
+						}
+					}
+				}
 			}
 			else
 			{
@@ -253,7 +290,7 @@ void Npc_Base::Route_Search()
 			stAddNode.bGoalNodeFlg		= false;													// ゴール地点フラグを無効
 			stAddNode.bStartNodeFlg		= false;													// スタート地点フラグを無効
 			stAddNode.iCost_G			= iMinF_Cost_G + iMoveCost;									// Gコスト(累計のコスト)を現在のGコスト + 移動コストに設定
-			stAddNode.iCost_H			= iCost_H_CalcHeuristicCost(vecNextPosition, vecGoal);		// Hコスト(ゴールまでの予測コスト)を設定
+			stAddNode.iCost_H			= iCost_H_CalcHeuristicCost(vecNextPosition, vecGoalPos);		// Hコスト(ゴールまでの予測コスト)を設定
 			stAddNode.iCost_F			= stAddNode.iCost_G + stAddNode.iCost_H;					// Fコスト(Gコスト + Hコスト)を設定
 			stAddNode.bOpenListFlg		= true;														// オープンリストフラグを有効に設定
 			stAddNode.bCloseListFlg		= false;													// クローズリストフラグを無効に設定
@@ -348,7 +385,7 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos, VECTOR vecGoalPos)
 	// 引数
 	// vecMovePos	: 移動先の座標
 	// 戻り値
-	// int			: (MOVE_NOT:移動不可 / MOVE_OK:そのまま移動可能 / MOVE_UP:上方向へ移動すれば移動可能 / MOVE_GOALHIT:目標へ到達
+	// int			: (MOVE_NOT:移動不可 / MOVE_OK:そのまま移動可能 / MOVE_UP:上方向へ移動すれば移動可能 / MOVE_GOALHIT:目標へ到達 / MOVE_DOWN:移動可能だが、足場がないので落下する)
 
 	int iReturnValue = MOVE_OK;	// 戻り値
 
@@ -431,6 +468,35 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos, VECTOR vecGoalPos)
 		}
 	}
 
+	/* 移動後座標に足場があるか確認 */
+	if (iReturnValue == MOVE_OK)
+	{
+		// そのまま移動可能である場合
+		/* 足場があるか確認 */
+		// ※ 1ブロック分下にずらしたコリジョンを作成し、接触するかを確認する
+		Struct_Collision::COLLISION_BOX stCheckBox_Floor = stCheckBox;
+		stCheckBox_Floor.vecBoxCenter.y -= MAP_BLOCK_SIZE_Y;
+
+		/* 接触確認 */
+		bool bFloorFoundFlg = false;
+		for (auto& Collision : CollisionList)
+		{
+			/* 接触しているか確認 */
+			if (Collision->HitCheck(stCheckBox_Floor))
+			{
+				// 接触している場合
+				bFloorFoundFlg = true;
+				break;
+			}
+		}
+		if (!bFloorFoundFlg)
+		{
+			// 足場がない場合
+			/* 移動可能だが、落下することになるとする */
+			iReturnValue = MOVE_DOWN;
+		}
+	}
+
 	return iReturnValue;
 }
 
@@ -510,13 +576,4 @@ int Npc_Base::iCost_H_CalcHeuristicCost(const VECTOR& vecCurrentPosition, const 
 
 	// 斜め移動と直線移動のコストを合計して返す
 	return ROUTE_SEARCH_MOVE_COST_DIAG * diagonalMoveCount + ROUTE_SEARCH_MOVE_COST_DEFAULT * straightMoveCount;
-}
-
-// 指定座標との距離の2乗を取得
-float Npc_Base::fDistanceToTargetSquare(VECTOR vecTargetPos)
-{
-	// 戻り値
-	// float	<- 対象との距離の二乗
-
-	return VSquareSize(VSub(vecTargetPos, this->vecBasePosition));
 }
