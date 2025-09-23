@@ -101,7 +101,8 @@ void Npc_Base::Update_Action_Enemy()
 	}
 
 	/* 射程範囲内のプレイヤーに攻撃が有効であるか */
-	if (this->abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTARN_PLAYER_ATTACK])
+	// ※ 攻撃後のインターバルが0以下であることも条件とする
+	if (this->abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTARN_PLAYER_ATTACK] && this->iAttackInterval <= 1)
 	{
 		// 有効である場合
 		/* 射程範囲内にプレイヤー陣営のキャラクターが存在するか確認 */
@@ -135,12 +136,18 @@ void Npc_Base::Update_Action_Enemy()
 							iHp -= this->iAttack;
 							pChara->SetHealth(iHp);
 						}
+
+						/* 攻撃後のインターバルを設定 */
+						this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_MELE - this->iSpeed;
 					}
 					else
 					{
 						// 遠距離攻撃である場合
 						/* バレットを作成し、パターンに応じた方向へ発射する */
 						Update_MakeBullet(pChara->GetPosition(), "Enemy");
+
+						/* 攻撃後のインターバルを設定 */
+						this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_LONG - this->iSpeed;
 					}
 				}
 
@@ -209,7 +216,8 @@ void Npc_Base::Update_Action_Enemy()
 	}
 
 	/* 神木(防衛対象)への侵攻が有効であるか */
-	if (this->abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTERN_INVASION_CORETREE])
+	// ※ 攻撃後のインターバルが0以下であることも条件とする
+	if (this->abEnemyActionPatternFlg[NPC_ENEMY_ACTION_PATTERN_INVASION_CORETREE] && this->iAttackInterval <= 0)
 	{
 		// 有効である場合
 		/* 射程範囲内に神木(防衛対象)が存在するか確認 */
@@ -226,6 +234,16 @@ void Npc_Base::Update_Action_Enemy()
 				int iCoreTreeHp = this->pDataList_GameStatus->GetHp_CoreTree();
 				iCoreTreeHp -= this->iAttack;
 				this->pDataList_GameStatus->SetHp_CoreTree(iCoreTreeHp);
+
+				/* 攻撃後のインターバルを設定 */
+				if (this->bAttackMeleeFlg == true)
+				{
+					this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_MELE - this->iSpeed;
+				}
+				else
+				{
+					this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_LONG - this->iSpeed;
+				}
 			}
 
 			/* モーションが攻撃以外であるなら攻撃モーションに設定 */
@@ -320,7 +338,8 @@ void Npc_Base::Update_Action_Friend()
 	}
 
 	/* 敵への攻撃が有効であるか */
-	if (this->abFriendActionPatternFlg[NPC_FRIEND_ACTION_PATTERN_ENEMY_ATTACK])
+	// ※ 攻撃後のインターバルが0以下であることも条件とする
+	if (this->abFriendActionPatternFlg[NPC_FRIEND_ACTION_PATTERN_ENEMY_ATTACK] && this->iAttackInterval <= 0)
 	{
 		// 有効である場合
 		/* 索敵範囲内に"Enemy"チームのキャラクターが存在するか確認 */
@@ -431,9 +450,8 @@ void Npc_Base::Update_Action_Friend()
 	if (this->abFriendActionPatternFlg[NPC_FRIEND_ACTION_PATTERN_PLAYER_TRACKING])
 	{
 		// 有効である場合
-		/* 射程範囲内にプレイヤーが存在するか確認 */
-		// ※ プレイヤーへのめり込みを防止するため、1ブロック分の距離を射程範囲に加算して判定
-		if (fDistanceToTargetSquare(this->pDataList_GameStatus->GetPlayerPosition_WoldMap()) <= (this->fAttackRange + MAP_BLOCK_SIZE_X) * (this->fAttackRange + MAP_BLOCK_SIZE_X))
+		/* 射程範囲の半分の距離内にプレイヤーが存在するか */
+		if (fDistanceToTargetSquare(this->pDataList_GameStatus->GetPlayerPosition_WoldMap()) <= (this->fAttackRange / 2.f) * (this->fAttackRange / 2.f))
 		{
 			// 射程範囲内にプレイヤーが存在する場合
 			/* 現在所持しているルート情報を破棄 */

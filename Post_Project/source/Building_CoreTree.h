@@ -18,7 +18,6 @@ class Building_CoreTree : public Building_Base
 
 		/* 関数 */
 		virtual void	InitialSetup()		override;	// 初期設定
-		virtual void	Update()			override;	// 更新
 
 		/* セッター */
 		void SetHP(int iHP);									// 体力を設定

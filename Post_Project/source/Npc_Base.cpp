@@ -17,6 +17,7 @@
 // 共通定義
 #include "ConstantDefine.h"
 #include "FunctionDefine.h"
+#include "VariableDefine.h"
 
 // コンストラクタ
 Npc_Base::Npc_Base() : Character_Base()
@@ -82,8 +83,16 @@ void Npc_Base::Draw()
 	/* ベースクラスの描写処理 */
 	Character_Base::Draw();
 
-	/* 移動ルートの描写 */
-	Draw_Route();
+	/* HPバーの描写 */
+	Draw_HpBar();
+
+	/* デバッグモードであるか */
+	if (gbDebugMode)
+	{
+		// デバッグモードであるなら
+		/* 移動ルートの描写 */
+		Draw_Route();
+	}
 }
 
 // キャラクター情報の読み込み
@@ -120,7 +129,7 @@ void Npc_Base::JsonLoad_CharacterStatus()
 			this->fSearchRange			= status.value("SearchRange", 0.f);			// 探索範囲
 			this->fAttackRange			= status.value("AttackRange", 0.f);			// 攻撃範囲
 			this->bContactDamageFlg		= status.value("ContactDamageFlg", false);	// 接触によりダメージ発生するかのフラグ
-			this->bAttackMeleeFlg		= status.value("AttackMeleeFlg", false);	// 近接攻撃を行うかのフラグ
+			this->bAttackMeleeFlg		= status.value("AttackMelee", false);		// 近接攻撃を行うかのフラグ
 			this->bEnableGravityFlg		= status.value("EnableGravityFlg", true);	// 重力影響を受けるかのフラグ
 			// 行動パターンフラグ(エネミー)
 			auto& actionPattern = status["EnemyActionPattern"];
@@ -555,6 +564,37 @@ void Npc_Base::Draw_Route()
 			);
 		}
 	}
+}
+
+// HPバーの描写
+void Npc_Base::Draw_HpBar()
+{
+	/* HPバーを描写する */
+	// ※ 現在の座標をスクリーン座標に変換して、その上に描写する
+	VECTOR vecScreenPos = ConvWorldPosToScreenPos(this->vecBasePosition);
+
+	/* HPバーの描写 */
+	int iHpBarX = static_cast<int>(vecScreenPos.x) + HPBAR_POS_X;	// HPバーのX座標
+	int iHpBarY = static_cast<int>(vecScreenPos.y) - HPBAR_POS_Y;	// HPバーのY座標
+	// HPバーの背景を描写
+	DrawBox(
+		iHpBarX - HPBAR_BACK_WIDE,
+		iHpBarY - HPBAR_BACK_WIDE,
+		iHpBarX + HPBAR_WIDE + HPBAR_BACK_WIDE,
+		iHpBarY + HPBAR_HEIGHT + HPBAR_BACK_WIDE,
+		GetColor(0, 0, 0),
+		true
+	);
+	// HPバー本体を描写
+	int iCurrentHpBarWidth = static_cast<int>(static_cast<float>(this->iHealth) / static_cast<float>(this->iMaxHealth) * static_cast<float>(HPBAR_WIDE));
+	DrawBox(
+		iHpBarX,
+		iHpBarY,
+		iHpBarX + iCurrentHpBarWidth,
+		iHpBarY + HPBAR_HEIGHT,
+		GetColor(255, 0, 0),
+		true
+	);
 }
 
 // 現在ノードからゴールノードまでの推定コスト（ヒューリスティック値）を算出

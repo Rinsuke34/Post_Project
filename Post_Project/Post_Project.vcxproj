@@ -172,7 +172,8 @@
     <ClCompile Include="source\Actor_Base.cpp" />
     <ClCompile Include="source\Building_Base.cpp" />
     <ClCompile Include="source\Building_CoreTree.cpp" />
-    <ClCompile Include="source\Building_Monument_Sowrd.cpp" />
+    <ClCompile Include="source\Building_Monument.cpp" />
+    <ClCompile Include="source\Building_NpcBase.cpp" />
     <ClCompile Include="source\Bullet_Base.cpp" />
     <ClCompile Include="source\Bullet_Npc.cpp" />
     <ClCompile Include="source\Bullet_Player.cpp" />
@@ -207,6 +208,7 @@
     <ClCompile Include="source\Scene_Stage_JsonLoad.cpp" />
     <ClCompile Include="source\Scene_Stage_Setup.cpp" />
     <ClCompile Include="source\Scene_Title.cpp" />
+    <ClCompile Include="source\VariableDefine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppFrame\AppFrame.vcxproj">
@@ -215,9 +217,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Actor_Base.h" />
+    <ClInclude Include="source\VariableDefine.h" />
     <ClInclude Include="source\Building_Base.h" />
     <ClInclude Include="source\Building_CoreTree.h" />
-    <ClInclude Include="source\Building_Monument_Sowrd.h" />
+    <ClInclude Include="source\Building_Monument.h" />
+    <ClInclude Include="source\Building_NpcBase.h" />
     <ClInclude Include="source\Bullet_Base.h" />
     <ClInclude Include="source\Bullet_Npc.h" />
     <ClInclude Include="source\Bullet_Player.h" />

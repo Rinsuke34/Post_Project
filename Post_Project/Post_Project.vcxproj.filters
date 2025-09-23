@@ -211,6 +211,15 @@
     <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\バレット\NPCバレット">
       <UniqueIdentifier>{480d0227-2738-4b70-a47c-e9cb29c837e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\NPC拠点">
+      <UniqueIdentifier>{60740192-18ed-4e1c-b47e-82048a397ea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\NCP拠点">
+      <UniqueIdentifier>{0251b62e-d1b7-44b5-9b94-1c651ec7614e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\定義">
+      <UniqueIdentifier>{8fdf0a69-3949-41b0-8a8b-1a7ec2983df0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -315,7 +324,7 @@
     <ClCompile Include="source\Bullet_Player.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\バレット\プレイヤーバレット</Filter>
     </ClCompile>
-    <ClCompile Include="source\Building_Monument_Sowrd.cpp">
+    <ClCompile Include="source\Building_Monument.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\モニュメント</Filter>
     </ClCompile>
     <ClCompile Include="source\Building_Base.cpp">
@@ -326,6 +335,12 @@
     </ClCompile>
     <ClCompile Include="source\Bullet_Npc.cpp">
       <Filter>ソース ファイル\ゲーム内オブジェクト\動的オブジェクト\バレット\NPCバレット</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Building_NpcBase.cpp">
+      <Filter>ソース ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\NCP拠点</Filter>
+    </ClCompile>
+    <ClCompile Include="source\VariableDefine.cpp">
+      <Filter>ソース ファイル\定義</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,7 +434,7 @@
     <ClInclude Include="source\Bullet_Player.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\バレット\プレイヤーバレット</Filter>
     </ClInclude>
-    <ClInclude Include="source\Building_Monument_Sowrd.h">
+    <ClInclude Include="source\Building_Monument.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\モニュメント</Filter>
     </ClInclude>
     <ClInclude Include="source\Building_Base.h">
@@ -430,6 +445,12 @@
     </ClInclude>
     <ClInclude Include="source\Bullet_Npc.h">
       <Filter>ヘッダー ファイル\ゲーム内オブジェクト\動的オブジェクト%28アクタ%29\バレット\NPCバレット</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Building_NpcBase.h">
+      <Filter>ヘッダー ファイル\ゲーム内オブジェクト\静的オブジェクト\建造物\NPC拠点</Filter>
+    </ClInclude>
+    <ClInclude Include="source\VariableDefine.h">
+      <Filter>ヘッダー ファイル\定義</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

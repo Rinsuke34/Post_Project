@@ -5,6 +5,7 @@
 // ヘッダファイル
 #include "Character_Player.h"
 // 関連クラス
+#include "DataList_GameStatus.h"
 #include "DataList_Object.h"
 #include "Ground_Base.h"
 #include "Ground_Model.h"
@@ -29,8 +30,9 @@ void Character_Player::Update_Action()
 	/* 武器切り替え処理 */
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_E] == TRUE)
 	{
-		// 武器を切り替える
+		/* 武器を切り替える */
 		this->bMeleeFlg = !this->bMeleeFlg;
+		this->pDataList_GameStatus->SetPlayerMeleeFlg(this->bMeleeFlg);
 
 		/* 武器切り替えに応じてモーションを変更 */
 		if (this->bMeleeFlg)
@@ -54,73 +56,83 @@ void Character_Player::Update_Action()
 	Update_ApplyMovement();
 
 	/* 射程範囲内の敵に対する攻撃処理 */
-	// 射程距離設定(近接攻撃状態では攻撃範囲、遠距離攻撃状態では索敵範囲を射程とする)
-	float fAttackRangeA = this->bMeleeFlg ? this->fAttackRange : this->fSearchRange;
-	for (auto& chara : this->pDataList_Object->GetCharacterList())
+	// ※ 攻撃後のインターバルが1以下である場合のみ実施
+	if (this->iAttackInterval <= 1)
 	{
-		// 敵陣営のキャラクターであるか
-		if (!chara->bCheckTeamTag("Enemy"))
+		// 射程距離設定(近接攻撃状態では攻撃範囲、遠距離攻撃状態では索敵範囲を射程とする)
+		float fAttackRangeA = this->bMeleeFlg ? this->fAttackRange : this->fSearchRange;
+		for (auto& chara : this->pDataList_Object->GetCharacterList())
 		{
-			// 敵陣営のキャラクターでない場合はスルー
-			continue;
-		}
-
-		// 射程範囲内に存在するか
-		if (fDistanceToTargetSquare(chara->GetPosition()) <= fAttackRangeA * fAttackRangeA)
-		{
-			// 射程範囲内に存在する場合
-			/* モーションが攻撃かつ、完了フラグが有効なら攻撃処理 */
-			if (this->NowMotionName == "Attack_Sowrd" && this->bMotionEndFlg && this->bMeleeFlg)
+			// 敵陣営のキャラクターであるか
+			if (!chara->bCheckTeamTag("Enemy"))
 			{
-				/* 近接攻撃処理 */
-				Character_Base* pChara = dynamic_cast<Character_Base*>(chara.get());
-				if (pChara)
-				{
-					int iHp	= pChara->iGetHealth();
-					iHp		-= this->iAttack;
-					pChara->SetHealth(iHp);
-				}
-			}
-			else if (this->NowMotionName == "Attack_Rod" && this->bMotionEndFlg && !this->bMeleeFlg)
-			{
-				/* 遠距離攻撃処理 */
-				// ※ バレットを作成し、敵の方向に発射する
-				std::shared_ptr<Bullet_Player> pBullet = std::make_shared<Bullet_Player>();
-				// 発射方向を設定
-				// ※ 速度はプレイヤーの移動速度の2倍に設定
-				VECTOR vecDirection = VNorm(VSub(chara->GetPosition(), this->vecBasePosition));
-				vecDirection = VScale(vecDirection, this->iSpeed * 2.f);
-				pBullet->SetMoveVector(vecDirection);
-				// 初期地点を設定
-				// ※ めり込ませないため、少し上にずらして生成
-				pBullet->SetPosition(VAdd(this->vecBasePosition, VGet(0.f, MAP_BLOCK_SIZE_Y / 2.f, 0.f)));
-				// 攻撃力を設定
-				pBullet->SetAttack(this->iAttack);
-				// バレットを登録
-				this->pDataList_Object->AddObject_Bullet(pBullet);
+				// 敵陣営のキャラクターでない場合はスルー
+				continue;
 			}
 
-			/* モーションが攻撃以外であるなら攻撃モーションに設定 */
-			if (this->bMeleeFlg)
+			// 射程範囲内に存在するか
+			if (fDistanceToTargetSquare(chara->GetPosition()) <= fAttackRangeA * fAttackRangeA)
 			{
-				if (this->NowMotionName != "Attack_Sowrd")
+				// 射程範囲内に存在する場合
+				/* モーションが攻撃かつ、完了フラグが有効なら攻撃処理 */
+				if (this->NowMotionName == "Attack_Sowrd" && this->bMotionEndFlg && this->bMeleeFlg)
 				{
-					this->NowMotionName		= "Attack_Sowrd";
-					this->iMotionCount		= 0;
-					this->bMotionLoopFlg	= true;
-				}
-			}
-			else
-			{
-				if (this->NowMotionName != "Attack_Rod")
-				{
-					this->NowMotionName		= "Attack_Rod";
-					this->iMotionCount		= 0;
-					this->bMotionLoopFlg	= true;
-				}
-			}
+					/* 近接攻撃処理 */
+					Character_Base* pChara = dynamic_cast<Character_Base*>(chara.get());
+					if (pChara)
+					{
+						int iHp = pChara->iGetHealth();
+						iHp -= this->iAttack + this->pDataList_GameStatus->GetBuilldingBuff_Sword();;
+						pChara->SetHealth(iHp);
+					}
 
-			return;
+					/* 攻撃後のインターバルを設定 */
+					this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_MELE - this->iSpeed;
+				}
+				else if (this->NowMotionName == "Attack_Rod" && this->bMotionEndFlg && !this->bMeleeFlg)
+				{
+					/* 遠距離攻撃処理 */
+					// ※ バレットを作成し、敵の方向に発射する
+					std::shared_ptr<Bullet_Player> pBullet = std::make_shared<Bullet_Player>();
+					// 発射方向を設定
+					// ※ 速度はプレイヤーの移動速度の2倍に設定
+					VECTOR vecDirection = VNorm(VSub(chara->GetPosition(), this->vecBasePosition));
+					vecDirection = VScale(vecDirection, this->iSpeed * 2.f);
+					pBullet->SetMoveVector(vecDirection);
+					// 初期地点を設定
+					// ※ めり込ませないため、少し上にずらして生成
+					pBullet->SetPosition(VAdd(this->vecBasePosition, VGet(0.f, MAP_BLOCK_SIZE_Y / 2.f, 0.f)));
+					// 攻撃力を設定
+					pBullet->SetAttack(this->iAttack + this->pDataList_GameStatus->GetBuilldingBuff_Rod());
+					// バレットを登録
+					this->pDataList_Object->AddObject_Bullet(pBullet);
+
+					/* 攻撃後のインターバルを設定 */
+					this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_LONG - this->iSpeed;
+				}
+
+				/* モーションが攻撃以外であるなら攻撃モーションに設定 */
+				if (this->bMeleeFlg)
+				{
+					if (this->NowMotionName != "Attack_Sowrd")
+					{
+						this->NowMotionName		= "Attack_Sowrd";
+						this->iMotionCount		= 0;
+						this->bMotionLoopFlg	= true;
+					}
+				}
+				else
+				{
+					if (this->NowMotionName != "Attack_Rod")
+					{
+						this->NowMotionName		= "Attack_Rod";
+						this->iMotionCount		= 0;
+						this->bMotionLoopFlg	= true;
+					}
+				}
+
+				return;
+			}
 		}
 	}
 

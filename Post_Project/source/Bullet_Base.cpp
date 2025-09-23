@@ -9,6 +9,7 @@
 #include "Ground_Base.h"
 // 共通定義
 #include "FunctionDefine.h"
+#include "VariableDefine.h"
 
 // コンストラクタ
 Bullet_Base::Bullet_Base() : Actor_Base()
@@ -101,6 +102,11 @@ void Bullet_Base::Draw()
 		-fHalfGrWidth, +fHalfGrHeight,		// 左下
 		*this->piGrHandle, TRUE);
 
-	/* コリジョン描画(デバッグ用) */
-	Draw_Collision();
+	/* デバッグモードであるか */
+	if (gbDebugMode)
+	{
+		// デバッグモードであるなら
+		/* コリジョン描画 */
+		Draw_Collision();
+	}
 }

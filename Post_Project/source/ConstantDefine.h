@@ -65,6 +65,8 @@ static const int CHARACTER_PARTS_ANIM_DRAW_SIZE_WIDE	= 256;	// ƒLƒƒƒ‰ƒNƒ^[‚Ìƒp
 static const int CHARACTER_PARTS_ANIM_DRAW_SIZE_HEIGHT	= 256;	// ƒLƒƒƒ‰ƒNƒ^[‚Ìƒp[ƒcƒAƒjƒ[ƒVƒ‡ƒ“—p‰æ‘œ‚Ìc•
 // Œ©‰º‚ë‚µŽ‹“_‚Å‚Ì‚Ì‚¯‚¼‚è—Ê
 static const float TOPVIEW_LEAN_AMOUNT			= 150.f;	// Œ©‰º‚ë‚µŽ‹“_‚Å‚Ì‚Ì‚¯‚¼‚è—Ê
+// Šî€•¶ŽšƒTƒCƒY
+static const int BASE_FONT_SIZE = 32;	// Šî€•¶ŽšƒTƒCƒY
 
 /* ƒIƒuƒWƒFƒNƒgŒn */
 // ƒGƒlƒ~[‚ÌƒXƒ|[ƒ“ƒ|ƒCƒ“ƒg‚ÌŽí—Þ
@@ -94,7 +96,10 @@ static const int LONG_RANGE_ATTACK_DIR_PATTERN_CARDINAL_WAY	= 2;	// ŽÎ‚ß•ûŒü‚ÉŒ‚
 static const int LONG_RANGE_ATTACK_DIR_PATTERN_MAX			= 3;	// ‰“‹——£UŒ‚‚Ì•ûŒüƒpƒ^[ƒ“‚ÌÅ‘å”
 
 /* ƒQ[ƒ€—pƒXƒe[ƒ^ƒX */
-static const float GRAVITY_ACCELERATION						= 0.5f;	// d—Í‰Á‘¬“x
-static const float GRAVITY_JUMP_POWER						= 10.f;	// ƒWƒƒƒ“ƒvŽž‚Ì‰‘¬
-static const int   INVINCIBLE_TIME_BULLET_HIT				= 60;	// ’eŠÛ‚Éƒqƒbƒg‚µ‚½Û‚Ì–³“GŽžŠÔ(ƒtƒŒ[ƒ€”)
-static const int   INVINCIBLE_TIME_CHARACTER_CONTACT		= 30;	// ƒLƒƒƒ‰ƒNƒ^[‚ÉÚG‚µ‚½Û‚Ì–³“GŽžŠÔ(ƒtƒŒ[ƒ€”)
+static const float	GRAVITY_ACCELERATION					= 0.5f;	// d—Í‰Á‘¬“x
+static const float	GRAVITY_JUMP_POWER						= 10.f;	// ƒWƒƒƒ“ƒvŽž‚Ì‰‘¬
+static const int	INVINCIBLE_TIME_BULLET_HIT				= 60;	// ’eŠÛ‚Éƒqƒbƒg‚µ‚½Û‚Ì–³“GŽžŠÔ(ƒtƒŒ[ƒ€”)
+static const int	INVINCIBLE_TIME_CHARACTER_CONTACT		= 30;	// ƒLƒƒƒ‰ƒNƒ^[‚ÉÚG‚µ‚½Û‚Ì–³“GŽžŠÔ(ƒtƒŒ[ƒ€”)
+static const int	DEFAULT_ATTACK_INTERVAL_MELE			= 15;	// ‹ßÚUŒ‚‚ÌƒfƒtƒHƒ‹ƒg‚ÌUŒ‚ŠÔŠu(ƒtƒŒ[ƒ€”)
+static const int	DEFAULT_ATTACK_INTERVAL_LONG			= 30;	// ‰“‹——£UŒ‚‚ÌƒfƒtƒHƒ‹ƒg‚ÌUŒ‚ŠÔŠu(ƒtƒŒ[ƒ€”)
+

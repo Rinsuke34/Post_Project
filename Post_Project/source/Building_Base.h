@@ -20,7 +20,7 @@ class Building_Base : public Ground_Model
 		static const int BUILDING_SIZE_X		= 64 * 3;		// X²‚ÌŒš‘¢•¨‚Ì‘å‚«‚³
 		static const int BUILDING_SIZE_Y		= 64 * 8;		// Y²‚ÌŒš‘¢•¨‚Ì‘å‚«‚³
 		static const int BUILDING_SIZE_Z		= 64 * 3;		// Z²‚ÌŒš‘¢•¨‚Ì‘å‚«‚³
-		static const int POSITION_ADJUSTEMENT_Y	= -16;		// Œš‘¢•¨‚ÌˆÊ’u’²®—Ê(­‚µ‰º‚É‰º‚°‚é)
+		static const int POSITION_ADJUSTEMENT_Y	= -16;			// Œš‘¢•¨‚ÌˆÊ’u’²®—Ê(­‚µ‰º‚É‰º‚°‚é)
 
 		/* ŠÖ” */
 		virtual void	InitialSetup()		override;	// ‰Šúİ’è

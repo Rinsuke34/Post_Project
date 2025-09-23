@@ -24,6 +24,8 @@ class Scene_Stage : public Scene_Base
 		static const int SHADOWMAP_GROUND	= 0;	// 静的オブジェクト
 		static const int SHADOWMAP_ACTOR	= 1;	// 動的オブジェクト
 		static const int SHADOWMAP_MAX		= 2;	// シャドウマップの種類の個数
+		// エネミーのスポーン頻度
+		static const int ENEMY_SPAWN_TIME_BASE = 60 * 10;	// 基本のスポーン頻度(10秒/フレーム数)
 
 		/* 関数 */
 		virtual void	Update()			override;	// 更新
@@ -43,6 +45,7 @@ class Scene_Stage : public Scene_Base
 		// 設定関係
 		void	Setup_LoadMarker_CenterArea();	// マーカー情報読み込み(中央エリア)
 		void	Setup_LoadMarker_SideArea();	// マーカー情報読み込み(外側エリア)
+		void	Setup_WoldMap_SideArea();		// ワールドマップ(外側エリア)設定
 		void	Setup_PlaceObject_CenterArea();	// オブジェクト配置(中央エリア)
 		void	Setup_PlaceObject_SideArea();	// オブジェクト配置(外側エリア)
 		
@@ -56,4 +59,6 @@ class Scene_Stage : public Scene_Base
 		int iScreenHandle_ShadowMap[SHADOWMAP_MAX];	// シャドウマップ(0:静的オブジェクト/1:動的オブジェクト)
 		// マップの情報
 		std::vector<WOLD_MAP_DATA>	MapDataList;	// マップ情報リスト
+		// その他
+		int iEnemySpawnTime;	// エネミーのスポーンまでの待機時間
 };

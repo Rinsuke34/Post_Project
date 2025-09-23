@@ -5,6 +5,8 @@
 #include "Building_Base.h"
 // 関連クラス
 #include "DataList_GameStatus.h"
+// 共通定義
+#include "ConstantDefine.h"
 
 // コンストラクタ
 Building_Base::Building_Base() : Ground_Model()
@@ -17,10 +19,9 @@ Building_Base::Building_Base() : Ground_Model()
 void Building_Base::InitialSetup()
 {
 	/* 少し下に下げる */
-	this->SetPosition(VAdd(this->GetPosition(), VGet(0.f, -16.f, 0.f)));
-
+	this->vecPosition = (VAdd(this->vecPosition, VGet(0.f, -(MAP_BLOCK_SIZE_Y / 2.f), 0.f)));
 	/* コリジョン設定 */
-	this->stBox.vecBoxCenter	= VAdd(VGet(0.f, (BUILDING_SIZE_Y / 2.f) - POSITION_ADJUSTEMENT_Y, 0.f), this->GetPosition());
+	this->stBox.vecBoxCenter	= VAdd(VGet(0.f, (BUILDING_SIZE_Y / 2.f), 0.f), this->GetPosition());
 	this->stBox.vecBoxHalfSize	= VGet(BUILDING_SIZE_X / 2.f, BUILDING_SIZE_Y / 2.f, BUILDING_SIZE_Z / 2.f);
 
 	/* ベースクラスの初期設定 */

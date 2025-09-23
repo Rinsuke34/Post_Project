@@ -13,6 +13,9 @@
 // コンストラクタ
 Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 {
+	/* 初期化 */
+	this->iEnemySpawnTime = 0;
+
 	/* 画像データ作成 */
 	// 画像
 	this->iScreenHandle_Stage		= MakeScreen(SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT);
@@ -41,24 +44,16 @@ Scene_Stage::Scene_Stage() : Scene_Base("Scene_Stage", 1, false, false)
 		/* ワールドマップ(中央)読み込み */
 		JsonLoad_WoldMap(AREA_NO_CENTER, "AreaData_Front");
 
-		JsonLoad_WoldMap(0, "AreaData_Rocky");
-		JsonLoad_WoldMap(1, "AreaData_Rocky");
-		JsonLoad_WoldMap(2, "AreaData_Plain");
-		JsonLoad_WoldMap(3, "AreaData_Plain");
-		JsonLoad_WoldMap(5, "AreaData_Plain");
-		JsonLoad_WoldMap(6, "AreaData_Plain");
-		JsonLoad_WoldMap(7, "AreaData_Desert");
-		JsonLoad_WoldMap(8, "AreaData_Desert");
+		/* ワールドマップ(外側)読み込み */
+		Setup_WoldMap_SideArea();
 
 		/* マーカー情報読み込み */
 		Setup_LoadMarker_CenterArea();
 		Setup_LoadMarker_SideArea();
 
 		/* オブジェクト配置 */
+		// ※中央エリア部分のみ先行して配置し、外側エリア部分はエネミースポーンのタイミングで配置する
 		Setup_PlaceObject_CenterArea();
-		Setup_PlaceObject_SideArea();
-		Setup_PlaceObject_SideArea();
-		Setup_PlaceObject_SideArea();
 	}
 }
 
@@ -85,6 +80,25 @@ void Scene_Stage::Update()
 		{
 			/* シーンを削除(ステージ作成シーンに遷移) */
 			this->bDeleteFlg = true;
+		}
+	}
+	else
+	{
+		// 読み込まれていない場合
+		/* エネミーのスポーン更新 */
+		if (this->iEnemySpawnTime <= 0)
+		{
+			// カウントが0以下であるならば
+			/* エネミーをスポーン */
+			Setup_PlaceObject_SideArea();
+
+			/* 次のエネミースポーンまでのカウントをリセット */
+			this->iEnemySpawnTime = ENEMY_SPAWN_TIME_BASE;
+		}
+		else
+		{
+			// カウントが0以下でないならば
+			this->iEnemySpawnTime--;
 		}
 	}
 }

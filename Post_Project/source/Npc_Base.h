@@ -38,6 +38,15 @@ class Npc_Base : public Character_Base
 		std::string GetName()			{ return this->Name; }	// 名前
 
 	protected:
+		/* 定数 */
+		// HPバーの描写系
+		static const int HPBAR_POS_X		= -25;	// HPバーのX座標(基準座標からの相対位置)
+		static const int HPBAR_POS_Y		= 50;	// HPバーのY座標(基準座標からの相対位置)
+		static const int HPBAR_WIDE			= 50;	// HPバーの幅
+		static const int HPBAR_HEIGHT		= 5;	// HPバーの高さ
+		static const int HPBAR_BACK_WIDE	= 1;	// 背景の幅
+
+
 		/* 変数 */
 		// 基本情報
 		std::string			Name;	// 名前
@@ -53,6 +62,7 @@ class Npc_Base : public Character_Base
 		int		iCheck_Moveble(VECTOR vecMovePos, VECTOR vecGoalPos);	// 移動可能か確認
 		void	Update_RouteMove();										// 移動ルートに沿った移動
 		void	Draw_Route();											// 移動ルートの描写
+		void	Draw_HpBar();											// HPバーの描写
 		int		iCost_H_CalcHeuristicCost(const VECTOR& vecCurrentPosition, const VECTOR& vecGoalPosition);	// 現在ノードからゴールノードまでの推定コスト（ヒューリスティック値）を算出
 		// 行動パターンなど
 		void	Update_Action();											// 行動パターン管理

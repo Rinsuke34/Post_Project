@@ -10,6 +10,7 @@
 #include "DataList_StageCreate.h"
 // 共通定義
 #include "ConstantDefine.h"
+#include "VariableDefine.h"
 
 // 描画
 void Scene_Stage::Draw()
@@ -196,10 +197,15 @@ void Scene_Stage::DrawSetup_Stage()
 	this->pDataList_Object->Draw_Character();
 	this->pDataList_Object->Draw_Building();
 
-	/* デバッグ用コリジョン描写 */
-	this->pDataList_Object->Draw_Character_Collision();
-	this->pDataList_Object->Draw_Building_Collision();
-	this->pDataList_Object->Draw_Item_Collision();
+	/* デバッグモードであるか */
+	if (gbDebugMode)
+	{
+		// デバッグモードであるなら
+		/* デバッグ用コリジョン描写 */
+		this->pDataList_Object->Draw_Character_Collision();
+		this->pDataList_Object->Draw_Building_Collision();
+		this->pDataList_Object->Draw_Item_Collision();
+	}
 
 	/* メイン画面への描写を終了 */
 	SetDrawScreen(DX_SCREEN_BACK);

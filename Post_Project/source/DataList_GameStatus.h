@@ -23,6 +23,8 @@ class DataList_GameStatus : public DataList_Base
 		void SetHp_Player(int iHp)											{ this->iHp_Player					= iHp; }				// プレイヤーの体力の設定
 		void SetMaxHp_Player(int iMaxHp)									{ this->iMaxHp_Player				= iMaxHp; }				// プレイヤーの最大体力の設定
 		void SetHaveCoin(int iHaveCoin)										{ this->iHaveCoin					= iHaveCoin; }			// 所持しているコインの設定
+		void SetScore(int iScore)											{ this->iScore						= iScore; }				// スコアの設定
+		void SetWave(int iWave)												{ this->iWave						= iWave; }				// 現在のウェーブ数の設定
 		// マーカー関連
 		void SetPlayerStartPosition(VECTOR vecPosition)						{ this->vecPlayerStartPosition		= vecPosition; }		// プレイヤーのスタート座標の設定
 		void SetBuildAreaPositionList(BUILDING_AREA_DATA AreaData)			{ this->BuildAreaPositionList.push_back(AreaData); }		// 建築エリアリストの設定
@@ -33,6 +35,9 @@ class DataList_GameStatus : public DataList_Base
 		// ゲーム状態
 		void SetBuildModeFlg(bool bFlg)										{ this->bBuildModeFlg				= bFlg; }				// 建築モードフラグの設定
 		void SetSelectedBuildingIndex(int iIndex)							{ this->iSelectedBuildingIndex		= iIndex; }				// 選択している建造物のインデックス番号の設定
+		void SetPlayerMeleeFlg(bool bFlg)									{ this->bPlayerMeleeFlg				= bFlg; }				// プレイヤーが近接攻撃状態であるかのフラグを設定
+		void SetBuilldingBuff_Sword(int iBuff)								{ this->iBuilldingBuff_Sword		= iBuff; }				// 建築物バフ(剣)の設定
+		void SetBuilldingBuff_Rod(int iBuff)								{ this->iBuilldingBuff_Rod			= iBuff; }				// 建築物バフ(杖)の設定
 
 		/* ゲッター */
 		// 共通
@@ -42,6 +47,8 @@ class DataList_GameStatus : public DataList_Base
 		int									GetHp_Player()					{ return this->iHp_Player; }					// プレイヤーの体力の取得
 		int									GetMaxHp_Player()				{ return this->iMaxHp_Player; }					// プレイヤーの最大体力の取得
 		int									GetHaveCoin()					{ return this->iHaveCoin; }						// 所持しているコインの取得
+		int 								GetScore()						{ return this->iScore; }						// スコアの取得
+		int									GetWave()						{ return this->iWave; }							// 現在のウェーブ数の取得
 		// マーカー関連
 		VECTOR								GetPlayerStartPosition()			{ return this->vecPlayerStartPosition; }		// プレイヤーのスタート座標の取得
 		std::vector<BUILDING_AREA_DATA>		GetBuildAreaPositionList()			{ return this->BuildAreaPositionList; }			// 建築エリアリストの取得
@@ -52,6 +59,9 @@ class DataList_GameStatus : public DataList_Base
 		// ゲーム状態
 		bool								GetBuildModeFlg()				{ return this->bBuildModeFlg; }					// 建築モードフラグの取得
 		int									GetSelectedBuildingIndex()		{ return this->iSelectedBuildingIndex; }		// 選択している建造物のインデックス番号の取得
+		bool								GetPlayerMeleeFlg()				{ return this->bPlayerMeleeFlg; }				// プレイヤーが近接攻撃状態であるかのフラグを取得
+		int									GetBuilldingBuff_Sword()		{ return this->iBuilldingBuff_Sword; }			// 建築物バフ(剣)の取得
+		int									GetBuilldingBuff_Rod()			{ return this->iBuilldingBuff_Rod; }			// 建築物バフ(杖)の取得
 
 	private:
 		/* 変数 */
@@ -62,6 +72,8 @@ class DataList_GameStatus : public DataList_Base
 		int		iHp_Player;					// プレイヤーの体力
 		int		iMaxHp_Player;				// プレイヤーの最大体力
 		int		iHaveCoin;					// 所持しているコイン
+		int		iScore;						// スコア
+		int		iWave;						// ウェーブ数
 		// マーカー関連
 		VECTOR								vecPlayerStartPosition;		// プレイヤーのスタート座標
 		std::vector<BUILDING_AREA_DATA>		BuildAreaPositionList;		// 建築エリアリスト
@@ -71,4 +83,7 @@ class DataList_GameStatus : public DataList_Base
 		// ゲーム状態
 		bool								bBuildModeFlg;				// 建築モードフラグ
 		int									iSelectedBuildingIndex;		// 選択している建造物のインデックス番号
+		bool								bPlayerMeleeFlg;			// プレイヤーが近接攻撃状態であるかのフラグ
+		int									iBuilldingBuff_Sword;		// 建築物バフ:攻撃力(剣)
+		int									iBuilldingBuff_Rod;			// 建築物バフ:攻撃力(杖)
 };

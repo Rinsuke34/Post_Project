@@ -10,6 +10,7 @@
 // 共通定義
 #include "ConstantDefine.h"
 #include "FunctionDefine.h"
+#include "VariableDefine.h"
 
 // コンストラクタ
 Character_Player::Character_Player() : Character_Base()
@@ -99,8 +100,13 @@ void Character_Player::Draw()
 	/* ベースクラスの描写処理 */
 	Character_Base::Draw();
 
-	/* グリッド範囲描写 */
-	Draw_Grid();
+	/* デバッグモードであるか */
+	if (gbDebugMode)
+	{
+		// デバッグモードであるなら
+		/* グリッド範囲描写 */
+		Draw_Grid();
+	}
 }
 
 // 移動処理

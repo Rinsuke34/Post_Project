@@ -16,4 +16,9 @@ DataList_GameStatus::DataList_GameStatus() : DataList_Base("DataList_GameStatus"
 	this->iMaxHp_Player				= 0;
 	this->bBuildModeFlg				= false;
 	this->iSelectedBuildingIndex	= 0;
+	this->bPlayerMeleeFlg			= true;
+	this->iScore					= 0;
+	this->iWave						= 0;
+	this->iBuilldingBuff_Sword		= 0;
+	this->iBuilldingBuff_Rod		= 0;
 }

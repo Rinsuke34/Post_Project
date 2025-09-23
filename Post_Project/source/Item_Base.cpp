@@ -35,7 +35,7 @@ void Item_Base::Update()
 	{
 		// Á–Å‚·‚éŽžŠÔ‚É‚È‚Á‚½ê‡
 		/* íœƒtƒ‰ƒO‚ð—LŒø‰» */
-		this->bDeleteFlg = false;
+		this->bDeleteFlg = true;
 		return;
 	}
 

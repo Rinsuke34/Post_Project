@@ -20,7 +20,34 @@ class Scene_GameMain_UI_Status_Player : public Scene_Base
 		virtual void	Draw()				override;	// 描画
 
 	private:
+		/* 定数 */
+		// 武器の種類
+		static const int WEPON_SOWRD	= 0;	// 剣
+		static const int WEPON_ROD		= 1;	// 杖
+		static const int WEPON_MAX		= 2;	// 総数
+		// UI用の座標
+		// 現在の武器
+		static const int UI_WEPON_NOW_POS_X			= 10;	// 現在の武器のX座標
+		static const int UI_WEPON_NOW_POS_Y			= 878;	// 現在の武器のY座標
+		static const int UI_WEPON_NOW_WIDE			= 192;	// 現在の武器の幅
+		static const int UI_WEPON_NOW_HEIGHT		= 192;	// H現在の武器の高さ
+		static const int UI_WEPON_NOW_BACK_WIDE		= 5;	// 背景の幅
+		// 切り替え先の武器
+		static const int UI_WEPON_NEXT_POS_X		= 10;	// 切り替え先の武器のX座標
+		static const int UI_WEPON_NEXT_POS_Y		= 777;	// 切り替え先の武器のY座標
+		static const int UI_WEPON_NEXT_WIDE			= 96;	// 切り替え先の武器の幅
+		static const int UI_WEPON_NEXT_HEIGHT		= 96;	// 切り替え先の武器の高さ
+		static const int UI_WEPON_NEXT_BACK_WIDE	= 5;	// 背景の幅
+		// HP表示
+		static const int UI_HPBAR_POS_X		= 212;	// HPバーのX座標
+		static const int UI_HPBAR_POS_Y		= 944;	// HPバーのY座標
+		static const int UI_HPBAR_WIDE		= 500;	// HPバーの幅
+		static const int UI_HPBAR_HEIGHT	= 60;	// HPバーの高さ
+		static const int UI_HPBAR_BACK_WIDE = 5;	// 背景の幅
+
 		/* 変数 */
 		// データリストへのポインタ
-		std::shared_ptr<DataList_GameStatus>	pDataList_GameStatus;	// ゲーム状態管理		
+		std::shared_ptr<DataList_GameStatus>	pDataList_GameStatus;			// ゲーム状態管理		
+		// 描画系
+		std::shared_ptr<int>					piGrHandle_Wepon[WEPON_MAX];	// 武器の画像
 };

@@ -97,6 +97,40 @@ void Scene_Stage::Setup_LoadMarker_SideArea()
 	}
 }
 
+// ワールドマップ(外側エリア)設定
+// ※ 中央エリアを除く外側のエリアをランダムに設定する
+void Scene_Stage::Setup_WoldMap_SideArea()
+{
+	/* マップデータから外側マップの情報のみを抽出 */
+	std::vector<std::string> sideMapNames;
+	for (const auto& mapData : this->MapDataList)
+	{
+		if (mapData.iMapType == WOLD_MAP_TYPE_SIDE)
+		{
+			sideMapNames.push_back(mapData.MapName);
+		}
+	}
+
+	// 候補がなければ何もしない
+	if (sideMapNames.empty()) {
+		return;
+	}
+
+	/* 中央エリア以外のエリアのマップ設定を行う */
+	for (int iIndex = 0; iIndex < AREA_NO_MAX; ++iIndex)
+	{
+		/* 中央エリアであるならスキップ */
+		if (iIndex == AREA_NO_CENTER) { continue; }
+
+		/* ランダムに一つのエリア情報を取得する */
+		int iRandomIndex = (sideMapNames.size() == 1) ? 0 : GetRand(static_cast<int>(sideMapNames.size()) - 1);
+		std::string selectedMapName = sideMapNames[iRandomIndex];
+
+		/* 取得したエリア情報からマップを制作する */
+		JsonLoad_WoldMap(iIndex, selectedMapName);
+	}
+}
+
 // オブジェクト配置(中央エリア)
 void Scene_Stage::Setup_PlaceObject_CenterArea()
 {
@@ -108,7 +142,7 @@ void Scene_Stage::Setup_PlaceObject_CenterArea()
 	std::shared_ptr<Character_Player> pPlayer = std::make_shared<Character_Player>();
 	pPlayer->SetPosition(this->pDataList_GameStatus->GetPlayerStartPosition());
 	pPlayer->InitialSetup();
-	this->pDataList_Object->AddObject_Actor(pPlayer);
+	this->pDataList_Object->AddObject_Character(pPlayer);
 
 	/* 防衛対象追加 */
 	std::shared_ptr<Building_CoreTree> pCoreTree = std::make_shared<Building_CoreTree>();
@@ -122,8 +156,11 @@ void Scene_Stage::Setup_PlaceObject_CenterArea()
 void Scene_Stage::Setup_PlaceObject_SideArea()
 {
 	/* ランダムなスポーンポイントを決める */
-	int iRandomIndex = GetRand(this->pDataList_GameStatus->GetEnemySpawnPointList().size());
-	ENEMY_SPAWN_POINT_DATA SpawnPoint = this->pDataList_GameStatus->GetEnemySpawnPointList()[iRandomIndex];
+	const auto& spawnList	= this->pDataList_GameStatus->GetEnemySpawnPointList();
+	int spawnCount			= static_cast<int>(spawnList.size());
+	if (spawnCount == 0) { return; }
+	int iRandomIndex = (spawnCount == 1) ? 0 : GetRand(spawnCount - 1);
+	ENEMY_SPAWN_POINT_DATA SpawnPoint = spawnList[iRandomIndex];
 
 	/* エネミーのスポーン処理 */
 	std::shared_ptr<Npc_Base> pEnemyNpc = std::make_shared<Npc_Base>();
@@ -131,18 +168,21 @@ void Scene_Stage::Setup_PlaceObject_SideArea()
 	pEnemyNpc->SetTeamTag("Enemy");
 
 	/* 現在のスポーンポイントの種類に合致する敵の名前を設定 */
-	for (auto& Table : this->pDataList_GameStatus->GetEnemySpawnTableList())
+	// ※ 複数の名前が登録されている場合はランダムに選択する
+	for (const auto& Table : this->pDataList_GameStatus->GetEnemySpawnTableList())
 	{
-		if (Table.iPointType == SpawnPoint.iPointType && !Table.EnemyNameList.empty())
+		if (Table.iPointType == SpawnPoint.iPointType)
 		{
-			// スポーンポイントの種類が一致し、敵の名前リストが空でない場合
-			/* 登録されているエネミーの名前をランダムに取得 */
-			int iRandomEnemyIndex = GetRand(static_cast<int>(Table.EnemyNameList.size()) - 1);
-			pEnemyNpc->SetName(Table.EnemyNameList[iRandomEnemyIndex]);
-			break;
+			int nameCount = static_cast<int>(Table.EnemyNameList.size());
+			if (nameCount > 0)
+			{
+				int iRandomEnemyIndex = (nameCount == 1) ? 0 : GetRand(nameCount - 1);
+				pEnemyNpc->SetName(Table.EnemyNameList[iRandomEnemyIndex]);
+				break;
+			}
 		}
 	}
 
 	pEnemyNpc->InitialSetup();
-	this->pDataList_Object->AddObject_Actor(pEnemyNpc);
+	this->pDataList_Object->AddObject_Character(pEnemyNpc);
 }

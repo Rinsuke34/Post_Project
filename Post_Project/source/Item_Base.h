@@ -18,7 +18,7 @@ class Item_Base : public Actor_Base
 
 		/* 定数 */
 		static const int DESPAWN_TIME			= 600;	// アイテムが消滅するまでの時間(フレーム数)
-		static const int COLLISION_HALF			= 32;	// コリジョンの半径
+		static const int COLLISION_HALF			= 64;	// コリジョンの半径
 
 		/* 関数 */
 		virtual void	InitialSetup()		override;	// 初期設定

@@ -15,6 +15,7 @@
 // 共通定義
 #include "ConstantDefine.h"
 #include "FunctionDefine.h"
+#include "VariableDefine.h"
 
 // コンストラクタ
 Character_Base::Character_Base() : Actor_Base()
@@ -35,12 +36,13 @@ Character_Base::Character_Base() : Actor_Base()
 	this->bMotionLoopFlg	= true;
 	this->bDrawReversalFlg	= false;
 	// パラメーター系(プレイヤー、NPC共通)
-	this->iHealth			= 0;	// 体力
-	this->iMaxHealth		= 0;	// 最大体力
-	this->iAttack			= 0;	// 攻撃力
-	this->iSpeed			= 0;	// 速度
-	this->iAutoHealDelay	= 0;	// 自動回復待機時間
-	this->iAutoHealAmount	= 0;	// 自動回復量
+	this->iHealth				= 0;	// 体力
+	this->iMaxHealth			= 0;	// 最大体力
+	this->iAttack				= 0;	// 攻撃力
+	this->iSpeed				= 0;	// 速度
+	this->iAutoHealDelay		= 0;	// 自動回復待機時間
+	this->iAutoHealDelay_Timer	= 0;	// 自動回復までの残り待機時間
+	this->iAutoHealAmount		= 0;	// 自動回復量
 	// パラメーター系(NPC用)
 	this->fSearchRange		= 0.f;		// 探索範囲
 	this->fAttackRange		= 0.f;		// 攻撃範囲
@@ -55,6 +57,7 @@ Character_Base::Character_Base() : Actor_Base()
 	this->iInvincibleTime	= 0;		// 残り無敵時間(フレーム数)
 	this->bJumpUseFlg		= false;	// ジャンプ使用可能フラグ
 	this->bTrackingFlg		= false;	// 追跡中であるかのフラグ
+	this->iAttackInterval	= 0;		// 攻撃後の待機時間
 	// コリジョン
 	// ※ ブロックと同じサイズに設定
 	this->stBox.vecBoxCenter	= VGet(0.0f, 0.0f, 0.0f);
@@ -87,11 +90,39 @@ void Character_Base::Update()
 		// HPが0以下なら死亡フラグを立てる
 		this->bDeadFlg = true;
 	}
+	else
+	{
+		// HPが残っているなら自動回復処理
+		if (this->iAutoHealAmount > 0)
+		{
+			/* 自動回復待機時間が0以下であるか確認 */
+			if (this->iAutoHealDelay_Timer <= 0)
+			{
+				// 待機時間が0以下であるなら自動回復を行う
+				this->iHealth += this->iAutoHealAmount;
+				// 最大体力を超えないように調整
+				this->iHealth = std::min(this->iHealth, this->iMaxHealth);
+				// 自動回復待機時間をリセット
+				this->iAutoHealDelay_Timer = this->iAutoHealDelay;
+			}
+			else
+			{
+				// 待機時間が0以下でないなら待機時間を減少
+				--this->iAutoHealDelay_Timer;
+			}
+		}
+	}
 
 	/* 無敵時間の更新 */
 	if (this->iInvincibleTime > 0)
 	{
 		--this->iInvincibleTime;
+	}
+
+	/* 攻撃後の待機時間の更新 */
+	if (this->iAttackInterval > 0)
+	{
+		--this->iAttackInterval;
 	}
 
 	/* コリジョンの更新 */
@@ -110,11 +141,16 @@ void Character_Base::Draw()
 	/* アニメーション描写 */
 	Draw_Animation();
 
-	/* 探索範囲の描写 */
-	Draw_SearchRange();
+	/* デバッグモードであるか */
+	if (gbDebugMode)
+	{
+		// デバッグモードであるなら
+		/* 探索範囲の描写 */
+		Draw_SearchRange();
 
-	/* 攻撃範囲の描写 */
-	Draw_AttackRange();
+		/* 攻撃範囲の描写 */
+		Draw_AttackRange();
+	}
 }
 
 // 描画(シャドウマップ用)

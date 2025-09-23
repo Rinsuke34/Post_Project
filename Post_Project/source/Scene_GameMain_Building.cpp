@@ -4,19 +4,35 @@
 // ヘッダファイル
 #include "Scene_GameMain_Building.h"
 // 関連クラス
+#include "DataList_Image.h"
 #include "DataList_GameStatus.h"
 #include "DataList_Object.h"
-#include "Building_Monument_Sowrd.h"
+#include "Building_Monument.h"
+#include "Building_NpcBase.h"
 
 // コンストラクタ
 Scene_GameMain_Building::Scene_GameMain_Building() : Scene_Base("Scene_GameMain_Building", 1000, true, false)
 {
 	/* データリスト取得 */
-	this->pDataList_GameStatus	= std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));		// ゲーム状態管理
-	this->pDataList_Object		= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));				// オブジェクト管理
+	this->pDataList_GameStatus						= std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));		// ゲーム状態管理
+	this->pDataList_Object							= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));				// オブジェクト管理
+	std::shared_ptr<DataList_Image>	pDataList_Image	= std::dynamic_pointer_cast<DataList_Image>(gpDataListServer->GetDataList("DataList_Image"));				// 画像管理
 
 	/* 建築モードフラグを有効化 */
 	this->pDataList_GameStatus->SetBuildModeFlg(true);
+
+	/* 初期化 */
+	this->iPlacementBuildingIndex = 0;
+
+	/* 使用する画像を設定 */
+	std::string fileName = "ItemImage/Coin";
+	this->piGrHandle_Coin = pDataList_Image->iGetGrhandle(fileName);	// コインの画像
+
+	/* 建築物のコスト設定 */	
+	this->iBuildingPrice[BUILDING_MONUMENT_SOWRD]	= 3;	// モニュメント(剣)
+	this->iBuildingPrice[BUILDING_MONUMENT_ROD]		= 5;	// モニュメント(杖)
+	this->iBuildingPrice[BUILDING_NPCBASE_SLIME]	= 5;	// NPC拠点(スライム)
+	this->iBuildingPrice[BUILDING_NPCBASE_WISP]		= 8;	// NPC拠点(ウィスプ)
 }
 
 // デストラクタ
@@ -47,7 +63,42 @@ void Scene_GameMain_Building::Update()
 // 描画
 void Scene_GameMain_Building::Draw()
 {
+	std::string strBuildingName[BUILDING_MAX] =
+	{
+		"モニュメント(剣)",			// モニュメント(剣)
+		"モニュメント(杖)",			// モニュメント(杖)
+		"味方生成拠点(スライム)",	// NPC拠点(スライム)
+		"味方生成拠点(ウィスプ)"	// NPC拠点(ウィスプ)
+	};
+
 	/* 建築物一覧を描写 */
+	for (int i = 0; i < BUILDING_MAX; i++)
+	{
+		/* 描写地点を取得 */
+		int iPosX = UI_BUILDING_POS_X;
+		int iPosY = UI_BUILDING_POS_Y + (i * UI_BUILDING_HEIGHT);
+
+		/* オブジェクト名の背景描写 */
+		// ※ 選択中の建築物であるならば黄色で描写
+		DrawBox(iPosX, iPosY, iPosX + UI_BUILDING_WIDE, iPosY + UI_BUILDING_HEIGHT, GetColor(0, 0, 0), TRUE);
+		int iFrameColor = GetColor(255, 255, 255);
+		if (i == this->iPlacementBuildingIndex) { iFrameColor = GetColor(255, 255, 0); }
+		DrawBox(iPosX + UI_BUILDING_BACK_WIDE, iPosY + UI_BUILDING_BACK_WIDE, iPosX + UI_BUILDING_WIDE - UI_BUILDING_BACK_WIDE, iPosY + UI_BUILDING_HEIGHT - UI_BUILDING_BACK_WIDE, iFrameColor, TRUE);
+
+		/* オブジェクト名を描写 */
+		DrawFormatString(iPosX + 10, iPosY + 15, GetColor(0, 0, 0), "%s", strBuildingName[i].c_str());
+
+		/* オブジェクトの値段の背景描写 */
+		// ※選択中の建築物であるならば黄色で描写
+		DrawBox(iPosX + UI_BUILDING_WIDE, iPosY, iPosX + UI_BUILDING_WIDE + UI_BUILDING_PRICE_WIDE_X, iPosY + UI_BUILDING_HEIGHT, GetColor(0, 0, 0), TRUE);
+		iFrameColor = GetColor(255, 255, 255);
+		if (i == this->iPlacementBuildingIndex) { iFrameColor = GetColor(255, 255, 0); }
+		DrawBox(iPosX + UI_BUILDING_WIDE + UI_BUILDING_BACK_WIDE, iPosY + UI_BUILDING_BACK_WIDE, iPosX + UI_BUILDING_WIDE + UI_BUILDING_PRICE_WIDE_X - UI_BUILDING_BACK_WIDE, iPosY + UI_BUILDING_HEIGHT - UI_BUILDING_BACK_WIDE, iFrameColor, TRUE);
+
+		/* オブジェクトの値段を描写 */
+		DrawGraph(iPosX + UI_BUILDING_WIDE + 10, iPosY + 10, *(this->piGrHandle_Coin), TRUE);
+		DrawFormatString(iPosX + UI_BUILDING_WIDE + 80, iPosY + 30, GetColor(0, 0, 0), "x %d", iBuildingPrice[i]);
+	}
 }
 
 // 選択している建築エリアの変更
@@ -89,15 +140,28 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 		if (this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex()).pBuilding == nullptr)
 		{
 			// 建築物がない(建築可能である)場合
-			/* 建築物を配置 */
+			/* 所持コインが足りているか確認 */
+			if (this->pDataList_GameStatus->GetHaveCoin() < this->iBuildingPrice[this->iPlacementBuildingIndex])
+			{
+				// 所持コインが足りていない場合は処理を終了
+				return;
+			}
+			else
+			{
+				// 所持コインが足りている場合はコインを減算
+				this->pDataList_GameStatus->SetHaveCoin(this->pDataList_GameStatus->GetHaveCoin() - this->iBuildingPrice[this->iPlacementBuildingIndex]);
+			}
 
+			/* 建築物を配置 */
 			switch (this->iPlacementBuildingIndex)
 			{
-				case BUILDING_MONUMENT_SOWRD:	// モニュメント(剣)
+				// モニュメント(剣)
+				case BUILDING_MONUMENT_SOWRD:
 				{
 					/* 建築物を生成 */
-					std::shared_ptr<Building_Monument_Sowrd> pBuilding = std::make_shared<Building_Monument_Sowrd>();
+					std::shared_ptr<Building_Monument> pBuilding = std::make_shared<Building_Monument>();
 					pBuilding->SetPosition(this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex()).vecPosition);
+					pBuilding->SetMonumentName("Monument_Sowrd");
 					pBuilding->InitialSetup();
 
 					/* 建造物をデータリストに設定 */
@@ -106,6 +170,72 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 					// ゲーム状態管理
 					BUILDING_AREA_DATA AreaData	= this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex());
 					AreaData.pBuilding			= pBuilding;
+					this->pDataList_GameStatus->SetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex(), AreaData);
+
+					/* 剣バフ量を加算 */
+					int iSowrdBuff = this->pDataList_GameStatus->GetBuilldingBuff_Sword();
+					iSowrdBuff++;
+					this->pDataList_GameStatus->SetBuilldingBuff_Sword(iSowrdBuff);
+				}
+				break;
+
+				// モニュメント(杖)
+				case BUILDING_MONUMENT_ROD:
+				{
+					/* 建築物を生成 */
+					std::shared_ptr<Building_Monument> pBuilding = std::make_shared<Building_Monument>();
+					pBuilding->SetPosition(this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex()).vecPosition);
+					pBuilding->SetMonumentName("Monument_Rod");
+					pBuilding->InitialSetup();
+					/* 建造物をデータリストに設定 */
+					// オブジェクト管理
+					this->pDataList_Object->AddObject_Building(pBuilding);
+					// ゲーム状態管理
+					BUILDING_AREA_DATA AreaData = this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex());
+					AreaData.pBuilding = pBuilding;
+					this->pDataList_GameStatus->SetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex(), AreaData);
+
+					/* 杖バフ量を加算 */
+					int iRodBuff = this->pDataList_GameStatus->GetBuilldingBuff_Rod();
+					iRodBuff++;
+					this->pDataList_GameStatus->SetBuilldingBuff_Rod(iRodBuff);
+				}
+				break;
+
+				// NPC拠点(スライム)
+				case BUILDING_NPCBASE_SLIME:
+				{
+					/* 建築物を生成 */
+					std::shared_ptr<Building_NpcBase> pBuilding = std::make_shared<Building_NpcBase>();
+					pBuilding->SetPosition(this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex()).vecPosition);
+					pBuilding->SetNpcName("Slime_Green");
+					pBuilding->InitialSetup();
+
+					/* 建造物をデータリストに設定 */
+					// オブジェクト管理
+					this->pDataList_Object->AddObject_Building(pBuilding);
+					// ゲーム状態管理
+					BUILDING_AREA_DATA AreaData = this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex());
+					AreaData.pBuilding = pBuilding;
+					this->pDataList_GameStatus->SetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex(), AreaData);
+				}
+				break;
+
+				// NPC拠点(ウィスプ)
+				case BUILDING_NPCBASE_WISP:
+				{
+					/* 建築物を生成 */
+					std::shared_ptr<Building_NpcBase> pBuilding = std::make_shared<Building_NpcBase>();
+					pBuilding->SetPosition(this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex()).vecPosition);
+					pBuilding->SetNpcName("Wisp_Green");
+					pBuilding->InitialSetup();
+
+					/* 建造物をデータリストに設定 */
+					// オブジェクト管理
+					this->pDataList_Object->AddObject_Building(pBuilding);
+					// ゲーム状態管理
+					BUILDING_AREA_DATA AreaData = this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex());
+					AreaData.pBuilding = pBuilding;
 					this->pDataList_GameStatus->SetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex(), AreaData);
 				}
 				break;

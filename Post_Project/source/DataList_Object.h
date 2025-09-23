@@ -75,7 +75,7 @@ class DataList_Object : public DataList_Base
 		/* セッター */
 		void	AddObject_Ground(std::shared_ptr<Ground_Base> pGround, int iGridX, int iGridY)	{ this->pGroundList[iGridX][iGridY].push_back(pGround); };	// 指定エリアの地形追加
 		void	AddObject_Marker(std::shared_ptr<Ground_Marker> pMarker, int iAreaNo)			{ this->pMarkerList[iAreaNo].push_back(pMarker); };			// 指定エリアのマーカー追加
-		void	AddObject_Actor(std::shared_ptr<Character_Base> pActor)							{ this->pCharacterList.push_back(pActor); };				// キャラクター追加
+		void	AddObject_Character(std::shared_ptr<Character_Base> pActor)							{ this->pCharacterList.push_back(pActor); };				// キャラクター追加
 		void	AddObject_Building(std::shared_ptr<Building_Base> pBuilding)					{ this->pBuildingList.push_back(pBuilding); };				// 建造物追加
 		void	AddObject_Item(std::shared_ptr<Item_Base> pItem)								{ this->pItemList.push_back(pItem); };						// アイテム追加
 		void	AddObject_Bullet(std::shared_ptr<Bullet_Base> pBullet)							{ this->pBulletList.push_back(pBullet); };					// バレット追加

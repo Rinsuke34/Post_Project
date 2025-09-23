@@ -32,13 +32,6 @@ void Building_CoreTree::InitialSetup()
 	Building_Base::InitialSetup();
 }
 
-// 更新
-void Building_CoreTree::Update()
-{
-	this->pDataList_GameStatus->SetMaxHp_CoreTree(this->iMaxHp);
-	this->pDataList_GameStatus->SetHp_CoreTree(this->iHp);
-}
-
 // 体力を設定
 // ※このオブジェクトのHPだけでなく、ゲーム状態管理データリストの神木のHPも更新する
 void Building_CoreTree::SetHP(int iHP)

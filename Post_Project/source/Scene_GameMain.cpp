@@ -10,10 +10,15 @@
 #include "Scene_GameMain_UI_Resource.h"
 #include "DataList_Object.h"
 #include "DataList_GameStatus.h"
+// 共通定義
+#include "VariableDefine.h"
 
 // コンストラクタ
 Scene_GameMain::Scene_GameMain() : Scene_Base("Scene_GameMain", 0, false, false)
 {
+	/* フォントサイズを変更 */
+	SetFontSize(BASE_FONT_SIZE);
+
 	/* データリスト作成 */	
 	gpDataListServer->AddDataList(std::make_shared<DataList_GameStatus>());		// ゲーム状態管理
 	gpDataListServer->AddDataList(std::make_shared<DataList_Object>());			// オブジェクト管理
@@ -24,10 +29,13 @@ Scene_GameMain::Scene_GameMain() : Scene_Base("Scene_GameMain", 0, false, false)
 	gpSceneServer->AddSceneReservation(std::make_shared<Scene_GameMain_UI_Status_Player>());	// UI:プレイヤーの状態
 	gpSceneServer->AddSceneReservation(std::make_shared<Scene_GameMain_UI_Resource>());			// UI:ゲーム内リソース
 
-
 	/* データリスト取得 */
 	this->pDataList_Object		= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));			// オブジェクト管理
 	this->pDataList_GameStatus	= std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));	// ゲーム状態管理
+
+	/* 初期化 */
+	this->iScoreUpdateTimer	= 0;	// スコア更新までのカウントダウン
+	this->iWaveUpdateTimer	= 0;	// ウェーブ更新までのカウントダウン
 }
 
 // デストラクタ
@@ -46,4 +54,47 @@ void Scene_GameMain::Update()
 
 	/* 削除フラグが有効なオブジェクト削除 */
 	this->pDataList_Object->DeleteFlagged_AllObject();
+
+	/* スコア更新 */
+	if (this->iScoreUpdateTimer <= 0)
+	{
+		// カウントが0以下であるならば
+		/* スコアを加算 */
+		// ※ ウェーブ数分のスコアを加算
+		int iScore = this->pDataList_GameStatus->GetScore();
+		iScore += this->pDataList_GameStatus->GetWave();
+		this->pDataList_GameStatus->SetScore(iScore);
+
+		/* カウントダウンをリセット */
+		this->iScoreUpdateTimer = SCORE_UPDATE_TIME;
+	}
+	else
+	{
+		// カウントが0以下でないならば
+		this->iScoreUpdateTimer--;
+	}
+
+	/* ウェーブ更新 */
+	if (this->iWaveUpdateTimer <= 0)
+	{
+		// カウントが0以下であるならば
+		/* ウェーブ数を加算 */
+		int iWave = this->pDataList_GameStatus->GetWave();
+		iWave++;
+		this->pDataList_GameStatus->SetWave(iWave);
+
+		/* カウントダウンをリセット */
+		this->iWaveUpdateTimer = WAVE_UPDATE_TIME;
+	}
+	else
+	{
+		// カウントが0以下でないならば
+		this->iWaveUpdateTimer--;
+	}
+
+	/* "F1"キーが入力されたらデバッグモードの有効・無効の切り替え */
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_F1] == TRUE)
+	{
+		gbDebugMode = !gbDebugMode;
+	}
 }

@@ -21,8 +21,15 @@ class Scene_GameMain : public Scene_Base
 		virtual void	Update()			override;	// 更新
 
 	private:
+		/* 定数 */
+		static const int SCORE_UPDATE_TIME		= 60;		// スコア更新時間(1秒/フレーム数)
+		static const int WAVE_UPDATE_TIME		= 60 * 60;	// ウェーブ更新時間(1分/フレーム数)
+
 		/* 変数 */
 		// データリストへのポインタ
 		std::shared_ptr<DataList_Object>		pDataList_Object;		// オブジェクト管理
 		std::shared_ptr<DataList_GameStatus>	pDataList_GameStatus;	// ゲーム状態管理
+		// ゲーム状態
+		int iScoreUpdateTimer;	// スコア更新までのカウントダウン
+		int iWaveUpdateTimer;	// ウェーブ更新までのカウントダウン
 };

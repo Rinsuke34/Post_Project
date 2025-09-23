@@ -37,7 +37,8 @@ class Character_Base : public Actor_Base
 		// 状態系
 		void SetDeadFlg(bool bDeadFlg)				{ this->bDeadFlg		= bDeadFlg; }									// 死亡フラグの設定
 		void SetInvicibleTime(int iInvicibleTime)	{ this->iInvincibleTime = iInvicibleTime; }								// 無敵時間の設定
-		void SetJumpUseFlg(bool bJumpUseFlg)		{ this->bJumpUseFlg = bJumpUseFlg; }									// ジャンプ使用可能フラグの設定
+		void SetJumpUseFlg(bool bJumpUseFlg)		{ this->bJumpUseFlg		= bJumpUseFlg; }								// ジャンプ使用可能フラグの設定
+		void SetAttackInterval(int iAttackInterval) { this->iAttackInterval = iAttackInterval; }							// 攻撃後の待機時間の設定
 
 		/* ゲッター */
 		// パラメーター系
@@ -49,9 +50,10 @@ class Character_Base : public Actor_Base
 		int		iGetAutoHealAmount()	{ return this->iAutoHealAmount; }	// 自動回復量の取得
 		bool	bGetContactDamageFlg()	{ return this->bContactDamageFlg; }	// 接触によりダメージ発生するかのフラグの取得
 		// 状態系
-		bool	bGetDeadFlg()		{ return this->bDeadFlg; }			// 死亡フラグの取得
-		int		GetInvincibleTime() { return this->iInvincibleTime; }	// 無敵時間の取得
-		bool	bGetJumpUseFlg()	{ return this->bJumpUseFlg; }		// ジャンプ使用可能フラグの取得
+		bool	bGetDeadFlg()			{ return this->bDeadFlg; }			// 死亡フラグの取得
+		int		GetInvincibleTime()		{ return this->iInvincibleTime; }	// 無敵時間の取得
+		bool	bGetJumpUseFlg()		{ return this->bJumpUseFlg; }		// ジャンプ使用可能フラグの取得
+		int		iGetAttackInterval()	{ return this->iAttackInterval; }	// 攻撃後の待機時間の取得
 
 	protected:
 		/* 変数 */
@@ -67,12 +69,13 @@ class Character_Base : public Actor_Base
 		bool			bMotionLoopFlg;				// モーションループフラグ
 		bool			bDrawReversalFlg;			// 左右反転フラグ
 		// パラメーター系(プレイヤー、NPC共通)
-		int	iHealth;			// 体力
-		int	iMaxHealth;			// 最大体力
-		int iAttack;			// 攻撃力
-		int iSpeed;				// すばやさ
-		int iAutoHealDelay;		// 自動回復待機時間
-		int iAutoHealAmount;	// 自動回復量
+		int	iHealth;				// 体力
+		int	iMaxHealth;				// 最大体力
+		int iAttack;				// 攻撃力
+		int iSpeed;					// すばやさ
+		int iAutoHealDelay;			// 自動回復待機時間
+		int iAutoHealDelay_Timer;	// 自動回復までの残り待機時間
+		int iAutoHealAmount;		// 自動回復量
 		// パラメーター系(NPC用)
 		float	fSearchRange;		// 探索範囲
 		float	fAttackRange;		// 攻撃範囲
@@ -87,6 +90,7 @@ class Character_Base : public Actor_Base
 		int iInvincibleTime;	// 残り無敵時間(フレーム数)
 		bool bJumpUseFlg;		// ジャンプ使用可能フラグ
 		bool bTrackingFlg;		// 追跡中であるかのフラグ
+		int iAttackInterval;	// 攻撃後の待機時間
 
 		/* 関数 */
 		void	Update_Collision();									// コリジョン更新
