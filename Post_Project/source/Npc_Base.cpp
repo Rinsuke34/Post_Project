@@ -22,7 +22,8 @@
 // コンストラクタ
 Npc_Base::Npc_Base() : Character_Base()
 {
-
+	/* 初期化 */
+	this->vecTargetPos	= VGet(0.f, 0.f, 0.f);
 }
 
 // デストラクタ
@@ -68,12 +69,17 @@ void Npc_Base::Update()
 		/* 削除フラグを有効化 */
 		this->bDeleteFlg = true;
 
-		/* 現在の座標にアイテム"コイン"を生成する */
-		// ※ めり込ませないため、少し上にずらして生成
-		std::shared_ptr<Item_Coin> pItem_Coin = std::make_shared<Item_Coin>();
-		pItem_Coin->SetPosition(VAdd(this->vecBasePosition, VGet(0.f, MAP_BLOCK_SIZE_Y / 2.f, 0.f)));
-		pItem_Coin->InitialSetup();
-		this->pDataList_Object->AddObject_Item(pItem_Coin);
+		/* エネミーであるか */
+		if (bCheckTeamTag("Enemy"))
+		{
+			// エネミーである場合
+			/* 現在の座標にアイテム"コイン"を生成する */
+			// ※ めり込ませないため、少し上にずらして生成
+			std::shared_ptr<Item_Coin> pItem_Coin = std::make_shared<Item_Coin>();
+			pItem_Coin->SetPosition(VAdd(this->vecBasePosition, VGet(0.f, MAP_BLOCK_SIZE_Y / 2.f, 0.f)));
+			pItem_Coin->InitialSetup();
+			this->pDataList_Object->AddObject_Item(pItem_Coin);
+		}
 	}
 }
 
@@ -454,9 +460,19 @@ int Npc_Base::iCheck_Moveble(VECTOR vecMovePos, VECTOR vecGoalPos)
 			if (pCoreTree != nullptr)
 			{
 				// 神木である場合
-				/* 移動可能とする */
-				// ※ 神木へのルート検索時にゴールまで到達できなくなってしまうため
-				return MOVE_OK;
+				/* Enemy陣営であるか */
+				if (this->bCheckTeamTag("Enemy"))
+				{
+					// Enemy陣営である場合
+					/* 移動可能とする */
+					return MOVE_OK;
+				}
+				else
+				{
+					// Enemy陣営でない場合
+					/* 移動不可とする */
+					return MOVE_NOT;
+				}
 			}
 
 			/* ブロック1マス分上昇させた場合、接触しているか確認 */

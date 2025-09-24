@@ -460,12 +460,22 @@ void Npc_Base::Update_Action_Friend()
 		else
 		{
 			// 射程範囲内にプレイヤーが存在しない場合
-			/* 移動ルートが確定しているか確認 */
-			if (this->avecMovePath.empty())
+			/* 移動ルートが確定していない、あるいはプレイヤーがサーチ開始地点から1ブロック以上移動したか */
+			if( this->vecTargetPos.x - MAP_BLOCK_SIZE_X > this->pDataList_GameStatus->GetPlayerPosition_WoldMap().x ||
+			    this->vecTargetPos.x + MAP_BLOCK_SIZE_X < this->pDataList_GameStatus->GetPlayerPosition_WoldMap().x ||
+			    this->vecTargetPos.z - MAP_BLOCK_SIZE_Z > this->pDataList_GameStatus->GetPlayerPosition_WoldMap().z ||
+			    this->vecTargetPos.z + MAP_BLOCK_SIZE_Z < this->pDataList_GameStatus->GetPlayerPosition_WoldMap().z ||
+				this->avecMovePath.empty())
 			{
-				// 移動ルートが確定していない場合
+				// 移動ルートが確定していない、あるいはプレイヤーがサーチ開始地点から1ブロック以上移動した場合
+				/* 現在所持しているルート情報を破棄 */
+				this->avecMovePath.clear();
+
 				/* ルート設定を別スレッドで実行 */
 				thred_RouteSearch = std::async(std::launch::async, [this]() { this->Route_Search(this->pDataList_GameStatus->GetPlayerPosition_WoldMap()); });
+
+				/* 現在のターゲット座標をプレイヤーポジションに設定 */
+				this->vecTargetPos = this->pDataList_GameStatus->GetPlayerPosition_WoldMap();
 				return;
 			}
 

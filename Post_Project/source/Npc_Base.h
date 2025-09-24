@@ -54,6 +54,8 @@ class Npc_Base : public Character_Base
 		std::future<void>	thred_RouteSearch;	// 移動経路検索処理の結果確認用
 		// 移動系
 		std::vector<VECTOR>	avecMovePath;		// 対象エリアまでの移動ルート
+		// 処理用
+		VECTOR				vecTargetPos;		// ターゲット座標(移動ルート再検索で使用)
 
 		/* 関数 */
 		// 基本機能用関数

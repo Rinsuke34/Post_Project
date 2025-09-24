@@ -102,4 +102,4 @@ static const int	INVINCIBLE_TIME_BULLET_HIT				= 60;	// 弾丸にヒットした際の無敵
 static const int	INVINCIBLE_TIME_CHARACTER_CONTACT		= 30;	// キャラクターに接触した際の無敵時間(フレーム数)
 static const int	DEFAULT_ATTACK_INTERVAL_MELE			= 15;	// 近接攻撃のデフォルトの攻撃間隔(フレーム数)
 static const int	DEFAULT_ATTACK_INTERVAL_LONG			= 30;	// 遠距離攻撃のデフォルトの攻撃間隔(フレーム数)
-
+static const int	FRIEND_NPC_ADD_MAX_NUMBER				= 3;	// 味方NPCの最大数(拠点建築時に加算される数)

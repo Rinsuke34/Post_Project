@@ -25,6 +25,8 @@ class DataList_GameStatus : public DataList_Base
 		void SetHaveCoin(int iHaveCoin)										{ this->iHaveCoin					= iHaveCoin; }			// 所持しているコインの設定
 		void SetScore(int iScore)											{ this->iScore						= iScore; }				// スコアの設定
 		void SetWave(int iWave)												{ this->iWave						= iWave; }				// 現在のウェーブ数の設定
+		void SetMaxFriendNpc(int iMaxFriendNpc)								{ this->iMaxFriendNpc				= iMaxFriendNpc; }		// 最大味方NPC数の設定
+		void SetCurrentFriendNpc(int iCurrentFriendNpc)						{ this->iCurrentFriendNpc			= iCurrentFriendNpc; }	// 現在の味方NPC数の設定
 		// マーカー関連
 		void SetPlayerStartPosition(VECTOR vecPosition)						{ this->vecPlayerStartPosition		= vecPosition; }		// プレイヤーのスタート座標の設定
 		void SetBuildAreaPositionList(BUILDING_AREA_DATA AreaData)			{ this->BuildAreaPositionList.push_back(AreaData); }		// 建築エリアリストの設定
@@ -49,6 +51,8 @@ class DataList_GameStatus : public DataList_Base
 		int									GetHaveCoin()					{ return this->iHaveCoin; }						// 所持しているコインの取得
 		int 								GetScore()						{ return this->iScore; }						// スコアの取得
 		int									GetWave()						{ return this->iWave; }							// 現在のウェーブ数の取得
+		int									GetMaxFriendNpc()				{ return this->iMaxFriendNpc; }					// 最大味方NPC数の取得
+		int									GetCurrentFriendNpc()			{ return this->iCurrentFriendNpc; }				// 現在の味方NPC数の取得
 		// マーカー関連
 		VECTOR								GetPlayerStartPosition()			{ return this->vecPlayerStartPosition; }		// プレイヤーのスタート座標の取得
 		std::vector<BUILDING_AREA_DATA>		GetBuildAreaPositionList()			{ return this->BuildAreaPositionList; }			// 建築エリアリストの取得
@@ -74,6 +78,8 @@ class DataList_GameStatus : public DataList_Base
 		int		iHaveCoin;					// 所持しているコイン
 		int		iScore;						// スコア
 		int		iWave;						// ウェーブ数
+		int		iMaxFriendNpc;				// 最大味方NPC数
+		int		iCurrentFriendNpc;			// 現在の味方NPC数
 		// マーカー関連
 		VECTOR								vecPlayerStartPosition;		// プレイヤーのスタート座標
 		std::vector<BUILDING_AREA_DATA>		BuildAreaPositionList;		// 建築エリアリスト

@@ -21,4 +21,6 @@ DataList_GameStatus::DataList_GameStatus() : DataList_Base("DataList_GameStatus"
 	this->iWave						= 0;
 	this->iBuilldingBuff_Sword		= 0;
 	this->iBuilldingBuff_Rod		= 0;
+	this->iMaxFriendNpc				= 0;
+	this->iCurrentFriendNpc			= 0;
 }
