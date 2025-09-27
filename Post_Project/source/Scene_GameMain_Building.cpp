@@ -25,12 +25,26 @@ Scene_GameMain_Building::Scene_GameMain_Building() : Scene_Base("Scene_GameMain_
 	this->iPlacementBuildingIndex = 0;
 
 	/* 使用する画像を設定 */
+	// コインの画像
 	std::string fileName = "ItemImage/Coin";
-	this->piGrHandle_Coin = pDataList_Image->iGetGrhandle(fileName);	// コインの画像
+	this->piGrHandle_Coin = pDataList_Image->iGetGrhandle(fileName);
+	// キーの画像
+	fileName = "Key/E";
+	this->piGrHandle_Key[KEY_E] = pDataList_Image->iGetGrhandle(fileName);
+	fileName = "Key/Q";
+	this->piGrHandle_Key[KEY_Q] = pDataList_Image->iGetGrhandle(fileName);
+	fileName = "Key/W";
+	this->piGrHandle_Key[KEY_W] = pDataList_Image->iGetGrhandle(fileName);
+	fileName = "Key/A";
+	this->piGrHandle_Key[KEY_A] = pDataList_Image->iGetGrhandle(fileName);
+	fileName = "Key/S";
+	this->piGrHandle_Key[KEY_S] = pDataList_Image->iGetGrhandle(fileName);
+	fileName = "Key/D";
+	this->piGrHandle_Key[KEY_D] = pDataList_Image->iGetGrhandle(fileName);
 
 	/* 建築物のコスト設定 */	
 	this->iBuildingPrice[BUILDING_MONUMENT_SOWRD]	= 3;	// モニュメント(剣)
-	this->iBuildingPrice[BUILDING_MONUMENT_ROD]		= 5;	// モニュメント(杖)
+	this->iBuildingPrice[BUILDING_MONUMENT_ROD]		= 3;	// モニュメント(杖)
 	this->iBuildingPrice[BUILDING_NPCBASE_SLIME]	= 5;	// NPC拠点(スライム)
 	this->iBuildingPrice[BUILDING_NPCBASE_WISP]		= 8;	// NPC拠点(ウィスプ)
 }
@@ -45,8 +59,8 @@ Scene_GameMain_Building::~Scene_GameMain_Building()
 // 更新
 void Scene_GameMain_Building::Update()
 {	
-	/* Escキーが入力されたならシーンを終了する */
-	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_ESCAPE] == TRUE)
+	/* Qキーが入力されたならシーンを終了する */
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_Q] == TRUE)
 	{
 		/* シーンを削除(ゲームメインシーンに遷移) */
 		this->bDeleteFlg = true;
@@ -63,13 +77,27 @@ void Scene_GameMain_Building::Update()
 // 描画
 void Scene_GameMain_Building::Draw()
 {
-	std::string strBuildingName[BUILDING_MAX] =
-	{
-		"モニュメント(剣)",			// モニュメント(剣)
-		"モニュメント(杖)",			// モニュメント(杖)
-		"味方生成拠点(スライム)",	// NPC拠点(スライム)
-		"味方生成拠点(ウィスプ)"	// NPC拠点(ウィスプ)
-	};
+	/* 上方向と下方向の矢印、キーを描写 */
+	// 上方向
+	DrawTriangle(
+		UI_TRIANGLE_CENTER_X, UI_BUILDING_POS_Y - UI_TRIANGLE_GAP - UI_TRIANGLE_HEIGHT,
+		UI_TRIANGLE_CENTER_X - UI_TRIANGLE_WIDTH, UI_BUILDING_POS_Y - UI_TRIANGLE_GAP,
+		UI_TRIANGLE_CENTER_X + UI_TRIANGLE_WIDTH, UI_BUILDING_POS_Y - UI_TRIANGLE_GAP,
+		GetColor(255, 255, 0), TRUE);
+	DrawExtendGraph(
+		UI_TRIANGLE_CENTER_X + UI_TRIANGLE_WIDTH + UI_TRIANGLE_GAP,		UI_BUILDING_POS_Y - UI_TRIANGLE_GAP - UI_TRIANGLE_HEIGHT,
+		UI_TRIANGLE_CENTER_X + UI_TRIANGLE_WIDTH + UI_TRIANGLE_GAP + UI_KEY_SIZE,	UI_BUILDING_POS_Y - UI_TRIANGLE_GAP,
+		*(this->piGrHandle_Key[KEY_W]), TRUE);
+	// 下方向
+	DrawTriangle(
+		UI_TRIANGLE_CENTER_X, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + UI_TRIANGLE_GAP + UI_TRIANGLE_HEIGHT,
+		UI_TRIANGLE_CENTER_X - UI_TRIANGLE_WIDTH, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + UI_TRIANGLE_GAP,
+		UI_TRIANGLE_CENTER_X + UI_TRIANGLE_WIDTH, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + UI_TRIANGLE_GAP,
+		GetColor(255, 255, 0), TRUE);
+	DrawExtendGraph(
+		UI_TRIANGLE_CENTER_X + UI_TRIANGLE_WIDTH + UI_TRIANGLE_GAP, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + UI_TRIANGLE_GAP,
+		UI_TRIANGLE_CENTER_X + UI_TRIANGLE_WIDTH + UI_TRIANGLE_GAP + UI_KEY_SIZE, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + UI_TRIANGLE_GAP + UI_TRIANGLE_HEIGHT,
+		*(this->piGrHandle_Key[KEY_S]), TRUE);
 
 	/* 建築物一覧を描写 */
 	for (int i = 0; i < BUILDING_MAX; i++)
@@ -86,6 +114,13 @@ void Scene_GameMain_Building::Draw()
 		DrawBox(iPosX + UI_BUILDING_BACK_WIDE, iPosY + UI_BUILDING_BACK_WIDE, iPosX + UI_BUILDING_WIDE - UI_BUILDING_BACK_WIDE, iPosY + UI_BUILDING_HEIGHT - UI_BUILDING_BACK_WIDE, iFrameColor, TRUE);
 
 		/* オブジェクト名を描写 */
+		std::string strBuildingName[BUILDING_MAX] =
+		{
+			"モニュメント(剣)",			// モニュメント(剣)
+			"モニュメント(杖)",			// モニュメント(杖)
+			"味方生成拠点(スライム)",	// NPC拠点(スライム)
+			"味方生成拠点(ウィスプ)"	// NPC拠点(ウィスプ)
+		};
 		DrawFormatString(iPosX + 10, iPosY + 15, GetColor(0, 0, 0), "%s", strBuildingName[i].c_str());
 
 		/* オブジェクトの値段の背景描写 */
@@ -99,6 +134,20 @@ void Scene_GameMain_Building::Draw()
 		DrawGraph(iPosX + UI_BUILDING_WIDE + 10, iPosY + 10, *(this->piGrHandle_Coin), TRUE);
 		DrawFormatString(iPosX + UI_BUILDING_WIDE + 80, iPosY + 30, GetColor(0, 0, 0), "x %d", iBuildingPrice[i]);
 	}
+
+	/* 操作内容とキーを描写 */
+	// Eキー : 決定
+	DrawExtendGraph(UI_BUILDING_POS_X, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 100, UI_BUILDING_POS_X + UI_KEY_SIZE, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 100 + UI_KEY_SIZE, *(this->piGrHandle_Key[KEY_E]), TRUE);
+	DrawFormatString(UI_BUILDING_POS_X + (UI_KEY_SIZE * 2) + 20, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 100, GetColor(255, 255, 255), "決定");
+
+	// Qキー : 建築モード終了
+	DrawExtendGraph(UI_BUILDING_POS_X, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 150, UI_BUILDING_POS_X + UI_KEY_SIZE, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 150 + UI_KEY_SIZE, *(this->piGrHandle_Key[KEY_Q]), TRUE);
+	DrawFormatString(UI_BUILDING_POS_X + (UI_KEY_SIZE * 2) + 20, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 150, GetColor(255, 255, 255), "建築モード終了");
+
+	// ADキー : 建築エリア選択
+	DrawExtendGraph(UI_BUILDING_POS_X, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 200, UI_BUILDING_POS_X + UI_KEY_SIZE, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 200 + UI_KEY_SIZE, *(this->piGrHandle_Key[KEY_A]), TRUE);
+	DrawExtendGraph(UI_BUILDING_POS_X + UI_KEY_SIZE + 10, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 200, UI_BUILDING_POS_X + (UI_KEY_SIZE * 2) + 10, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 200 + UI_KEY_SIZE, *(this->piGrHandle_Key[KEY_D]), TRUE);
+	DrawFormatString(UI_BUILDING_POS_X + (UI_KEY_SIZE * 2) + 20, UI_BUILDING_POS_Y + (BUILDING_MAX * UI_BUILDING_HEIGHT) + 200, GetColor(255, 255, 255), "建築エリア選択");
 }
 
 // 選択している建築エリアの変更
@@ -133,7 +182,7 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 	if (this->iPlacementBuildingIndex >= BUILDING_MAX) { this->iPlacementBuildingIndex = 0; }
 
 	/* 建築物の配置 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_SPACE] == TRUE)
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_E] == TRUE)
 	{
 		// Spaceキーが押された場合
 		/* 選択中の建築エリアに建造物がないか確認 */

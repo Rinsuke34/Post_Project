@@ -7,6 +7,7 @@
 // 関連クラス
 #include "DataList_GameStatus.h"
 #include "DataList_Object.h"
+#include "DataList_Sound.h"
 #include "Bullet_Npc.h"
 // 共通定義
 #include "FunctionDefine.h"
@@ -137,6 +138,9 @@ void Npc_Base::Update_Action_Enemy()
 							pChara->SetHealth(iHp);
 						}
 
+						/* 攻撃音を再生 */
+						this->pDataList_Sound->SE_Play("Npc_Attack_Melee", this->vecBasePosition);
+
 						/* 攻撃後のインターバルを設定 */
 						this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_MELE - this->iSpeed;
 					}
@@ -145,6 +149,9 @@ void Npc_Base::Update_Action_Enemy()
 						// 遠距離攻撃である場合
 						/* バレットを作成し、パターンに応じた方向へ発射する */
 						Update_MakeBullet(pChara->GetPosition(), "Enemy");
+
+						/* 攻撃音を再生 */
+						this->pDataList_Sound->SE_Play("Npc_Attack_Long", this->vecBasePosition);
 
 						/* 攻撃後のインターバルを設定 */
 						this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_LONG - this->iSpeed;
@@ -373,12 +380,24 @@ void Npc_Base::Update_Action_Friend()
 							iHp -= this->iAttack;
 							pChara->SetHealth(iHp);
 						}
+
+						/* 攻撃音を再生 */
+						this->pDataList_Sound->SE_Play("Npc_Attack_Melee", this->vecBasePosition);
+
+						/* 攻撃後のインターバルを設定 */
+						this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_MELE - this->iSpeed;
 					}
 					else
 					{
 						// 遠距離攻撃である場合
 						/* バレットを作成し、パターンに応じた方向へ発射する */
 						Update_MakeBullet(pChara->GetPosition(), "Friend");
+
+						/* 攻撃音を再生 */
+						this->pDataList_Sound->SE_Play("Npc_Attack_Long", this->vecBasePosition);
+
+						/* 攻撃後のインターバルを設定 */
+						this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_LONG - this->iSpeed;
 					}
 				}
 

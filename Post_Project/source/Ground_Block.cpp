@@ -57,7 +57,7 @@ void Ground_Block::Draw()
 	}
 
 	/* 各面の描画 */
-	// ※+Zと-Y方向はカメラの位置関係で基本見えないので描写しない
+	// ※-Y方向はカメラの位置関係で基本見えないので描写しない
 	// +X方向
 	if (bFaceDrawFlg[DIRECTION_X_PLUS])
 	{
@@ -133,10 +133,34 @@ void Ground_Block::Draw()
 		// 四角形（板ポリゴン）の描画
 		DrawPolygonIndexed3D(aVertex, 8, IndexTop, 2, *this->apiGrHandle[FACE_TYPE_TOP], TRUE);
 	}
+	// +Z方向
+	if (bFaceDrawFlg[DIRECTION_Z_PLUS])
+	{
+		// インデックスデータ（奥面の2ポリゴン）
+		unsigned short IndexFront[6] = { 0, 4, 2, 2, 4, 6 };
+		// 法線ベクトルを設定
+		for (int i = 0; i < 8; ++i)
+		{
+			aVertex[i].norm = VGet(0.0f, 0.0f, +1.0f);
+		}
+
+		// uv座標を設定
+		aVertex[0].u = 1.f;
+		aVertex[0].v = 0.f;
+		aVertex[2].u = 1.f;
+		aVertex[2].v = 1.f;
+		aVertex[4].u = 0.f;
+		aVertex[4].v = 0.f;
+		aVertex[6].u = 0.f;
+		aVertex[6].v = 1.f;
+
+		// 四角形（板ポリゴン）の描画
+		DrawPolygonIndexed3D(aVertex, 8, IndexFront, 2, *this->apiGrHandle[FACE_TYPE_SIDE], TRUE);
+	}
 	// -Z方向
 	if (bFaceDrawFlg[DIRECTION_Z_MINUS])
 	{
-		// インデックスデータ（奥面の2ポリゴン）
+		// インデックスデータ（手前面の2ポリゴン）
 		unsigned short IndexBack[6] = { 7, 5, 3, 3, 5, 1 };
 
 		// 法線ベクトルを設定

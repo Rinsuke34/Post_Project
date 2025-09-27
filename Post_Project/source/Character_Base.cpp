@@ -9,6 +9,7 @@
 // 関連クラス
 #include "DataList_Object.h"
 #include "DataList_GameStatus.h"
+#include "DataList_Sound.h"
 #include "Ground_Base.h"
 #include "Building_Base.h"
 #include "Bullet_Base.h"
@@ -23,6 +24,7 @@ Character_Base::Character_Base() : Actor_Base()
 	// データリスト取得
 	this->pDataList_GameStatus				= std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));							// ゲーム状態管理
 	this->pDataList_2DPartsAnimCreateTool	= std::dynamic_pointer_cast<DataList_2DPartsAnimCreateTool>(gpDataListServer->GetDataList("DataList_2DPartsAnimCreateTool"));	// 2Dパーツアニメーションツール
+	this->pDataList_Sound					= std::dynamic_pointer_cast<DataList_Sound>(gpDataListServer->GetDataList("DataList_Sound"));									// サウンド管理
 
 	// 画像データ作成
 	this->iScreenHandle_Animation = MakeScreen(CHARACTER_PARTS_ANIM_DRAW_SIZE_WIDE, CHARACTER_PARTS_ANIM_DRAW_SIZE_HEIGHT, TRUE);

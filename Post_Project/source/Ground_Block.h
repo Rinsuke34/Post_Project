@@ -22,8 +22,9 @@ class Ground_Block : public Ground_Base
 		static const int DIRECTION_X_PLUS	= 0;	// +X•ûŒü
 		static const int DIRECTION_X_MINUS	= 1;	// -X•ûŒü
 		static const int DIRECTION_Y_PLUS	= 2;	// +Y•ûŒü
-		static const int DIRECTION_Z_MINUS	= 3;	// -Z•ûŒü
-		static const int DIRECTION_MAX		= 4;	// •ûŒü”
+		static const int DIRECTION_Z_PLUS	= 3;	// +Z•ûŒü
+		static const int DIRECTION_Z_MINUS	= 4;	// -Z•ûŒü
+		static const int DIRECTION_MAX		= 5;	// •ûŒü”
 
 		/* ŠÖ” */
 		virtual void	InitialSetup()	override;	// ‰Šúİ’è

@@ -184,6 +184,7 @@
     <ClCompile Include="source\DataList_Image.cpp" />
     <ClCompile Include="source\DataList_Model.cpp" />
     <ClCompile Include="source\DataList_Object.cpp" />
+    <ClCompile Include="source\DataList_Sound.cpp" />
     <ClCompile Include="source\DataList_StageCreate.cpp" />
     <ClCompile Include="source\FunctionDefine.cpp" />
     <ClCompile Include="source\Ground_Base.cpp" />
@@ -201,6 +202,8 @@
     <ClCompile Include="source\Scene_GameMain_UI_Resource.cpp" />
     <ClCompile Include="source\Scene_GameMain_UI_Status_CoreTree.cpp" />
     <ClCompile Include="source\Scene_GameMain_UI_Status_Player.cpp" />
+    <ClCompile Include="source\Scene_GameOver.cpp" />
+    <ClCompile Include="source\Scene_GameOver_Fadeout.cpp" />
     <ClCompile Include="source\Scene_Load.cpp" />
     <ClCompile Include="source\Scene_Stage.cpp" />
     <ClCompile Include="source\Scene_StageCreate.cpp" />
@@ -217,6 +220,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Actor_Base.h" />
+    <ClInclude Include="source\DataList_Sound.h" />
+    <ClInclude Include="source\Scene_GameOver.h" />
+    <ClInclude Include="source\Scene_GameOver_Fadeout.h" />
     <ClInclude Include="source\VariableDefine.h" />
     <ClInclude Include="source\Building_Base.h" />
     <ClInclude Include="source\Building_CoreTree.h" />

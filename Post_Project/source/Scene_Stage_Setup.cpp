@@ -2,6 +2,9 @@
 // ※セットアップ用の処理部分のみ
 
 /* 使用する要素のインクルード */
+// 標準ライブラリ
+#define NOMINMAX
+#include <algorithm>
 // ヘッダファイル
 #include "Scene_Stage.h"
 // 関連クラス
@@ -43,6 +46,9 @@ void Scene_Stage::Setup_LoadMarker_CenterArea()
 			this->pDataList_GameStatus->SetCoreTreePosition(Marker->vecGetBoxCenter());
 		}
 	}
+
+	/* 建築エリアの順番調整 */
+	Setup_Building_Index();
 }
 
 // マーカー情報読み込み(外側エリア)
@@ -185,4 +191,54 @@ void Scene_Stage::Setup_PlaceObject_SideArea()
 
 	pEnemyNpc->InitialSetup();
 	this->pDataList_Object->AddObject_Character(pEnemyNpc);
+}
+
+// 建築エリアの順番調整 
+// ※建築エリアの順番を、最も近いエリア同士が連続するように並べ替える
+void Scene_Stage::Setup_Building_Index()
+{
+	/* 建築エリアリストを取得 */
+	std::vector<BUILDING_AREA_DATA> BuildingAreaList = this->pDataList_GameStatus->GetBuildAreaPositionList();
+	if (BuildingAreaList.size() <= 1) return;
+
+	/* 最初の要素はそのまま、2番以降を並べ替える */
+	std::vector<BUILDING_AREA_DATA> sortedList;
+	std::vector<bool> used(BuildingAreaList.size(), false);
+
+	/* 0番を追加 */
+	sortedList.push_back(BuildingAreaList[0]);
+	used[0] = true;
+
+	/* 2番以降を最も近いエリア同士が連続するように並べ替え */
+	int currentIdx = 0;
+	for (size_t i = 1; i < BuildingAreaList.size(); ++i)
+	{
+		float minDistSq = std::numeric_limits<float>::max();
+		int nearestIdx = -1;
+		for (size_t j = 1; j < BuildingAreaList.size(); ++j)
+		{
+			if (used[j]) continue;
+			float dx = BuildingAreaList[currentIdx].vecPosition.x - BuildingAreaList[j].vecPosition.x;
+			float dy = BuildingAreaList[currentIdx].vecPosition.y - BuildingAreaList[j].vecPosition.y;
+			float dz = BuildingAreaList[currentIdx].vecPosition.z - BuildingAreaList[j].vecPosition.z;
+			float distSq = dx * dx + dy * dy + dz * dz;
+			if (distSq < minDistSq)
+			{
+				minDistSq = distSq;
+				nearestIdx = static_cast<int>(j);
+			}
+		}
+		if (nearestIdx != -1)
+		{
+			sortedList.push_back(BuildingAreaList[nearestIdx]);
+			used[nearestIdx] = true;
+			currentIdx = nearestIdx;
+		}
+	}
+
+	/* 並べ替えたリストで上書き */
+	for (size_t i = 0; i < sortedList.size(); ++i)
+	{
+		this->pDataList_GameStatus->SetBuildAreaPosition(static_cast<int>(i), sortedList[i]);
+	}
 }

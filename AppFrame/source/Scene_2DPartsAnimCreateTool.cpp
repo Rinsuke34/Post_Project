@@ -18,6 +18,10 @@
 // コンストラクタ
 Scene_2DPartsAnimCreateTool::Scene_2DPartsAnimCreateTool() : Scene_Base("Scene_2DPartsAnimCreateTool", 9999, true, false)
 {
+	/* フォントサイズを変更 */
+	// ※DXライブラリの標準サイズに設定
+	SetFontSize(16);
+
 	/* 起動時点でのマウス関連のフラグを保持し、各フラグを無効に設定する */
 	this->bOldMouseCursorCenterFixedFlg = gbMouseCursorCenterFixedFlg;
 	gbMouseCursorCenterFixedFlg			= false;
@@ -161,6 +165,12 @@ void Scene_2DPartsAnimCreateTool::Update()
 	{
 		// ESCキーが押された場合
 		this->bDeleteFlg = true;
+
+		/* シーンを初期状態に設定 */
+		// ※共通のAppFlameを使用するため各プログラムに応じたシーンに設定する
+		SCENE_SET::SetFastScene();
+
+		return;
 	}
 
 	/* テーブルUIへの要素設定 */

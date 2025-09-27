@@ -36,6 +36,7 @@ class DataList_GameStatus : public DataList_Base
 		void SetEnemySpawnTable(ENEMY_SPAWN_TABLE EnemySpawnTable)			{ this->stEnemySpawnTableList.push_back(EnemySpawnTable); }	// エネミースポーンテーブルリストの設定
 		// ゲーム状態
 		void SetBuildModeFlg(bool bFlg)										{ this->bBuildModeFlg				= bFlg; }				// 建築モードフラグの設定
+		void SetBuildModeChangePossibleFlg(bool bFlg)						{ this->bChangeBuildModePossibleFlg = bFlg; }				// 建築モード変更可能フラグの設定
 		void SetSelectedBuildingIndex(int iIndex)							{ this->iSelectedBuildingIndex		= iIndex; }				// 選択している建造物のインデックス番号の設定
 		void SetPlayerMeleeFlg(bool bFlg)									{ this->bPlayerMeleeFlg				= bFlg; }				// プレイヤーが近接攻撃状態であるかのフラグを設定
 		void SetBuilldingBuff_Sword(int iBuff)								{ this->iBuilldingBuff_Sword		= iBuff; }				// 建築物バフ(剣)の設定
@@ -62,6 +63,7 @@ class DataList_GameStatus : public DataList_Base
 		std::vector<ENEMY_SPAWN_TABLE>		GetEnemySpawnTableList()			{ return this->stEnemySpawnTableList; }			// エネミースポーンテーブルリストの取得
 		// ゲーム状態
 		bool								GetBuildModeFlg()				{ return this->bBuildModeFlg; }					// 建築モードフラグの取得
+		bool								GetBuildModeChangePossibleFlg() { return this->bChangeBuildModePossibleFlg; }	// 建築モードに変更可能であるかのフラグを取得
 		int									GetSelectedBuildingIndex()		{ return this->iSelectedBuildingIndex; }		// 選択している建造物のインデックス番号の取得
 		bool								GetPlayerMeleeFlg()				{ return this->bPlayerMeleeFlg; }				// プレイヤーが近接攻撃状態であるかのフラグを取得
 		int									GetBuilldingBuff_Sword()		{ return this->iBuilldingBuff_Sword; }			// 建築物バフ(剣)の取得
@@ -87,9 +89,10 @@ class DataList_GameStatus : public DataList_Base
 		std::vector<ENEMY_SPAWN_POINT_DATA>	stEnemySpawnPointList;		// エネミーのスポーン座標リスト
 		std::vector<ENEMY_SPAWN_TABLE>		stEnemySpawnTableList;		// エネミースポーンテーブルリスト
 		// ゲーム状態
-		bool								bBuildModeFlg;				// 建築モードフラグ
-		int									iSelectedBuildingIndex;		// 選択している建造物のインデックス番号
-		bool								bPlayerMeleeFlg;			// プレイヤーが近接攻撃状態であるかのフラグ
-		int									iBuilldingBuff_Sword;		// 建築物バフ:攻撃力(剣)
-		int									iBuilldingBuff_Rod;			// 建築物バフ:攻撃力(杖)
+		bool								bBuildModeFlg;					// 建築モードフラグ
+		bool								bChangeBuildModePossibleFlg;	// 建築モードに変更可能であるかのフラグ
+		int									iSelectedBuildingIndex;			// 選択している建造物のインデックス番号
+		bool								bPlayerMeleeFlg;				// プレイヤーが近接攻撃状態であるかのフラグ
+		int									iBuilldingBuff_Sword;			// 建築物バフ:攻撃力(剣)
+		int									iBuilldingBuff_Rod;				// 建築物バフ:攻撃力(杖)
 };

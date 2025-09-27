@@ -8,6 +8,7 @@
 
 /* 前方宣言 */
 class DataList_Object;
+class DataList_Sound;
 
 // 建造物(神木(防衛対象))クラス
 class Building_CoreTree : public Building_Base
@@ -17,19 +18,18 @@ class Building_CoreTree : public Building_Base
 		virtual ~Building_CoreTree() {};	// デストラクタ
 
 		/* 関数 */
-		virtual void	InitialSetup()		override;	// 初期設定
-
-		/* セッター */
-		void SetHP(int iHP);									// 体力を設定
-		void SetMaxHP(int iMaxHp)	{ this->iMaxHp = iMaxHp; };	// 最大体力を設定
-
-		/* ゲッター */
-		int iGetHP()		{ return this->iHp; }		// 体力を取得
-		int iGetMaxHP()		{ return this->iMaxHp; }	// 最大体力を取得
+		virtual void	InitialSetup()	override;	// 初期設定
+		virtual void	Update()		override;	// 更新
 
 	private:
+		/* 定数 */
+		static const int MAX_HP				= 100;	// HP最大値
+		static const int SE_COOLDOWN_TIME	= 10;	// SEクールタイム(ダメージを受けてから次にSEが鳴るまでの時間)
+
 		/* 変数 */
+		// データリストのポインタ
+		std::shared_ptr<DataList_Sound>	pDataList_Sound;	// サウンド管理
 		// 状態系
-		int										iHp;					// 体力
-		int										iMaxHp;					// 最大体力
+		int iHpPrevFrame;		// 前のフレームの体力
+		int iSECooldownTimer;	// SEクールタイム（SEが鳴るまでの残り時間）
 };

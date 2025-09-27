@@ -103,3 +103,6 @@ static const int	INVINCIBLE_TIME_CHARACTER_CONTACT		= 30;	// ƒLƒƒƒ‰ƒNƒ^[‚ÉÚG‚
 static const int	DEFAULT_ATTACK_INTERVAL_MELE			= 15;	// ‹ßÚUŒ‚‚ÌƒfƒtƒHƒ‹ƒg‚ÌUŒ‚ŠÔŠu(ƒtƒŒ[ƒ€”)
 static const int	DEFAULT_ATTACK_INTERVAL_LONG			= 30;	// ‰“‹——£UŒ‚‚ÌƒfƒtƒHƒ‹ƒg‚ÌUŒ‚ŠÔŠu(ƒtƒŒ[ƒ€”)
 static const int	FRIEND_NPC_ADD_MAX_NUMBER				= 3;	// –¡•ûNPC‚ÌÅ‘å”(‹’“_Œš’zŽž‚É‰ÁŽZ‚³‚ê‚é”)
+
+/* ƒTƒEƒ“ƒhŒn */
+static const int	VOLUME_SE_RADIUS						= 128;	// SE‚Ì‰¹—Ê”¼Œa

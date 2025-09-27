@@ -10,6 +10,7 @@
 // ŠÖ˜AƒNƒ‰ƒX
 #include "DataList_GameStatus.h"
 #include "DataList_Object.h"
+#include "DataList_Sound.h"
 #include "Ground_Base.h"
 #include "Ground_Model.h"
 #include "Building_CoreTree.h"
@@ -80,6 +81,9 @@ void Npc_Base::Update()
 			pItem_Coin->InitialSetup();
 			this->pDataList_Object->AddObject_Item(pItem_Coin);
 		}
+
+		/* SE‚ðÄ¶ */
+		this->pDataList_Sound->SE_Play("Npc_Death", this->vecBasePosition);
 	}
 }
 

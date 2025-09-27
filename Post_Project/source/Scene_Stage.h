@@ -43,6 +43,7 @@ class Scene_Stage : public Scene_Base
 		void	DrawSetup_Stage();				// ステージの描写
 		void	DrawSetup_Stage_StageCreate();	// ステージの描写(ステージクリエイト用)
 		// 設定関係
+		void	Setup_Building_Index();			// 建築エリアの順番調整 
 		void	Setup_LoadMarker_CenterArea();	// マーカー情報読み込み(中央エリア)
 		void	Setup_LoadMarker_SideArea();	// マーカー情報読み込み(外側エリア)
 		void	Setup_WoldMap_SideArea();		// ワールドマップ(外側エリア)設定
@@ -57,6 +58,7 @@ class Scene_Stage : public Scene_Base
 		// 画像データ
 		int iScreenHandle_Stage;					// ステージ
 		int iScreenHandle_ShadowMap[SHADOWMAP_MAX];	// シャドウマップ(0:静的オブジェクト/1:動的オブジェクト)
+		std::shared_ptr<int> piGrHandle_Sky;		// 空の画像
 		// マップの情報
 		std::vector<WOLD_MAP_DATA>	MapDataList;	// マップ情報リスト
 		// その他

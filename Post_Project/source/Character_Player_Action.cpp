@@ -7,6 +7,7 @@
 // 関連クラス
 #include "DataList_GameStatus.h"
 #include "DataList_Object.h"
+#include "DataList_Sound.h"
 #include "Ground_Base.h"
 #include "Ground_Model.h"
 #include "Bullet_Player.h"
@@ -18,12 +19,22 @@ void Character_Player::Update_Action()
 	/* 建築モード起動処理 */
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_Q] == TRUE)
 	{
-		// 中心エリアにいる場合のみ建築モードを起動できる
-		if (this->iCheckCurrentAreaNo()  == AREA_NO_CENTER)
+		/* 建築モードが使用可能か確認 */
+		if (this->pDataList_GameStatus->GetBuildModeChangePossibleFlg())
 		{
-			// 建築モードを起動
+			// 建築モードに変更可能な場合
+			/* シーン"建築モード"を作成 */
 			gpSceneServer->AddSceneReservation(std::make_shared<Scene_GameMain_Building>());
+
+			/* SEを再生する */
+			this->pDataList_Sound->SE_Play("Select_OK");
 			return;
+		}
+		else
+		{
+			// 建築モードに変更不可能な場合
+			/* SEを再生する */
+			this->pDataList_Sound->SE_Play("Select_Error");
 		}
 	}
 
@@ -84,6 +95,9 @@ void Character_Player::Update_Action()
 						int iHp = pChara->iGetHealth();
 						iHp -= this->iAttack + this->pDataList_GameStatus->GetBuilldingBuff_Sword();;
 						pChara->SetHealth(iHp);
+
+						/* 攻撃音を再生 */
+						this->pDataList_Sound->SE_Play("Player_Attack_Sowrd");
 					}
 
 					/* 攻撃後のインターバルを設定 */
@@ -106,6 +120,9 @@ void Character_Player::Update_Action()
 					pBullet->SetAttack(this->iAttack + this->pDataList_GameStatus->GetBuilldingBuff_Rod());
 					// バレットを登録
 					this->pDataList_Object->AddObject_Bullet(pBullet);
+
+					/* 攻撃音を再生 */
+					this->pDataList_Sound->SE_Play("Player_Attack_Rod");
 
 					/* 攻撃後のインターバルを設定 */
 					this->iAttackInterval = DEFAULT_ATTACK_INTERVAL_LONG - this->iSpeed;

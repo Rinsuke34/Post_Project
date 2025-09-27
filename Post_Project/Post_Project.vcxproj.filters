@@ -220,6 +220,24 @@
     <Filter Include="ソース ファイル\定義">
       <UniqueIdentifier>{8fdf0a69-3949-41b0-8a8b-1a7ec2983df0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\データリスト\サウンド管理">
+      <UniqueIdentifier>{288c91ea-aed4-434f-bf24-bd982fadcbf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\データリスト\サウンド管理">
+      <UniqueIdentifier>{ae10c061-0662-4c14-8e38-cf7398872e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームオーバー">
+      <UniqueIdentifier>{805d748b-4198-423f-97b8-b44dc58ce64f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ゲームオーバー">
+      <UniqueIdentifier>{2ff07167-89ae-4ddb-94c4-9741e9be040b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\シーン\ゲームオーバー\フェードアウト">
+      <UniqueIdentifier>{0dc70ead-25d1-4489-956a-93f460313ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\シーン\ゲームオーバー\フェードアウト">
+      <UniqueIdentifier>{343bf3ed-81c5-4635-95d9-a9280bedef35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -342,6 +360,15 @@
     <ClCompile Include="source\VariableDefine.cpp">
       <Filter>ソース ファイル\定義</Filter>
     </ClCompile>
+    <ClCompile Include="source\DataList_Sound.cpp">
+      <Filter>ソース ファイル\データリスト\サウンド管理</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_GameOver.cpp">
+      <Filter>ソース ファイル\シーン\ゲームオーバー</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Scene_GameOver_Fadeout.cpp">
+      <Filter>ソース ファイル\シーン\ゲームオーバー\フェードアウト</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Scene_Title.h">
@@ -451,6 +478,15 @@
     </ClInclude>
     <ClInclude Include="source\VariableDefine.h">
       <Filter>ヘッダー ファイル\定義</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DataList_Sound.h">
+      <Filter>ヘッダー ファイル\データリスト\サウンド管理</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_GameOver.h">
+      <Filter>ヘッダー ファイル\シーン\ゲームオーバー</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Scene_GameOver_Fadeout.h">
+      <Filter>ヘッダー ファイル\シーン\ゲームオーバー\フェードアウト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -46,7 +46,6 @@ class Npc_Base : public Character_Base
 		static const int HPBAR_HEIGHT		= 5;	// HPバーの高さ
 		static const int HPBAR_BACK_WIDE	= 1;	// 背景の幅
 
-
 		/* 変数 */
 		// 基本情報
 		std::string			Name;	// 名前

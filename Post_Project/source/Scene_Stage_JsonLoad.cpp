@@ -129,11 +129,12 @@ void Scene_Stage::JsonLoad_WoldMap(int iAreaNo, std::string MapName)
 					/* ブロックの面の描写設定 */
 					// ※ 隣接するブロックがある場合、その面は描写しない
 					// ※ 各方向の境界面は必ず描写する
-					// ※ +Zと-Y方向はカメラの向きの関係で描写しない
+					// ※ -Y方向はカメラの向きの関係で描写しない
 					static const int aiDirOffset[Ground_Block::DIRECTION_MAX][3] = {
 						{+1,  0,  0}, // +X
 						{-1,  0,  0}, // -X
 						{ 0, +1,  0}, // +Y
+						{ 0,  0, +1}, // +Z
 						{ 0,  0, -1}  // -Z
 					};
 

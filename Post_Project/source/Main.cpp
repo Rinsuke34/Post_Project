@@ -9,6 +9,7 @@
 #include "Scene_Title.h"
 #include "DataList_Image.h"
 #include "DataList_Model.h"
+#include "DataList_Sound.h"
 
 // メインプログラム
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -40,5 +41,6 @@ namespace PROJECT_INIT
 		gpDataListServer->AddDataList(std::make_shared<DataList_Image>());					// 画像データ管理
 		gpDataListServer->AddDataList(std::make_shared<DataList_Model>());					// 3Dモデル管理
 		gpDataListServer->AddDataList(std::make_shared<DataList_2DPartsAnimCreateTool>());	// 2Dパーツアニメーション作成ツール
+		gpDataListServer->AddDataList(std::make_shared<DataList_Sound>());					// サウンド管理
 	}
 }

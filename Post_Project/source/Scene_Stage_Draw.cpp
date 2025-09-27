@@ -32,8 +32,12 @@ void Scene_Stage::Draw()
 		DrawSetup_Stage_StageCreate();
 	}
 
+	/* 空の画像を描写 */
+	// ※空の画像はステージ描写後に描写することで、ステージの背景として表示されるようにする
+	DrawExtendGraph(0, 0, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT, *this->piGrHandle_Sky, TRUE);
+
 	/* ステージ画像を描写 */
-	DrawExtendGraph(0, 0, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT, this->iScreenHandle_Stage, FALSE);
+	DrawExtendGraph(0, 0, SCREEN_SIZE_WIDE, SCREEN_SIZE_HEIGHT, this->iScreenHandle_Stage, TRUE);
 
 	/* カメラ設定 */
 	DrawSetup_CameraPosition();

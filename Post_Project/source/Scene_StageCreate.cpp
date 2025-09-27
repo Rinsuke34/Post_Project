@@ -5,6 +5,7 @@
 #include "Scene_StageCreate.h"
 // 関連クラス
 #include "Scene_Stage.h"
+#include "Scene_Title.h"
 #include "DataList_Object.h"
 #include "DataList_StageCreate.h"
 #include "Ground_Block.h"
@@ -82,11 +83,11 @@ void Scene_StageCreate::Update_SelectMap()
 	std::vector<WOLD_MAP_DATA>& MapDataList = this->pDataList_StageCreate->GetMapDataList();
 
 	/* 選択マップ変更 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_UP] == TRUE)
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_W] == TRUE)
 	{
 		this->iSelectMapIndex--;
 	}
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_DOWN] == TRUE)
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_S] == TRUE)
 	{
 		this->iSelectMapIndex++;
 	}
@@ -103,7 +104,7 @@ void Scene_StageCreate::Update_SelectMap()
 	}
 
 	/* 決定キーでマップを読み込み、マップ編集フェーズへ移行 */
-	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_Z] == TRUE)
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_E] == TRUE)
 	{
 		/* フェーズ変更 */
 		this->iNowPhase = PHASE_EDIT_MAP;
@@ -114,6 +115,17 @@ void Scene_StageCreate::Update_SelectMap()
 		/* ステージシーン作成 */
 		gpSceneServer->AddSceneReservation(std::make_shared<Scene_Stage>());
 
+		return;
+	}
+
+	/* Qキーが入力されたらタイトルへ */
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_Q] == TRUE)
+	{
+		/* シーン"タイトル"へ遷移 */
+		gpSceneServer->AddSceneReservation(std::make_shared<Scene_Title>());
+
+		/* シーンの削除フラグを有効にする */
+		this->bDeleteFlg = true;
 		return;
 	}
 }
@@ -220,14 +232,19 @@ void Scene_StageCreate::Draw_SelectMap()
 		if (i == this->iSelectMapIndex)
 		{
 			// 選択中のマップの場合
-			DrawFormatString(DRAW_MAPNAME_X, DRAW_MAPNAME_Y + (16 * i), GetColor(255, 255, 0), "> %s", MapDataList[i].MapName.c_str());
+			DrawFormatString(DRAW_MAPNAME_X, DRAW_MAPNAME_Y + (32 * i), GetColor(255, 255, 0), "> %s", MapDataList[i].MapName.c_str());
 		}
 		else
 		{
 			// 選択中でないマップの場合
-			DrawFormatString(DRAW_MAPNAME_X, DRAW_MAPNAME_Y + (16 * i), GetColor(255, 255, 255), "  %s", MapDataList[i].MapName.c_str());
+			DrawFormatString(DRAW_MAPNAME_X, DRAW_MAPNAME_Y + (32 * i), GetColor(255, 255, 255), "  %s", MapDataList[i].MapName.c_str());
 		}
 	}
+
+	/* 操作説明を描写 */
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 100, GetColor(255, 255, 255), "W/S : 選択マップ変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 70, GetColor(255, 255, 255), "E : 決定(マップ読み込み、マップ編集フェーズへ移行");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 40, GetColor(255, 255, 255), "Q : タイトルに戻る");
 }
 
 // マップ編集フェーズの描写
@@ -241,23 +258,31 @@ void Scene_StageCreate::Draw_EditMap()
 	{
 		// ブロック
 		case ADD_OBJECT_TYPE_BLOCK:
-			DrawFormatString(DRAW_MAPNAME_X, 32, GetColor(255, 255, 255), "追加するオブジェクトの種類 : ブロック");
+			DrawFormatString(DRAW_MAPNAME_X, 64, GetColor(255, 255, 255), "追加するオブジェクトの種類 : ブロック");
 			break;
 
 		// 3Dモデル
 		case ADD_OBJECT_TYPE_MODEL:
-			DrawFormatString(DRAW_MAPNAME_X, 32, GetColor(255, 255, 255), "追加するオブジェクトの種類 : 3Dモデル");
+			DrawFormatString(DRAW_MAPNAME_X, 64, GetColor(255, 255, 255), "追加するオブジェクトの種類 : 3Dモデル");
 			break;
 
 		// マーカー
 		case ADD_OBJECT_TYPE_MARKER:
-			DrawFormatString(DRAW_MAPNAME_X, 32, GetColor(255, 255, 255), "追加するオブジェクトの種類 : マーカー");
+			DrawFormatString(DRAW_MAPNAME_X, 64, GetColor(255, 255, 255), "追加するオブジェクトの種類 : マーカー");
 			break;
 	}
 
 	/* 追加オブジェクト名を描写 */
 	std::vector<std::string>& ObjectNameList = this->pDataList_StageCreate->GetObjectNameList(this->iSelectObjectTypeIndex);
-	DrawFormatString(DRAW_MAPNAME_X, 48, GetColor(255, 255, 255), "追加するオブジェクト名 : %s", ObjectNameList[this->iSelectObjectNameIndex].c_str());
+	DrawFormatString(DRAW_MAPNAME_X, 128, GetColor(255, 255, 255), "追加するオブジェクト名 : %s", ObjectNameList[this->iSelectObjectNameIndex].c_str());
+
+	/* 操作説明を描写 */
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 180, GetColor(255, 255, 255), "W/A/S/D : 選択座標変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 150, GetColor(255, 255, 255), "E/Q : 選択座標変更(上下)");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 120, GetColor(255, 255, 255), "←/→ : 追加オブジェクトの種類変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 90, GetColor(255, 255, 255), "↑/↓ : 追加オブジェクト名変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 60, GetColor(255, 255, 255), "Z : 選択中のオブジェクトを配置 / X : 選択中のオブジェクトを削除");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 20, GetColor(255, 255, 255), "ESC : マップ選択フェーズへ移行(現時点での情報をJSON出力)");
 }
 
 // 地形オブジェクト追加(ブロック)

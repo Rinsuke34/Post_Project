@@ -7,14 +7,16 @@
 #include "DataList_GameStatus.h"
 #include "DataList_Model.h"
 #include "DataList_Object.h"
+#include "DataList_Sound.h"
 #include "Npc_Base.h"
 
 // コンストラクタ
 Building_NpcBase::Building_NpcBase() : Building_Base()
 {
 	/* データリスト取得 */
-	this->pDataList_Object											= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));			// オブジェクト管理
-	std::shared_ptr<DataList_Model>			pDataList_Model			= std::dynamic_pointer_cast<DataList_Model>(gpDataListServer->GetDataList("DataList_Model"));			// モデル管理
+	this->pDataList_Object							= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));		// オブジェクト管理
+	std::shared_ptr<DataList_Model>	pDataList_Model	= std::dynamic_pointer_cast<DataList_Model>(gpDataListServer->GetDataList("DataList_Model"));		// モデル管理
+	this->pDataList_Sound							= std::dynamic_pointer_cast<DataList_Sound>(gpDataListServer->GetDataList("DataList_Sound"));		// サウンド管理
 
 	/* 初期化 */
 	this->iRespawnTime = RESPAWN_TIME_DEFAULT;
@@ -66,6 +68,9 @@ void Building_NpcBase::Update()
 			pNpc_Wisp->SetPosition(VAdd(this->GetPosition(), VGet(0.f, MAP_BLOCK_SIZE_Y / 2.f, 0.f)));
 			pNpc_Wisp->InitialSetup();
 			this->pDataList_Object->AddObject_Character(pNpc_Wisp);
+
+			/* 生成音を再生 */
+			this->pDataList_Sound->SE_Play("Npc_Spawn", this->vecPosition);
 		}
 
 		/* タイマーをリセット */

@@ -83,6 +83,9 @@ void Character_Player::Update()
 	/* ワールドマップ上の座標を設定 */
 	this->pDataList_GameStatus->SetPlayerPosition_WoldMap(this->vecBasePosition);
 
+	/* 建築モードが使用可能であるかの設定 */
+	this->pDataList_GameStatus->SetBuildModeChangePossibleFlg(iCheckCurrentAreaNo() == AREA_NO_CENTER);
+
 	/* ベースクラスの更新処理 */
 	Character_Base::Update();
 

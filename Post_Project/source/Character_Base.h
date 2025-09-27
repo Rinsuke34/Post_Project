@@ -11,6 +11,7 @@
 
 /* 前方宣言 */
 class DataList_GameStatus;
+class DataList_Sound;
 
 // キャラクターベースクラス
 class Character_Base : public Actor_Base
@@ -60,6 +61,7 @@ class Character_Base : public Actor_Base
 		// データリストへのポインタ
 		std::shared_ptr<DataList_GameStatus>			pDataList_GameStatus;				// ゲーム状態管理
 		std::shared_ptr<DataList_2DPartsAnimCreateTool>	pDataList_2DPartsAnimCreateTool;	// 2Dパーツアニメーションツール
+		std::shared_ptr<DataList_Sound>					pDataList_Sound;					// サウンド管理
 		// アニメーション関係
 		int				iScreenHandle_Animation;	// アニメーション描写用画像データ
 		std::string		AnimFileName;				// アニメーションファイル名

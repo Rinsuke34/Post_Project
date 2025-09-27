@@ -9,6 +9,7 @@
 /* 前方宣言 */
 class Npc_Base;
 class DataList_Object;
+class DataList_Sound;
 
 // 建造物(NPC拠点(ウィスプ))クラス
 class Building_NpcBase : public Building_Base
@@ -37,6 +38,7 @@ class Building_NpcBase : public Building_Base
 		/* 変数 */
 		// データリストのポインタ
 		std::shared_ptr<DataList_Object>	pDataList_Object;	// オブジェクト管理
+		std::shared_ptr<DataList_Sound>		pDataList_Sound;	// サウンド管理
 		// 状態系
 		std::string	NpcName;		// 生成するNPCの名前
 		int			iRespawnTime;	// NPC再出現時間(フレーム数)
