@@ -6,6 +6,9 @@
 // 共通定義
 #include "AppFrame.h"
 
+/* 前方宣言 */
+class DataList_Sound;
+
 // シーン"タイトル"
 class Scene_Title : public Scene_Base
 {
@@ -37,6 +40,8 @@ class Scene_Title : public Scene_Base
 		static const int SELECT_POSITION_Y						= (SCREEN_SIZE_HEIGHT / 2);			// 選択肢の描画位置Y
 		
 		/* 変数 */
+		// データリストのポインタ
+		std::shared_ptr<DataList_Sound>	pDataList_Sound;	// サウンド管理
 		// 画像
 		std::shared_ptr<int>	piGrHandle_Sky;				// 空の画像
 		std::shared_ptr<int>	piGrHandle_Title;			// タイトルの画像

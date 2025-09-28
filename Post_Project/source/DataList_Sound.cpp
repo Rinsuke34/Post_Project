@@ -13,7 +13,7 @@ DataList_Sound::DataList_Sound() : DataList_Base("DataList_Sound")
 {
 	/* ‰Šú‰» */
 	this->iSoundHandle_BGM	= FALSE;
-	this->iVolume_BGM		= 128;
+	this->iVolume_BGM		= 0;
 	this->iVolume_SE		= 128;
 }
 

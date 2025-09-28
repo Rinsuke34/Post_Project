@@ -24,4 +24,5 @@ DataList_GameStatus::DataList_GameStatus() : DataList_Base("DataList_GameStatus"
 	this->iMaxFriendNpc					= 0;
 	this->iCurrentFriendNpc				= 0;
 	this->bChangeBuildModePossibleFlg	= false;
+	this->iZoomLevel					= 3;
 }

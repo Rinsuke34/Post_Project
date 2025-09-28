@@ -9,6 +9,7 @@
 /* 前方宣言 */
 class DataList_GameStatus;
 class DataList_Object;
+class DataList_Sound;
 
 // シーン"ゲームメイン(建築モード)"
 class Scene_GameMain_Building : public Scene_Base
@@ -55,6 +56,7 @@ class Scene_GameMain_Building : public Scene_Base
 		// データリストへのポインタ
 		std::shared_ptr<DataList_GameStatus>	pDataList_GameStatus;			// ゲーム状態管理
 		std::shared_ptr<DataList_Object>		pDataList_Object;				// オブジェクト管理
+		std::shared_ptr<DataList_Sound>			pDataList_Sound;				// サウンド管理
 		// 選択状態
 		int										iPlacementBuildingIndex;		// 配置予定の建築物の番号
 		// 描画系

@@ -82,7 +82,18 @@ void Scene_Stage::DrawSetup_CameraPosition()
 
 		/* カメラ設定 */
 		vecCameraTarget		= VAdd(vecTargetPosition,	VGet(0.f, 10.f, 0.f));
-		vecCameraPosition	= VAdd(vecCameraTarget,		VGet(0.f, 500.f, -250.f));
+
+		// カメラのポジションは現在のズーム量に応じて設定
+		VECTOR avecCameraOffset[5] =
+		{
+			VGet(0.f, 300.f, -150.f),	// ズーム量:1
+			VGet(0.f, 400.f, -200.f),	// ズーム量:2
+			VGet(0.f, 500.f, -250.f),	// ズーム量:3(標準)
+			VGet(0.f, 600.f, -300.f),	// ズーム量:4
+			VGet(0.f, 700.f, -350.f),	// ズーム量:5
+		};
+
+		vecCameraPosition	= VAdd(vecCameraTarget, avecCameraOffset[this->pDataList_GameStatus->GetZoomLevel() - 1]);
 	}
 	/* ステージクリエイト情報管理データリストが読み込まれているか確認 */
 	else if (this->pDataList_StageCreate != nullptr)

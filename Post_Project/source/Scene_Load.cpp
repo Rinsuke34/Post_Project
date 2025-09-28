@@ -12,12 +12,6 @@ Scene_Load::Scene_Load() : Scene_Base("Scene_Load", 99999, true, true)
 
 }
 
-// デストラクタ
-Scene_Load::~Scene_Load()
-{
-
-}
-
 // 更新
 void Scene_Load::Update()
 {

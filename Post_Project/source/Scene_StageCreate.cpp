@@ -277,12 +277,12 @@ void Scene_StageCreate::Draw_EditMap()
 	DrawFormatString(DRAW_MAPNAME_X, 128, GetColor(255, 255, 255), "追加するオブジェクト名 : %s", ObjectNameList[this->iSelectObjectNameIndex].c_str());
 
 	/* 操作説明を描写 */
-	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 180, GetColor(255, 255, 255), "W/A/S/D : 選択座標変更");
-	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 150, GetColor(255, 255, 255), "E/Q : 選択座標変更(上下)");
-	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 120, GetColor(255, 255, 255), "←/→ : 追加オブジェクトの種類変更");
-	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 90, GetColor(255, 255, 255), "↑/↓ : 追加オブジェクト名変更");
-	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 60, GetColor(255, 255, 255), "Z : 選択中のオブジェクトを配置 / X : 選択中のオブジェクトを削除");
-	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 20, GetColor(255, 255, 255), "ESC : マップ選択フェーズへ移行(現時点での情報をJSON出力)");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 190, GetColor(255, 255, 255), "W/A/S/D : 選択座標変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 160, GetColor(255, 255, 255), "E/Q : 選択座標変更(上下)");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 130, GetColor(255, 255, 255), "←/→ : 追加オブジェクトの種類変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 100, GetColor(255, 255, 255), "↑/↓ : 追加オブジェクト名変更");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 70, GetColor(255, 255, 255), "Z : 選択中のオブジェクトを配置 / X : 選択中のオブジェクトを削除");
+	DrawFormatString(DRAW_MAPNAME_X, SCREEN_SIZE_HEIGHT - 40, GetColor(255, 255, 255), "ESC : マップ選択フェーズへ移行(現時点での情報をJSON出力)");
 }
 
 // 地形オブジェクト追加(ブロック)

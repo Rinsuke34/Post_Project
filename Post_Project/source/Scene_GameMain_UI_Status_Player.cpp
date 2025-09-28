@@ -23,6 +23,12 @@ Scene_GameMain_UI_Status_Player::Scene_GameMain_UI_Status_Player() : Scene_Base(
 	// 杖
 	fileName							= "UI/Wepon_Image_Rod";
 	this->piGrHandle_Wepon[WEPON_ROD]	= pDataList_Image->iGetGrhandle(fileName);
+	// 拡大アイコン
+	fileName							= "UI/ZoomIn_Image";
+	this->piGrHandle_ZoomIn				= pDataList_Image->iGetGrhandle(fileName);
+	// 縮小アイコン
+	fileName							= "UI/ZoomOut_Image";
+	this->piGrHandle_ZoomOut			= pDataList_Image->iGetGrhandle(fileName);
 	// 建築アイコン
 	fileName							= "UI/Building_Image";
 	this->piGrHandle_Building			= pDataList_Image->iGetGrhandle(fileName);
@@ -32,6 +38,12 @@ Scene_GameMain_UI_Status_Player::Scene_GameMain_UI_Status_Player() : Scene_Base(
 	// Qキー
 	fileName							= "Key/Q";
 	this->piKey[KEY_Q]					= pDataList_Image->iGetGrhandle(fileName);
+	// Rキー
+	fileName							= "Key/R";
+	this->piKey[KEY_R]					= pDataList_Image->iGetGrhandle(fileName);
+	// Fキー
+	fileName							= "Key/F";
+	this->piKey[KEY_F]					= pDataList_Image->iGetGrhandle(fileName);
 	// NGアイコン
 	fileName							= "UI/NG";
 	this->piGrHandle_NG					= pDataList_Image->iGetGrhandle(fileName);
@@ -78,6 +90,30 @@ void Scene_GameMain_UI_Status_Player::Draw()
 	int iTextY = UI_HPBAR_POS_Y + (UI_HPBAR_HEIGHT / 2) - (BASE_FONT_SIZE / 2);
 	DrawBox(UI_HPBAR_POS_X, UI_HPBAR_POS_Y, UI_HPBAR_POS_X + iHpBarWidth_Calc, UI_HPBAR_POS_Y + UI_HPBAR_HEIGHT, GetColor(255, 0, 0), TRUE);
 	DrawFormatString(iTextX, iTextY, GetColor(255, 255, 255), "%d / %d", this->pDataList_GameStatus->GetHp_Player(), this->pDataList_GameStatus->GetMaxHp_Player());
+
+	/* 拡大アイコンの描写 */
+	DrawBox(UI_ZOOMIN_POS_X, UI_ZOOMIN_POS_Y, UI_ZOOMIN_POS_X + UI_ZOOMIN_WIDE, UI_ZOOMIN_POS_Y + UI_ZOOMIN_HEIGHT, GetColor(0, 0, 0), TRUE);
+	DrawBox(UI_ZOOMIN_POS_X + UI_ZOOMIN_BACK_WIDE, UI_ZOOMIN_POS_Y + UI_ZOOMIN_BACK_WIDE, UI_ZOOMIN_POS_X + UI_ZOOMIN_WIDE - UI_ZOOMIN_BACK_WIDE, UI_ZOOMIN_POS_Y + UI_ZOOMIN_HEIGHT - UI_ZOOMIN_BACK_WIDE, GetColor(192, 192, 192), TRUE);
+	DrawExtendGraph(UI_ZOOMIN_POS_X, UI_ZOOMIN_POS_Y, UI_ZOOMIN_POS_X + UI_ZOOMIN_WIDE, UI_ZOOMIN_POS_Y + UI_ZOOMIN_HEIGHT, *this->piGrHandle_ZoomIn, TRUE);
+	// NGアイコン描写
+	if (this->pDataList_GameStatus->GetZoomLevel() >= 5)
+	{
+		DrawExtendGraph(UI_ZOOMIN_POS_X, UI_ZOOMIN_POS_Y, UI_ZOOMIN_POS_X + UI_ZOOMIN_WIDE, UI_ZOOMIN_POS_Y + UI_ZOOMIN_HEIGHT, *this->piGrHandle_NG, TRUE);
+	}
+	// キーアイコン描写
+	DrawExtendGraph(UI_ZOOMIN_POS_X, UI_ZOOMIN_POS_Y, UI_ZOOMIN_POS_X + (UI_BUILDING_WIDE / 4), UI_ZOOMIN_POS_Y + (UI_BUILDING_WIDE / 4), *this->piKey[KEY_F], TRUE);
+
+	/* 縮小アイコンの描写 */
+	DrawBox(UI_ZOOMOUT_POS_X, UI_ZOOMOUT_POS_Y, UI_ZOOMOUT_POS_X + UI_ZOOMOUT_WIDE, UI_ZOOMOUT_POS_Y + UI_ZOOMOUT_HEIGHT, GetColor(0, 0, 0), TRUE);
+	DrawBox(UI_ZOOMOUT_POS_X + UI_ZOOMOUT_BACK_WIDE, UI_ZOOMOUT_POS_Y + UI_ZOOMOUT_BACK_WIDE, UI_ZOOMOUT_POS_X + UI_ZOOMOUT_WIDE - UI_ZOOMOUT_BACK_WIDE, UI_ZOOMOUT_POS_Y + UI_ZOOMOUT_HEIGHT - UI_ZOOMOUT_BACK_WIDE, GetColor(192, 192, 192), TRUE);
+	DrawExtendGraph(UI_ZOOMOUT_POS_X, UI_ZOOMOUT_POS_Y, UI_ZOOMOUT_POS_X + UI_ZOOMOUT_WIDE, UI_ZOOMOUT_POS_Y + UI_ZOOMOUT_HEIGHT, *this->piGrHandle_ZoomOut, TRUE);
+	// NGアイコン描写
+	if (this->pDataList_GameStatus->GetZoomLevel() <= 1)
+	{
+		DrawExtendGraph(UI_ZOOMOUT_POS_X, UI_ZOOMOUT_POS_Y, UI_ZOOMOUT_POS_X + UI_ZOOMOUT_WIDE, UI_ZOOMOUT_POS_Y + UI_ZOOMOUT_HEIGHT, *this->piGrHandle_NG, TRUE);
+	}
+	// キーアイコン描写
+	DrawExtendGraph(UI_ZOOMOUT_POS_X, UI_ZOOMOUT_POS_Y, UI_ZOOMOUT_POS_X + (UI_BUILDING_WIDE / 4), UI_ZOOMOUT_POS_Y + (UI_BUILDING_WIDE / 4), *this->piKey[KEY_R], TRUE);
 
 	/* 建築アイコンの描写 */
 	DrawBox(UI_BUILDING_POS_X, UI_BUILDING_POS_Y, UI_BUILDING_POS_X + UI_BUILDING_WIDE, UI_BUILDING_POS_Y + UI_BUILDING_HEIGHT, GetColor(0, 0, 0), TRUE);

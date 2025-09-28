@@ -22,7 +22,7 @@ Scene_Title::Scene_Title() : Scene_Base("Scene_Title", 0, false, false)
 	SetFontSize(BASE_FONT_SIZE);
 
 	/* データリストを取得 */
-	std::shared_ptr<DataList_Sound>	pDataList_Sound = std::dynamic_pointer_cast<DataList_Sound>(gpDataListServer->GetDataList("DataList_Sound"));	// サウンド管理
+	this->pDataList_Sound							= std::dynamic_pointer_cast<DataList_Sound>(gpDataListServer->GetDataList("DataList_Sound"));	// サウンド管理
 	std::shared_ptr<DataList_Image>	pDataList_Image = std::dynamic_pointer_cast<DataList_Image>(gpDataListServer->GetDataList("DataList_Image"));	// 画像管理
 
 	/* BGMを設定 */
@@ -65,6 +65,9 @@ void Scene_Title::Update()
 		{
 			this->iSelectIndex = SELECT_MAX - 1;
 		}
+
+		/* SEを再生 */
+		this->pDataList_Sound->SE_Play("CursorMove");
 	}
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_S] == TRUE)
 	{
@@ -74,6 +77,9 @@ void Scene_Title::Update()
 		{
 			this->iSelectIndex = 0;
 		}
+
+		/* SEを再生 */
+		this->pDataList_Sound->SE_Play("CursorMove");
 	}
 
 	/* Eキーが入力されたらその時点で選択されていた項目を実行 */
@@ -122,37 +128,9 @@ void Scene_Title::Update()
 				break;
 			}
 		}
-	}
 
-	/* 入力待ち */
-	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_Z] == TRUE)
-	{
-		/* 2Dパーツアニメーション作成ツールへ遷移 */
-		PUBLIC_FUNCTION::Start2DPartsAnimCreateTool();
-
-		/* シーンの削除フラグを有効にする */
-		this->bDeleteFlg = true;
-	}
-
-	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_X] == TRUE)
-	{
-		/* "ステージ作成"へ遷移 */
-		gpSceneServer->AddSceneReservation(std::make_shared<Scene_StageCreate>());
-		gpSceneServer->AddSceneReservation(std::make_shared<Scene_Load>());
-
-		/* シーンの削除フラグを有効にする */
-		this->bDeleteFlg = true;
-	}
-
-	if (gstKeyboardInputData.cgInput[INPUT_HOLD][KEY_INPUT_C] == TRUE)
-	{
-		/* シーン"ゲームメイン"へ遷移 */
-		gpSceneServer->AddSceneReservation(std::make_shared<Scene_GameMain>());
-		gpSceneServer->AddSceneReservation(std::make_shared<Scene_Load>());
-		gpSceneServer->SetDeleteCurrentSceneFlg(true);
-
-		/* シーンの削除フラグを有効にする */
-		this->bDeleteFlg = true;
+		/* SEを再生 */
+		this->pDataList_Sound->SE_Play("Select_Ok");
 	}
 }
 

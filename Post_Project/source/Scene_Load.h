@@ -11,7 +11,7 @@ class Scene_Load : public Scene_Base
 {
 	public:
 		Scene_Load();				// コンストラクタ
-		virtual ~Scene_Load();		// デストラクタ
+		virtual ~Scene_Load() {};	// デストラクタ
 
 		/* 関数 */
 		virtual void	Update()			override;	// 更新

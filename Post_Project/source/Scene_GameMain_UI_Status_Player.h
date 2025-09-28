@@ -28,7 +28,9 @@ class Scene_GameMain_UI_Status_Player : public Scene_Base
 		// キーの種類
 		static const int KEY_E			= 0;
 		static const int KEY_Q			= 1;
-		static const int KEY_MAX		= 2;
+		static const int KEY_R			= 2;
+		static const int KEY_F			= 3;
+		static const int KEY_MAX		= 4;
 		// UI用の座標
 		// 現在の武器
 		static const int UI_WEPON_NOW_POS_X			= 10;	// 現在の武器のX座標
@@ -42,6 +44,18 @@ class Scene_GameMain_UI_Status_Player : public Scene_Base
 		static const int UI_WEPON_NEXT_WIDE			= 96;	// 切り替え先の武器の幅
 		static const int UI_WEPON_NEXT_HEIGHT		= 96;	// 切り替え先の武器の高さ
 		static const int UI_WEPON_NEXT_BACK_WIDE	= 5;	// 背景の幅
+		// 拡大アイコン
+		static const int UI_ZOOMIN_POS_X			= 1506;	// 拡大アイコンのX座標
+		static const int UI_ZOOMIN_POS_Y			= 942;	// 拡大アイコンのY座標
+		static const int UI_ZOOMIN_WIDE				= 128;	// 拡大アイコンの幅
+		static const int UI_ZOOMIN_HEIGHT			= 128;	// 拡大アイコンの高さ
+		static const int UI_ZOOMIN_BACK_WIDE		= 5;	// 背景の幅
+		// 縮小アイコン
+		static const int UI_ZOOMOUT_POS_X			= 1644;	// 縮小アイコンのX座標
+		static const int UI_ZOOMOUT_POS_Y			= 942;	// 縮小アイコンのY座標
+		static const int UI_ZOOMOUT_WIDE			= 128;	// 縮小アイコンの幅
+		static const int UI_ZOOMOUT_HEIGHT			= 128;	// 縮小アイコンの高さ
+		static const int UI_ZOOMOUT_BACK_WIDE		= 5;	// 背景の幅
 		// 建築モード
 		static const int UI_BUILDING_POS_X			= 1782;	// 建築アイコンのX座標
 		static const int UI_BUILDING_POS_Y			= 942;	// 建築アイコンのY座標
@@ -60,6 +74,8 @@ class Scene_GameMain_UI_Status_Player : public Scene_Base
 		std::shared_ptr<DataList_GameStatus>	pDataList_GameStatus;			// ゲーム状態管理		
 		// 描画系
 		std::shared_ptr<int>					piGrHandle_Wepon[WEPON_MAX];	// 武器の画像
+		std::shared_ptr<int>					piGrHandle_ZoomIn;				// 拡大アイコン
+		std::shared_ptr<int>					piGrHandle_ZoomOut;				// 縮小アイコン
 		std::shared_ptr<int>					piGrHandle_Building;			// 建築アイコン
 		std::shared_ptr<int>					piKey[KEY_MAX];					// キー
 		std::shared_ptr<int>					piGrHandle_NG;					// NGアイコン

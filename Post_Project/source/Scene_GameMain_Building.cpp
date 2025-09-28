@@ -7,6 +7,7 @@
 #include "DataList_Image.h"
 #include "DataList_GameStatus.h"
 #include "DataList_Object.h"
+#include "DataList_Sound.h"
 #include "Building_Monument.h"
 #include "Building_NpcBase.h"
 
@@ -17,6 +18,7 @@ Scene_GameMain_Building::Scene_GameMain_Building() : Scene_Base("Scene_GameMain_
 	this->pDataList_GameStatus						= std::dynamic_pointer_cast<DataList_GameStatus>(gpDataListServer->GetDataList("DataList_GameStatus"));		// ゲーム状態管理
 	this->pDataList_Object							= std::dynamic_pointer_cast<DataList_Object>(gpDataListServer->GetDataList("DataList_Object"));				// オブジェクト管理
 	std::shared_ptr<DataList_Image>	pDataList_Image	= std::dynamic_pointer_cast<DataList_Image>(gpDataListServer->GetDataList("DataList_Image"));				// 画像管理
+	this->pDataList_Sound							= std::dynamic_pointer_cast<DataList_Sound>(gpDataListServer->GetDataList("DataList_Sound"));				// サウンド管理
 
 	/* 建築モードフラグを有効化 */
 	this->pDataList_GameStatus->SetBuildModeFlg(true);
@@ -165,6 +167,12 @@ void Scene_GameMain_Building::Update_Change_SelectBuildingArea()
 	if (iNowIndex < 0) { iNowIndex = static_cast<int>(this->pDataList_GameStatus->GetBuildAreaPositionList().size()) - 1; }
 	if (iNowIndex >= static_cast<int>(this->pDataList_GameStatus->GetBuildAreaPositionList().size())) { iNowIndex = 0; }
 
+	// 入力されたならSEを再生
+	if (iNowIndex != this->pDataList_GameStatus->GetSelectedBuildingIndex())
+	{
+		this->pDataList_Sound->SE_Play("CursorMove");
+	}
+
 	// インデックス番号を設定
 	this->pDataList_GameStatus->SetSelectedBuildingIndex(iNowIndex);
 }
@@ -174,6 +182,7 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 {
 	/* 配置する建築物を切り替える */
 	// 入力に応じてインデックス番号を変更
+	int iOldPlacementBuildingIndex = this->iPlacementBuildingIndex;
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_W] == TRUE) { this->iPlacementBuildingIndex--; }
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_S] == TRUE) { this->iPlacementBuildingIndex++; }
 
@@ -181,10 +190,16 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 	if (this->iPlacementBuildingIndex < 0) { this->iPlacementBuildingIndex = BUILDING_MAX - 1; }
 	if (this->iPlacementBuildingIndex >= BUILDING_MAX) { this->iPlacementBuildingIndex = 0; }
 
+	/* 入力されたならSEを再生 */
+	if (iOldPlacementBuildingIndex != this->iPlacementBuildingIndex)
+	{
+		this->pDataList_Sound->SE_Play("CursorMove");
+	}
+
 	/* 建築物の配置 */
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_E] == TRUE)
 	{
-		// Spaceキーが押された場合
+		// Eキーが押された場合
 		/* 選択中の建築エリアに建造物がないか確認 */
 		if (this->pDataList_GameStatus->GetBuildAreaPosition(this->pDataList_GameStatus->GetSelectedBuildingIndex()).pBuilding == nullptr)
 		{
@@ -193,12 +208,17 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 			if (this->pDataList_GameStatus->GetHaveCoin() < this->iBuildingPrice[this->iPlacementBuildingIndex])
 			{
 				// 所持コインが足りていない場合は処理を終了
+				/* SEを再生 */
+				this->pDataList_Sound->SE_Play("Select_Error");
 				return;
 			}
 			else
 			{
 				// 所持コインが足りている場合はコインを減算
 				this->pDataList_GameStatus->SetHaveCoin(this->pDataList_GameStatus->GetHaveCoin() - this->iBuildingPrice[this->iPlacementBuildingIndex]);
+
+				/* SEを再生 */
+				this->pDataList_Sound->SE_Play("Select_OK");
 			}
 
 			/* 建築物を配置 */
@@ -289,6 +309,12 @@ void Scene_GameMain_Building::Update_BuildingPlacement()
 				}
 				break;
 			}
+		}
+		else
+		{
+			// 建築物がある(建築不可である)場合
+			/* SEを再生 */
+			this->pDataList_Sound->SE_Play("Select_Error");
 		}
 	}
 }

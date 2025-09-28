@@ -38,6 +38,51 @@ void Character_Player::Update_Action()
 		}
 	}
 
+	/* ズームイン、ズームアウト処理 */
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_R] == TRUE)
+	{
+		/* ズームイン処理 */
+		int iZoomLevel = this->pDataList_GameStatus->GetZoomLevel();
+		iZoomLevel++;
+
+		if(iZoomLevel > 5)
+		{
+			// ズームレベルが5を超える場合は5に制限
+			iZoomLevel = 5;
+
+			/* SEを再生する */
+			this->pDataList_Sound->SE_Play("Select_Error");
+		}
+		else
+		{
+			/* SEを再生する */
+			this->pDataList_Sound->SE_Play("Select_OK");
+		}
+
+		this->pDataList_GameStatus->SetZoomLevel(iZoomLevel);
+	}
+	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_F] == TRUE)
+	{
+		/* ズームアウト処理 */
+		int iZoomLevel = this->pDataList_GameStatus->GetZoomLevel();
+		iZoomLevel--;
+
+		if (iZoomLevel < 1)
+		{
+			// ズームレベルが1を下回る場合は1に制限
+			iZoomLevel = 1;
+			/* SEを再生する */
+			this->pDataList_Sound->SE_Play("Select_Error");
+		}
+		else
+		{
+			/* SEを再生する */
+			this->pDataList_Sound->SE_Play("Select_OK");
+		}
+
+		this->pDataList_GameStatus->SetZoomLevel(iZoomLevel);
+	}
+
 	/* 武器切り替え処理 */
 	if (gstKeyboardInputData.cgInput[INPUT_TRG][KEY_INPUT_E] == TRUE)
 	{

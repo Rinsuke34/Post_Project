@@ -185,6 +185,58 @@ void Npc_Base::Route_Search(VECTOR vecGoalPos)
 	/* 現在の座標を設定 */
 	VECTOR vecStart = this->vecBasePosition;
 
+	/* 足場に着地できる座標まで下げる */
+	for (int i = 0; i < 8; ++i)
+	{
+		/* コリジョン作成 */
+		Struct_Collision::COLLISION_BOX stCheckBox;
+		stCheckBox.vecBoxCenter = VAdd(vecStart, VGet(0.f, this->stBox.vecBoxHalfSize.y, 0.f));
+		stCheckBox.vecBoxHalfSize = this->stBox.vecBoxHalfSize;
+		stCheckBox.vecBoxHalfSize.y += COLLISION_CHECK_FLOOR_MARGIN;
+
+		/* 足場判定用に1ブロック分下にずらす */
+		Struct_Collision::COLLISION_BOX stCheckBox_Floor = stCheckBox;
+		stCheckBox_Floor.vecBoxCenter.y -= MAP_BLOCK_SIZE_Y;
+
+		bool bFloorFoundFlg = false;
+		/* 判定対象リストを作成 */
+		std::vector<std::shared_ptr<Ground_Base>> CollisionList;
+		int iGridX = iGetGridIndexX(vecStart.x);
+		int iGridZ = iGetGridIndexZ(vecStart.z);
+		for (int iX = iGridX - 1; iX <= iGridX + 1; ++iX)
+		{
+			for (int iZ = iGridZ - 1; iZ <= iGridZ + 1; ++iZ)
+			{
+				for (auto& Ground : this->pDataList_Object->GetGroundList(iX, iZ))
+				{
+					CollisionList.push_back(Ground);
+				}
+			}
+		}
+		for (auto& Building : this->pDataList_Object->GetBuildingList())
+		{
+			CollisionList.push_back(Building);
+		}
+		for (auto& Collision : CollisionList)
+		{
+			if (Collision->HitCheck(stCheckBox_Floor))
+			{
+				bFloorFoundFlg = true;
+				break;
+			}
+		}
+		if (bFloorFoundFlg)
+		{
+			/* 足場が見つかったら終了 */
+			break;
+		}
+		else
+		{
+			/* 足場がなければY座標を1ブロック分下げる */
+			vecStart.y -= MAP_BLOCK_SIZE_Y;
+		}
+	}
+
 	/* 評価値リストを作成 */
 	std::vector<ASTAR_EVALUATION_LIST> astEvaluationList;
 
